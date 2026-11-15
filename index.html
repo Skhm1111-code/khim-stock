@@ -9,40 +9,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --bg-body: #f1f5f9;
+            --bg-body: #f2f2f7;
             --bg-card: #ffffff;
-            --bg-input: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --primary-soft: #eff6ff;
-            --success: #10b981;
-            --danger: #ef4444;
-            --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+            --bg-input: #f2f2f7;
+            --text-main: #000000;
+            --text-muted: #8e8e93;
+            --border-color: #e5e5ea;
+            --primary: #007aff;
+            --primary-hover: #0056b3;
+            --primary-soft: rgba(0, 122, 255, 0.12);
+            --success: #34c759;
+            --warning: #ff9500;
+            --danger: #ff3b30;
+            --purple: #af52de;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             --radius-lg: 16px;
             --radius-md: 12px;
         }
 
         [data-theme="dark"] {
-            --bg-body: #0b1120;
-            --bg-card: #1e293b;
-            --bg-input: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --primary-soft: rgba(59, 130, 246, 0.15);
-            --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+            --bg-body: #000000;
+            --bg-card: #1c1c1e;
+            --bg-input: #2c2c2e;
+            --text-main: #ffffff;
+            --text-muted: #98989d;
+            --border-color: #38383a;
+            --primary: #0a84ff;
+            --primary-hover: #409cff;
+            --primary-soft: rgba(10, 132, 255, 0.2);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -54,15 +56,15 @@
             transition: background-color 0.25s, color 0.25s;
         }
 
-        /* Header Navigation */
+        /* Header */
         .app-header {
             background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 0.5px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
             padding: 12px 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            backdrop-filter: blur(20px);
         }
 
         .header-inner {
@@ -80,59 +82,42 @@
         }
 
         .brand-logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #007aff, #5856d6);
             color: white;
-            border-radius: 12px;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             font-size: 18px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
-        .brand-text h1 {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
+        .brand-text h1 { font-size: 17px; font-weight: 700; }
+        .brand-text p { font-size: 12px; color: var(--text-muted); }
 
-        .brand-text p {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .header-actions { display: flex; gap: 8px; }
 
         .btn-icon {
             background: var(--bg-input);
-            border: 1px solid var(--border-color);
+            border: none;
             color: var(--text-main);
-            padding: 8px 12px;
+            padding: 8px 13px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
+            transition: 0.15s;
         }
-
-        .btn-icon:active { transform: scale(0.96); }
+        .btn-icon:active { opacity: 0.7; transform: scale(0.96); }
 
         .btn-admin {
-            background: var(--primary-soft);
-            color: var(--primary);
-            border-color: rgba(37, 99, 235, 0.3);
+            background: var(--primary);
+            color: #ffffff;
         }
 
-        /* Container & Cards */
+        /* Layout */
         .container {
             max-width: 900px;
             margin: 16px auto;
@@ -144,9 +129,8 @@
 
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 18px;
+            padding: 16px;
             box-shadow: var(--shadow);
         }
 
@@ -159,16 +143,12 @@
             align-items: center;
         }
 
-        /* Grid Inputs */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-
-        @media (max-width: 600px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
 
         .form-group label {
             display: block;
@@ -182,99 +162,69 @@
             width: 100%;
             padding: 11px 14px;
             background: var(--bg-input);
-            border: 1px solid var(--border-color);
+            border: 1px solid transparent;
             border-radius: var(--radius-md);
             color: var(--text-main);
             font-size: 14px;
             font-weight: 500;
             outline: none;
-            transition: 0.2s;
         }
-
         .input-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            background: var(--bg-card);
         }
 
-        /* Scanner Box */
-        .scanner-bar {
-            display: flex;
-            gap: 10px;
-        }
-
-        .scanner-bar input {
-            flex: 1;
-            font-family: 'Plus Jakarta Sans', monospace;
-            font-size: 15px;
-            font-weight: 600;
-        }
+        /* Scanner */
+        .scanner-bar { display: flex; gap: 10px; }
+        .scanner-bar input { flex: 1; font-weight: 600; }
 
         .btn-primary {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 22px;
+            padding: 12px 20px;
             border-radius: var(--radius-md);
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
             white-space: nowrap;
         }
+        .btn-primary:active { opacity: 0.8; transform: scale(0.98); }
 
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-primary:active { transform: scale(0.97); }
-
-        /* Quick Code Chips */
         .quick-codes {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             margin-top: 10px;
         }
-
         .chip {
             background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            padding: 5px 10px;
+            border: none;
+            padding: 6px 11px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--primary);
             cursor: pointer;
         }
 
-        .chip:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Table Styles */
+        /* Table */
         .table-wrapper {
             overflow-x: auto;
             border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
+            border: 0.5px solid var(--border-color);
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 13px;
-        }
-
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
         th {
             background: var(--bg-input);
             color: var(--text-muted);
-            font-weight: 700;
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            padding: 10px 12px;
             white-space: nowrap;
         }
-
         td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 11px 12px;
+            border-top: 0.5px solid var(--border-color);
             vertical-align: middle;
         }
 
@@ -286,220 +236,231 @@
             border-radius: 6px;
             font-size: 11px;
             font-weight: 700;
-            margin-top: 3px;
         }
 
-        .qty-control {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        .qty-control { display: flex; align-items: center; gap: 5px; }
         .qty-btn {
             width: 28px;
             height: 28px;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
+            border: none;
             background: var(--bg-input);
             color: var(--text-main);
             font-weight: 700;
             cursor: pointer;
         }
-
         .qty-input {
-            width: 48px;
+            width: 44px;
             text-align: center;
             padding: 4px;
-            border: 1px solid var(--border-color);
+            border: 0.5px solid var(--border-color);
             border-radius: 6px;
             background: var(--bg-card);
             color: var(--text-main);
             font-weight: 700;
         }
-
         .price-input {
-            width: 65px;
+            width: 62px;
             text-align: center;
             padding: 5px;
-            border: 1px solid var(--border-color);
+            border: none;
             border-radius: 6px;
             background: var(--bg-input);
             color: var(--text-main);
             font-weight: 600;
         }
 
-        /* Receipt Preview Card */
+        /* Receipt */
         .receipt-box {
             background: #ffffff;
-            color: #0f172a;
-            border: 2px solid #2563eb;
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+            color: #000000;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e5ea;
         }
-
         .receipt-header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 2px dashed #cbd5e1;
-            padding-bottom: 14px;
-            margin-bottom: 14px;
+            border-bottom: 1.5px dashed #d1d1d6;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
         }
-
         .receipt-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 7px 0;
+            border-bottom: 0.5px solid #f2f2f7;
             font-size: 13px;
         }
-
         .receipt-footer {
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 2px solid #0f172a;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1.5px solid #000000;
             display: flex;
             justify-content: space-between;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
         }
 
-        /* Action Buttons */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        /* Export Buttons */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        @media (max-width: 600px) { .action-grid { grid-template-columns: 1fr; } }
 
-        .btn-success {
-            background: #059669;
+        .btn-action {
             color: white;
             border: none;
-            padding: 14px;
+            padding: 13px;
             border-radius: var(--radius-md);
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 13px;
             cursor: pointer;
             text-align: center;
         }
+        .btn-save-rep { background: var(--purple); }
+        .btn-png { background: var(--success); }
+        .btn-tg { background: var(--primary); }
 
-        .btn-telegram {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        /* Modals */
+        /* Modals & iOS Settings Style */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
             z-index: 999;
             display: none;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            padding: 16px;
         }
-
+        @media (min-width: 640px) {
+            .modal-overlay { align-items: center; padding: 16px; }
+        }
         .modal-overlay.active { display: flex; }
 
-        .modal-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+        .ios-sheet {
+            background: var(--bg-body);
+            border-radius: 22px 22px 0 0;
             width: 100%;
-            max-width: 520px;
-            max-height: 88vh;
+            max-width: 560px;
+            max-height: 90vh;
             overflow-y: auto;
-            padding: 22px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 20px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.25);
+            animation: slideUp 0.25s ease-out;
+        }
+        @media (min-width: 640px) {
+            .ios-sheet { border-radius: 22px; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .modal-header {
+        .ios-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
-
-        .close-btn {
-            background: var(--bg-input);
+        .ios-nav h3 { font-size: 18px; font-weight: 700; }
+        .ios-done-btn {
+            background: none;
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 18px;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            color: var(--text-main);
         }
 
-        /* Variant Selector Grid */
+        /* iOS Grouped List */
+        .ios-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin: 16px 0 6px 12px;
+        }
+
+        .ios-group {
+            background: var(--bg-card);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .ios-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 16px;
+            border-bottom: 0.5px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .ios-row:last-child { border-bottom: none; }
+        .ios-row:active { background: var(--bg-input); }
+
+        .ios-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ios-icon-box {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .ios-row-text h4 { font-size: 14px; font-weight: 600; }
+        .ios-row-text p { font-size: 11px; color: var(--text-muted); }
+
+        .ios-chevron {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* Admin Sub-views */
+        .admin-subview { display: none; }
+        .admin-subview.active { display: block; }
+
+        .back-link {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Variant Grid */
         .variant-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 10px;
             margin-bottom: 16px;
         }
-
         .variant-item {
-            border: 1px solid var(--border-color);
-            background: var(--bg-input);
-            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
             padding: 10px;
             text-align: center;
-            transition: 0.2s;
         }
-
         .variant-item.selected {
             border-color: var(--primary);
             background: var(--primary-soft);
-        }
-
-        .variant-name {
-            font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .variant-stock {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        /* Admin Tabs */
-        .admin-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .tab-btn {
-            padding: 8px 14px;
-            border-radius: 8px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
         }
     </style>
 </head>
@@ -523,63 +484,58 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Container -->
     <div class="container">
         
-        <!-- Store & Counter Info -->
+        <!-- Store Info -->
         <div class="card">
             <div class="grid-2">
                 <div class="form-group">
                     <label id="lblStore">ឈ្មោះហាង / សាខា (Store)</label>
-                    <input type="text" id="storeInput" class="input-control" value="BOREY SHOP" oninput="renderAll()">
+                    <input type="text" id="storeInput" class="input-control" oninput="saveStoreInfo(); renderAll()">
                 </div>
                 <div class="form-group">
                     <label id="lblCounter">អ្នករាប់ស្តុក (Counter)</label>
-                    <input type="text" id="counterInput" class="input-control" value="បងគីម (Khem)" oninput="renderAll()">
+                    <input type="text" id="counterInput" class="input-control" oninput="saveStoreInfo(); renderAll()">
                 </div>
             </div>
         </div>
 
-        <!-- Scanner Input -->
+        <!-- Scanner -->
         <div class="card">
             <div class="card-title">
-                <span id="lblScanTitle">ស្កែន ឬ វាយកូដទំនិញ (Scan Barcode / Code)</span>
+                <span id="lblScanTitle">ស្កែន ឬ វាយកូដទំនិញ</span>
                 <span style="font-size:12px; color:var(--primary);" id="totalMasterBadge">ស្តុកក្នុងប្រព័ន្ធ: 0 មុខ</span>
             </div>
             <div class="scanner-bar">
                 <input type="text" id="scanInput" class="input-control" placeholder="វាយកូដ ឧ. BAG10, SH3540, Z471..." autofocus>
-                <button class="btn-primary" onclick="handleScan()" id="btnAdd">ស្វែងរក / បន្ថែម</button>
+                <button class="btn-primary" onclick="handleScan()" id="btnAdd">បន្ថែម</button>
             </div>
             <div class="quick-codes">
-                <span style="font-size:12px; color:var(--text-muted); padding-top:4px;">សាកល្បងកូដ៖</span>
-                <button class="chip" onclick="quickTest('BAG10')">BAG10 (មាន 10 ពណ៌)</button>
-                <button class="chip" onclick="quickTest('SH3540')">SH3540 (ស្បែកជើង 35-40)</button>
+                <button class="chip" onclick="quickTest('BAG10')">BAG10 (10 ពណ៌)</button>
+                <button class="chip" onclick="quickTest('SH3540')">SH3540 (35-40)</button>
                 <button class="chip" onclick="quickTest('Z471')">Z471 (អត់ពណ៌)</button>
             </div>
         </div>
 
-        <!-- Scanned Items Table -->
+        <!-- Scanned Table -->
         <div class="card">
             <div class="card-title">
-                <span>បញ្ជីទំនិញបានរាប់ជាក់ស្តែង (<span id="cartCount">0</span>)</span>
-                <button onclick="clearCart()" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:12px; cursor:pointer;">លុបទាំងអស់</button>
+                <span>បញ្ជីទំនិញបានរាប់ (<span id="cartCount">0</span>)</span>
+                <button onclick="clearCart()" style="background:none; border:none; color:var(--danger); font-weight:600; font-size:12px; cursor:pointer;">លុបទាំងអស់</button>
             </div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>កូដ / ឈ្មោះទំនិញ</th>
+                            <th>កូដ / ឈ្មោះ</th>
                             <th>ពណ៌ / ទំហំ</th>
                             <th style="text-align:center;">តម្លៃ ($)</th>
                             <th style="text-align:center;">ចំនួន</th>
                             <th style="text-align:right;">លុប</th>
                         </tr>
                     </thead>
-                    <tbody id="cartBody">
-                        <tr>
-                            <td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">មិនទាន់មានទំនិញបានស្កែននៅឡើយទេ...</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="cartBody"></tbody>
                 </table>
             </div>
         </div>
@@ -588,114 +544,279 @@
         <div class="receipt-box" id="receiptCapture">
             <div class="receipt-header">
                 <div>
-                    <h2 id="recStore" style="font-size:18px; font-weight:700; color:#2563eb;">BOREY SHOP</h2>
-                    <p id="recCounter" style="font-size:12px; color:#64748b;">អ្នករាប់: បងគីម (Khem)</p>
+                    <h2 id="recStore" style="font-size:17px; font-weight:700; color:#007aff;">BOREY SHOP</h2>
+                    <p id="recCounter" style="font-size:12px; color:#8e8e93;">អ្នករាប់: បងគីម (Khem)</p>
                 </div>
                 <div style="text-align:right;">
-                    <span id="recDate" style="background:#eff6ff; color:#2563eb; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:700;">15-11-2026</span>
-                    <p style="font-size:11px; color:#64748b; margin-top:4px;">វិក្កយបត្ររាប់ស្តុក</p>
+                    <span id="recDate" style="background:#f2f2f7; color:#000000; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:700;">15-11-2026</span>
+                    <p style="font-size:11px; color:#8e8e93; margin-top:4px;">វិក្កយបត្ររាប់ស្តុក</p>
                 </div>
             </div>
-            <div id="recList">
-                <p style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">មិនទាន់មានទិន្នន័យ</p>
-            </div>
+            <div id="recList"></div>
             <div class="receipt-footer">
-                <span>សរុបចំនួន៖ <span id="recTotalQty" style="color:#2563eb;">0</span> ឯកតា</span>
-                <span>សរុបទឹកប្រាក់៖ $<span id="recTotalPrice" style="color:#059669;">0.00</span></span>
+                <span>សរុបចំនួន៖ <span id="recTotalQty" style="color:#007aff;">0</span> ឯកតា</span>
+                <span>សរុបទឹកប្រាក់៖ $<span id="recTotalPrice" style="color:#34c759;">0.00</span></span>
             </div>
         </div>
 
-        <!-- Export Buttons -->
+        <!-- Actions -->
         <div class="action-grid">
-            <button class="btn-success" onclick="exportPNG()">ទាញយករូបភាព (PNG)</button>
-            <button class="btn-telegram" onclick="copyTelegram()">Copy ផ្ញើចូល Telegram</button>
+            <button class="btn-action btn-save-rep" onclick="saveReportToHistory()">រក្សាទុករបាយការណ៍</button>
+            <button class="btn-action btn-png" onclick="exportPNG()">ទាញយករូបភាព (PNG)</button>
+            <button class="btn-action btn-tg" onclick="copyTelegram()">Copy ផ្ញើ Telegram</button>
         </div>
 
     </div>
 
-    <!-- Modal: Variant Selector (Colors / Sizes) -->
+    <!-- Modal: Variant Selector -->
     <div class="modal-overlay" id="variantModal">
-        <div class="modal-card">
-            <div class="modal-header">
+        <div class="ios-sheet">
+            <div class="ios-nav">
                 <div>
-                    <h3 id="varModalTitle" style="font-size:16px; font-weight:700;">ជ្រើសរើសពណ៌ / ទំហំ</h3>
-                    <p id="varModalSub" style="font-size:12px; color:var(--text-muted);">ចុចបូកចំនួនតាមពណ៌ ឬលេខនីមួយៗ</p>
+                    <h3 id="varModalTitle">ជ្រើសរើសពណ៌ / ទំហំ</h3>
+                    <p style="font-size:12px; color:var(--text-muted);">ចុចបូកចំនួនតាមពណ៌ ឬលេខនីមួយៗ</p>
                 </div>
-                <button class="close-btn" onclick="closeVariantModal()">&times;</button>
+                <button class="ios-done-btn" onclick="closeVariantModal()">បិទ</button>
             </div>
             <div class="variant-grid" id="variantGrid"></div>
-            <button class="btn-primary" style="width:100%;" onclick="confirmVariants()">បញ្ចូលទៅក្នុងតារាងរាប់</button>
+            <button class="btn-primary" style="width:100%; padding:14px;" onclick="confirmVariants()">បញ្ចូលទៅក្នុងតារាងរាប់</button>
         </div>
     </div>
 
-    <!-- Modal: Admin Dashboard -->
+    <!-- Modal: iOS Style Admin System -->
     <div class="modal-overlay" id="adminModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="font-size:16px; font-weight:700;">ប្រព័ន្ធគ្រប់គ្រង Admin</h3>
-                <button class="close-btn" onclick="closeAdmin()">&times;</button>
-            </div>
-
-            <!-- PIN Lock Screen -->
+        <div class="ios-sheet">
+            
+            <!-- PIN Screen -->
             <div id="adminPinScreen">
-                <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">បញ្ចូលលេខកូដ PIN ដើម្បីចូលគ្រប់គ្រង (លេខដើម: 1234)</p>
-                <input type="password" id="pinInput" class="input-control" style="text-align:center; font-size:20px; letter-spacing:8px; margin-bottom:12px;" maxlength="6" placeholder="••••">
-                <button class="btn-primary" style="width:100%;" onclick="checkPin()">ចូលប្រព័ន្ធ Admin</button>
+                <div class="ios-nav">
+                    <h3>សុវត្ថិភាព Admin</h3>
+                    <button class="ios-done-btn" onclick="closeAdmin()">បិទ</button>
+                </div>
+                <div class="card" style="text-align:center; padding:24px;">
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">បញ្ចូលលេខកូដ PIN ដើម្បីចូលគ្រប់គ្រងប្រព័ន្ធ (លេខដើម: 1234)</p>
+                    <input type="password" id="pinInput" class="input-control" style="text-align:center; font-size:24px; letter-spacing:10px; margin-bottom:16px;" maxlength="6" placeholder="••••">
+                    <button class="btn-primary" style="width:100%; padding:14px;" onclick="checkPin()">ដោះសោចូល Admin</button>
+                </div>
             </div>
 
-            <!-- Admin Panel Content -->
-            <div id="adminPanel" style="display:none;">
-                <div class="admin-tabs">
-                    <button class="tab-btn active" onclick="switchAdminTab('import', this)">Import Excel</button>
-                    <button class="tab-btn" onclick="switchAdminTab('add', this)">បន្ថែមទំនិញថ្មី</button>
-                    <button class="tab-btn" onclick="switchAdminTab('security', this)">ប្តូរ PIN</button>
+            <!-- Main iOS Admin Menu -->
+            <div id="adminMainMenu" style="display:none;">
+                <div class="ios-nav">
+                    <h3>ការគ្រប់គ្រង Admin</h3>
+                    <button class="ios-done-btn" onclick="closeAdmin()">រួចរាល់</button>
                 </div>
 
-                <!-- Tab 1: Import Excel -->
-                <div id="tab-import">
-                    <div style="background:var(--bg-input); padding:14px; border-radius:12px; border:1px dashed var(--primary); margin-bottom:12px;">
-                        <p style="font-size:13px; font-weight:700; margin-bottom:6px;">ជ្រើសរើសឯកសារ Excel / CSV (HangPopok ឬ Master_List)</p>
-                        <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">ប្រព័ន្ធនឹងចាប់យក កូដ, ឈ្មោះ, ពណ៌/ទំហំ (បើមាន) និងតម្លៃដោយស្វ័យប្រវត្តិ។</p>
-                        <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="importExcel(event)" style="font-size:12px; width:100%;">
+                <!-- Summary Stats -->
+                <div class="grid-2" style="margin-bottom:8px;">
+                    <div class="card" style="padding:12px; text-align:center;">
+                        <div style="font-size:20px; font-weight:700; color:var(--primary);" id="statMasterCount">0</div>
+                        <div style="font-size:11px; color:var(--text-muted);">មុខទំនិញក្នុងប្រព័ន្ធ</div>
                     </div>
-                    <p id="importLog" style="font-size:12px; color:var(--success); font-weight:700;"></p>
+                    <div class="card" style="padding:12px; text-align:center;">
+                        <div style="font-size:20px; font-weight:700; color:var(--purple);" id="statHistoryCount">0</div>
+                        <div style="font-size:11px; color:var(--text-muted);">របាយការណ៍បានរក្សាទុក</div>
+                    </div>
                 </div>
 
-                <!-- Tab 2: Add Manual Item -->
-                <div id="tab-add" style="display:none;">
-                    <div class="form-group" style="margin-bottom:10px;">
+                <!-- Section 1: Inventory & Excel -->
+                <div class="ios-section-title">១. ទិន្នន័យស្តុក និង EXCEL</div>
+                <div class="ios-group">
+                    <div class="ios-row" onclick="openSubView('viewImport')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:var(--success);">IN</div>
+                            <div class="ios-row-text">
+                                <h4>Import ឯកសារ Excel / CSV</h4>
+                                <p>ទាញបញ្ចូលទិន្នន័យពី HangPopok ឬ Master_List</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                    <div class="ios-row" onclick="exportMasterExcel()">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:var(--primary);">EX</div>
+                            <div class="ios-row-text">
+                                <h4>Export ទិន្នន័យស្តុកចេញជា Excel</h4>
+                                <p>ទាញយកបញ្ជីទំនិញទាំងអស់ទុកក្នុងម៉ាស៊ីន</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                    <div class="ios-row" onclick="openSubView('viewManageProducts')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:var(--warning);">DB</div>
+                            <div class="ios-row-text">
+                                <h4>បញ្ជីទំនិញទាំងអស់ (កែប្រែ / លុប)</h4>
+                                <p>ឆែកមើលកូដ ពណ៌ ទំហំ និងកែតម្លៃទំនិញផ្ទាល់</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                </div>
+
+                <!-- Section 2: Add Product -->
+                <div class="ios-section-title">២. បន្ថែមទំនិញថ្មី</div>
+                <div class="ios-group">
+                    <div class="ios-row" onclick="openSubView('viewAddProduct')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:#5856d6;">+</div>
+                            <div class="ios-row-text">
+                                <h4>បង្កើតកូដទំនិញ និងពណ៌/ទំហំថ្មី</h4>
+                                <p>ដាក់បានទាំង ១០ ពណ៌, ស្បែកជើង ៣៥-៤០ ឬអត់ពណ៌</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                </div>
+
+                <!-- Section 3: Reports & Backup -->
+                <div class="ios-section-title">៣. ប្រវត្តិរបាយការណ៍ និង BACKUP</div>
+                <div class="ios-group">
+                    <div class="ios-row" onclick="openSubView('viewHistory')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:var(--purple);">H</div>
+                            <div class="ios-row-text">
+                                <h4>ប្រវត្តិវិក្កយបត្រដែលបានរាប់</h4>
+                                <p>មើលរបាយការណ៍ចាស់ៗ និងទាញយករូបភាពឡើងវិញ</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                    <div class="ios-row" onclick="openSubView('viewBackup')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:#32ade6;">B</div>
+                            <div class="ios-row-text">
+                                <h4>Backup & Restore ទិន្នន័យសុវត្ថិភាព</h4>
+                                <p>រក្សាទុកទិន្នន័យការពារពេលប្ដូរទូរស័ព្ទ</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                </div>
+
+                <!-- Section 4: Security & System -->
+                <div class="ios-section-title">៤. សុវត្ថិភាព និងការកំណត់</div>
+                <div class="ios-group">
+                    <div class="ios-row" onclick="openSubView('viewPin')">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:#8e8e93;">PIN</div>
+                            <div class="ios-row-text">
+                                <h4>ប្តូរលេខសម្ងាត់ Admin PIN</h4>
+                                <p>កំណត់លេខកូដសម្ងាត់ថ្មីសម្រាប់ចូល Admin</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                    <div class="ios-row" onclick="resetSystemData()">
+                        <div class="ios-row-left">
+                            <div class="ios-icon-box" style="background:var(--danger);">!</div>
+                            <div class="ios-row-text">
+                                <h4 style="color:var(--danger);">សម្អាតទិន្នន័យទាំងអស់ (Reset)</h4>
+                                <p>លុបទំនិញគំរូ និងចាប់ផ្ដើមប្រព័ន្ធថ្មីស្អាត</p>
+                            </div>
+                        </div>
+                        <span class="ios-chevron">›</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subview: Import Excel -->
+            <div id="viewImport" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>Import Excel</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <div class="card">
+                    <p style="font-size:13px; font-weight:600; margin-bottom:6px;">ជ្រើសរើស File Excel (.xlsx, .xls, .csv)</p>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">ប្រព័ន្ធនឹងផ្ដុំកូដដូចគ្នាដែលមានពណ៌ ឬលេខទំហំខុសគ្នាចូលក្នុងបញ្ជីតែមួយដោយស្វ័យប្រវត្តិ។</p>
+                    <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="importExcel(event)" class="input-control">
+                    <p id="importLog" style="font-size:13px; color:var(--success); font-weight:700; margin-top:12px;"></p>
+                </div>
+            </div>
+
+            <!-- Subview: Manage Products -->
+            <div id="viewManageProducts" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>បញ្ជីទំនិញក្នុងប្រព័ន្ធ</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <input type="text" id="adminSearchProd" class="input-control" placeholder="ស្វែងរកកូដ ឬឈ្មោះទំនិញ..." oninput="renderAdminProducts()" style="margin-bottom:12px;">
+                <div id="adminProductsList" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <!-- Subview: Add Product -->
+            <div id="viewAddProduct" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>បន្ថែមទំនិញថ្មី</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="form-group">
                         <label>កូដទំនិញ (Code)</label>
                         <input type="text" id="newCode" class="input-control" placeholder="ឧ. BAG20">
                     </div>
-                    <div class="form-group" style="margin-bottom:10px;">
-                        <label>ឈ្មោះទំនិញ (Product Name)</label>
+                    <div class="form-group">
+                        <label>ឈ្មោះទំនិញ (Name)</label>
                         <input type="text" id="newName" class="input-control" placeholder="ឧ. កាបូបស្ពាយនារី">
                     </div>
-                    <div class="form-group" style="margin-bottom:10px;">
+                    <div class="form-group">
                         <label>ពណ៌ ឬ ទំហំ (ដាក់សញ្ញាក្បៀស , បើមានច្រើន / ទុកទំនេរបើអត់ពណ៌)</label>
-                        <input type="text" id="newVariants" class="input-control" placeholder="ឧ. ខ្មៅ, ស, ក្រហម, ខៀវ ឬ 35, 36, 37, 38, 39, 40">
+                        <input type="text" id="newVariants" class="input-control" placeholder="ឧ. ខ្មៅ, ស, ក្រហម ឬ 35, 36, 37, 38, 39, 40">
                     </div>
-                    <div class="form-group" style="margin-bottom:12px;">
-                        <label>តម្លៃលក់ ($)</label>
+                    <div class="form-group">
+                        <label>តម្លៃ ($)</label>
                         <input type="number" step="0.1" id="newPrice" class="input-control" value="5.0">
                     </div>
-                    <button class="btn-primary" style="width:100%;" onclick="addNewMasterItem()">រក្សាទុកទំនិញចូលប្រព័ន្ធ</button>
-                </div>
-
-                <!-- Tab 3: Change PIN -->
-                <div id="tab-security" style="display:none;">
-                    <div class="form-group" style="margin-bottom:12px;">
-                        <label>កំណត់លេខកូដ PIN ថ្មី</label>
-                        <input type="text" id="newPinInput" class="input-control" placeholder="បញ្ចូលលេខ PIN ថ្មី">
-                    </div>
-                    <button class="btn-primary" style="width:100%;" onclick="saveNewPin()">រក្សាទុក PIN ថ្មី</button>
+                    <button class="btn-primary" style="width:100%; padding:14px;" onclick="addNewMasterItem()">រក្សាទុកទំនិញ</button>
                 </div>
             </div>
+
+            <!-- Subview: Report History -->
+            <div id="viewHistory" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>ប្រវត្តិរបាយការណ៍</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <div id="historyList" style="display:flex; flex-direction:column; gap:10px;"></div>
+            </div>
+
+            <!-- Subview: Backup & Restore -->
+            <div id="viewBackup" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>Backup & Restore</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+                    <button class="btn-primary" onclick="downloadBackup()">ទាញយក File Backup (.json)</button>
+                    <hr style="border:none; border-top:0.5px solid var(--border-color);">
+                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Restore ពី File Backup ចាស់៖</label>
+                    <input type="file" accept=".json" onchange="restoreBackup(event)" class="input-control">
+                </div>
+            </div>
+
+            <!-- Subview: Change PIN -->
+            <div id="viewPin" class="admin-subview">
+                <div class="ios-nav">
+                    <button class="back-link" onclick="backToAdminMenu()">‹ ត្រឡប់ក្រោយ</button>
+                    <h3>ប្តូរលេខសម្ងាត់ PIN</h3>
+                    <span style="width:40px;"></span>
+                </div>
+                <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+                    <input type="text" id="newPinInput" class="input-control" placeholder="បញ្ចូលលេខ PIN ថ្មី (យ៉ាងតិច ៤ ខ្ទង់)">
+                    <button class="btn-primary" onclick="saveNewPin()">រក្សាទុក PIN ថ្មី</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // Default Master Database with Multi-Color, Shoe Sizes, and Single Items
+        // Data Storage
         let masterDB = JSON.parse(localStorage.getItem('khem_master_db')) || [
             {
                 code: "BAG10",
@@ -703,16 +824,9 @@
                 name: "កាបូបម៉ូតកូរ៉េ (10 ពណ៌)",
                 price: 6.5,
                 variants: [
-                    { name: "ខ្មៅ (Black)", stock: 15 },
-                    { name: "ស (White)", stock: 12 },
-                    { name: "ក្រហម (Red)", stock: 8 },
-                    { name: "ខៀវ (Blue)", stock: 10 },
-                    { name: "ផ្កាឈូក (Pink)", stock: 14 },
-                    { name: "បៃតង (Green)", stock: 7 },
-                    { name: "លឿង (Yellow)", stock: 6 },
-                    { name: "ស្វាយ (Purple)", stock: 9 },
-                    { name: "ប្រផេះ (Grey)", stock: 11 },
-                    { name: "ត្នោត (Brown)", stock: 13 }
+                    { name: "ខ្មៅ", stock: 15 }, { name: "ស", stock: 12 }, { name: "ក្រហម", stock: 8 },
+                    { name: "ខៀវ", stock: 10 }, { name: "ផ្កាឈូក", stock: 14 }, { name: "បៃតង", stock: 7 },
+                    { name: "លឿង", stock: 6 }, { name: "ស្វាយ", stock: 9 }, { name: "ប្រផេះ", stock: 11 }, { name: "ត្នោត", stock: 13 }
                 ]
             },
             {
@@ -721,12 +835,8 @@
                 name: "ស្បែកជើងប៉ាតានារី (35-40)",
                 price: 8.0,
                 variants: [
-                    { name: "Size 35", stock: 5 },
-                    { name: "Size 36", stock: 8 },
-                    { name: "Size 37", stock: 12 },
-                    { name: "Size 38", stock: 10 },
-                    { name: "Size 39", stock: 6 },
-                    { name: "Size 40", stock: 4 }
+                    { name: "Size 35", stock: 5 }, { name: "Size 36", stock: 8 }, { name: "Size 37", stock: 12 },
+                    { name: "Size 38", stock: 10 }, { name: "Size 39", stock: 6 }, { name: "Size 40", stock: 4 }
                 ]
             },
             {
@@ -734,27 +844,39 @@
                 barcode: "P0050690",
                 name: "ក្រដាសជូតមាត់ (អត់ពណ៌)",
                 price: 1.5,
-                variants: [] // No variants -> direct add
+                variants: []
             }
         ];
 
         let cart = JSON.parse(localStorage.getItem('khem_cart')) || [];
+        let reportHistory = JSON.parse(localStorage.getItem('khem_history')) || [];
         let adminPin = localStorage.getItem('khem_admin_pin') || "1234";
+        let storeSettings = JSON.parse(localStorage.getItem('khem_store_info')) || { store: "BOREY SHOP", counter: "បងគីម (Khem)" };
         let currentLang = 'km';
         let activeProduct = null;
         let tempVariantCounts = {};
 
+        document.getElementById('storeInput').value = storeSettings.store;
+        document.getElementById('counterInput').value = storeSettings.counter;
+
+        function saveStoreInfo() {
+            storeSettings = {
+                store: document.getElementById('storeInput').value,
+                counter: document.getElementById('counterInput').value
+            };
+            localStorage.setItem('khem_store_info', JSON.stringify(storeSettings));
+        }
+
         function saveData() {
             localStorage.setItem('khem_master_db', JSON.stringify(masterDB));
             localStorage.setItem('khem_cart', JSON.stringify(cart));
+            localStorage.setItem('khem_history', JSON.stringify(reportHistory));
             document.getElementById('totalMasterBadge').innerText = `ស្តុកក្នុងប្រព័ន្ធ: ${masterDB.length} មុខ`;
         }
 
-        // Theme & Language
         function toggleTheme() {
-            const body = document.body;
-            const isDark = body.getAttribute('data-theme') === 'dark';
-            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
             document.getElementById('themeBtn').innerText = isDark ? 'Dark' : 'Light';
         }
 
@@ -762,13 +884,11 @@
             currentLang = currentLang === 'km' ? 'en' : 'km';
             document.getElementById('langBtn').innerText = currentLang === 'km' ? 'EN' : 'ខ្មែរ';
             document.getElementById('appTitle').innerText = currentLang === 'km' ? 'គីម ស្ដុក ខ្មែរ' : 'Khem Stock Pro';
-            document.getElementById('appSubtitle').innerText = currentLang === 'km' ? 'ប្រព័ន្ធស្កែន និងរាប់ស្តុកអាជីព' : 'Professional Inventory & Barcode System';
-            document.getElementById('lblStore').innerText = currentLang === 'km' ? 'ឈ្មោះហាង / សាខា (Store)' : 'Store / Branch Name';
-            document.getElementById('lblCounter').innerText = currentLang === 'km' ? 'អ្នករាប់ស្តុក (Counter)' : 'Staff / Counter Name';
-            document.getElementById('btnAdd').innerText = currentLang === 'km' ? 'ស្វែងរក / បន្ថែម' : 'Scan / Add';
+            document.getElementById('appSubtitle').innerText = currentLang === 'km' ? 'ប្រព័ន្ធស្កែន និងរាប់ស្តុកអាជីព' : 'Professional Inventory System';
+            document.getElementById('btnAdd').innerText = currentLang === 'km' ? 'បន្ថែម' : 'Add';
         }
 
-        // Scanning & Adding
+        // Scanning & Cart
         function quickTest(code) {
             document.getElementById('scanInput').value = code;
             handleScan();
@@ -782,7 +902,6 @@
                 item.code.toLowerCase() === raw.toLowerCase() || 
                 (item.barcode && item.barcode.toLowerCase() === raw.toLowerCase())
             );
-
             document.getElementById('scanInput').value = '';
 
             if (found) {
@@ -792,17 +911,14 @@
                     addToCart(found.code, found.name, "", found.price, 1);
                 }
             } else {
-                // Unknown code -> Add directly as single item
                 addToCart(raw.toUpperCase(), `ទំនិញថ្មី (${raw.toUpperCase()})`, "", 0, 1);
             }
         }
 
-        // Variant Selector Modal
         function openVariantModal(product) {
             activeProduct = product;
             tempVariantCounts = {};
             document.getElementById('varModalTitle').innerText = `${product.code} - ${product.name}`;
-            
             const grid = document.getElementById('variantGrid');
             grid.innerHTML = '';
 
@@ -810,8 +926,8 @@
                 tempVariantCounts[idx] = 0;
                 grid.innerHTML += `
                     <div class="variant-item" id="varCard_${idx}">
-                        <div class="variant-name">${v.name}</div>
-                        <div class="variant-stock">ស្តុក: ${v.stock || 0}</div>
+                        <div style="font-weight:700; font-size:13px; margin-bottom:2px;">${v.name}</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">ស្តុក: ${v.stock || 0}</div>
                         <div class="qty-control" style="justify-content:center;">
                             <button class="qty-btn" onclick="adjustVar(${idx}, -1)">-</button>
                             <input type="number" class="qty-input" id="varQty_${idx}" value="0" min="0" onchange="setVar(${idx}, this.value)">
@@ -820,7 +936,6 @@
                     </div>
                 `;
             });
-
             document.getElementById('variantModal').classList.add('active');
         }
 
@@ -833,8 +948,7 @@
         }
 
         function setVar(idx, val) {
-            let num = parseInt(val) || 0;
-            if (num < 0) num = 0;
+            let num = Math.max(0, parseInt(val) || 0);
             tempVariantCounts[idx] = num;
             document.getElementById(`varCard_${idx}`).classList.toggle('selected', num > 0);
         }
@@ -849,10 +963,7 @@
                     added = true;
                 }
             });
-            if (!added) {
-                alert("សូមជ្រើសរើសចំនួនយ៉ាងតិច ១ ពណ៌ ឬ ១ លេខ!");
-                return;
-            }
+            if (!added) return alert("សូមជ្រើសរើសចំនួនយ៉ាងតិច ១!");
             closeVariantModal();
         }
 
@@ -861,25 +972,18 @@
             activeProduct = null;
         }
 
-        // Cart Management
         function addToCart(code, name, variant, price, qty) {
             const existing = cart.find(c => c.code === code && c.variant === variant);
-            if (existing) {
-                existing.qty += qty;
-            } else {
-                cart.push({ code, name, variant, price: parseFloat(price) || 0, qty: parseInt(qty) || 1 });
-            }
+            if (existing) existing.qty += qty;
+            else cart.push({ code, name, variant, price: parseFloat(price) || 0, qty: parseInt(qty) || 1 });
             saveData();
             renderAll();
         }
 
         function updateCartQty(idx, newQty) {
             const q = parseInt(newQty);
-            if (q <= 0) {
-                cart.splice(idx, 1);
-            } else {
-                cart[idx].qty = q;
-            }
+            if (q <= 0) cart.splice(idx, 1);
+            else cart[idx].qty = q;
             saveData();
             renderAll();
         }
@@ -897,7 +1001,7 @@
         }
 
         function clearCart() {
-            if (confirm("តើបងចង់លុបទិន្នន័យដែលបានរាប់ទាំងអស់មែនទេ?")) {
+            if (confirm("តើបងចង់លុបបញ្ជីដែលបានរាប់ទាំងអស់មែនទេ?")) {
                 cart = [];
                 saveData();
                 renderAll();
@@ -915,22 +1019,17 @@
             document.getElementById('recCounter').innerText = `អ្នករាប់: ${counter}`;
 
             const now = new Date();
-            const dateStr = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}`;
-            document.getElementById('recDate').innerText = dateStr;
+            document.getElementById('recDate').innerText = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}`;
 
             if (cart.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">មិនទាន់មានទំនិញបានស្កែននៅឡើយទេ...</td></tr>`;
-                recList.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">មិនទាន់មានទិន្នន័យ</p>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:28px; color:var(--text-muted);">មិនទាន់មានទំនិញបានស្កែននៅឡើយទេ...</td></tr>`;
+                recList.innerHTML = `<p style="text-align:center; color:#8e8e93; font-size:12px; padding:14px 0;">មិនទាន់មានទិន្នន័យ</p>`;
                 document.getElementById('recTotalQty').innerText = '0';
                 document.getElementById('recTotalPrice').innerText = '0.00';
                 return;
             }
 
-            let tableHtml = '';
-            let recHtml = '';
-            let totalQty = 0;
-            let totalPrice = 0;
-
+            let tableHtml = '', recHtml = '', totalQty = 0, totalPrice = 0;
             cart.forEach((item, idx) => {
                 totalQty += item.qty;
                 totalPrice += (item.qty * item.price);
@@ -941,12 +1040,8 @@
                             <div style="font-weight:700; color:var(--primary);">${item.code}</div>
                             <div style="font-size:12px;">${item.name}</div>
                         </td>
-                        <td>
-                            ${item.variant ? `<span class="badge-variant">${item.variant}</span>` : `<span style="color:var(--text-muted); font-size:12px;">-</span>`}
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="number" step="0.1" class="price-input" value="${item.price}" onchange="updateCartPrice(${idx}, this.value)">
-                        </td>
+                        <td>${item.variant ? `<span class="badge-variant">${item.variant}</span>` : `<span style="color:var(--text-muted);">-</span>`}</td>
+                        <td style="text-align:center;"><input type="number" step="0.1" class="price-input" value="${item.price}" onchange="updateCartPrice(${idx}, this.value)"></td>
                         <td style="text-align:center;">
                             <div class="qty-control" style="justify-content:center;">
                                 <button class="qty-btn" onclick="updateCartQty(${idx}, ${item.qty - 1})">-</button>
@@ -954,9 +1049,7 @@
                                 <button class="qty-btn" onclick="updateCartQty(${idx}, ${item.qty + 1})">+</button>
                             </div>
                         </td>
-                        <td style="text-align:right;">
-                            <button onclick="removeCartItem(${idx})" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:16px; cursor:pointer;">&times;</button>
-                        </td>
+                        <td style="text-align:right;"><button onclick="removeCartItem(${idx})" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:16px; cursor:pointer;">&times;</button></td>
                     </tr>
                 `;
 
@@ -964,11 +1057,9 @@
                     <div class="receipt-row">
                         <div>
                             <strong>${item.code}</strong> - ${item.name}
-                            ${item.variant ? `<span style="background:#eff6ff; color:#2563eb; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:700; margin-left:4px;">${item.variant}</span>` : ''}
+                            ${item.variant ? `<span style="background:#f2f2f7; color:#007aff; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:700; margin-left:4px;">${item.variant}</span>` : ''}
                         </div>
-                        <div style="text-align:right; white-space:nowrap;">
-                            <strong>${item.qty}</strong> &times; $${item.price.toFixed(2)}
-                        </div>
+                        <div style="text-align:right; white-space:nowrap;"><strong>${item.qty}</strong> &times; $${item.price.toFixed(2)}</div>
                     </div>
                 `;
             });
@@ -979,12 +1070,28 @@
             document.getElementById('recTotalPrice').innerText = totalPrice.toFixed(2);
         }
 
-        // Export PNG & Telegram
+        // Export & Save Report
+        function saveReportToHistory() {
+            if (cart.length === 0) return alert("មិនទាន់មានទិន្នន័យសម្រាប់រក្សាទុកទេ!");
+            const now = new Date();
+            const record = {
+                id: Date.now(),
+                date: `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,
+                store: document.getElementById('storeInput').value,
+                counter: document.getElementById('counterInput').value,
+                items: JSON.parse(JSON.stringify(cart)),
+                totalQty: cart.reduce((s, i) => s + i.qty, 0),
+                totalPrice: cart.reduce((s, i) => s + (i.qty * i.price), 0)
+            };
+            reportHistory.unshift(record);
+            saveData();
+            alert("បានរក្សាទុករបាយការណ៍ចូលក្នុងប្រវត្តិ Admin រួចរាល់!");
+        }
+
         function exportPNG() {
-            const el = document.getElementById('receiptCapture');
-            html2canvas(el, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+            html2canvas(document.getElementById('receiptCapture'), { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
                 const a = document.createElement('a');
-                a.download = `Stock-${Date.now()}.png`;
+                a.download = `KhemStock-${Date.now()}.png`;
                 a.href = canvas.toDataURL('image/png');
                 a.click();
             });
@@ -992,28 +1099,23 @@
 
         function copyTelegram() {
             if (cart.length === 0) return alert("មិនទាន់មានទិន្នន័យសម្រាប់ Copy ទេ!");
-            const store = document.getElementById('storeInput').value;
-            const counter = document.getElementById('counterInput').value;
-            const date = document.getElementById('recDate').innerText;
-
-            let msg = `របាយការណ៍រាប់ស្តុក - ${store}\nអ្នករាប់: ${counter} | ថ្ងៃទី: ${date}\n------------------------\n`;
+            let msg = `របាយការណ៍រាប់ស្តុក - ${document.getElementById('storeInput').value}\nអ្នករាប់: ${document.getElementById('counterInput').value} | ថ្ងៃទី: ${document.getElementById('recDate').innerText}\n------------------------\n`;
             let sumQty = 0;
             cart.forEach((item, i) => {
                 sumQty += item.qty;
-                const vText = item.variant ? ` [${item.variant}]` : '';
-                msg += `${i+1}. ${item.code}${vText} : ${item.qty} ($${item.price})\n`;
+                msg += `${i+1}. ${item.code}${item.variant ? ` [${item.variant}]` : ''} : ${item.qty} ($${item.price})\n`;
             });
             msg += `------------------------\nសរុបចំនួន: ${sumQty} ឯកតា`;
-
             navigator.clipboard.writeText(msg);
-            alert("បាន Copy របាយការណ៍រួចរាល់! អាច Paste ចូល Telegram បានភ្លាមៗ។");
+            alert("បាន Copy របាយការណ៍រួចរាល់! អាច Paste ចូល Telegram បាន។");
         }
 
-        // Admin Controls
+        // iOS Admin Navigation
         function openAdmin() {
             document.getElementById('adminModal').classList.add('active');
             document.getElementById('adminPinScreen').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminMainMenu').style.display = 'none';
+            document.querySelectorAll('.admin-subview').forEach(el => el.classList.remove('active'));
             document.getElementById('pinInput').value = '';
         }
 
@@ -1022,21 +1124,59 @@
         }
 
         function checkPin() {
-            const val = document.getElementById('pinInput').value;
-            if (val === adminPin) {
+            if (document.getElementById('pinInput').value === adminPin) {
                 document.getElementById('adminPinScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
+                backToAdminMenu();
             } else {
                 alert("លេខកូដ PIN មិនត្រឹមត្រូវ!");
             }
         }
 
-        function switchAdminTab(tab, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('tab-import').style.display = tab === 'import' ? 'block' : 'none';
-            document.getElementById('tab-add').style.display = tab === 'add' ? 'block' : 'none';
-            document.getElementById('tab-security').style.display = tab === 'security' ? 'block' : 'none';
+        function backToAdminMenu() {
+            document.querySelectorAll('.admin-subview').forEach(el => el.classList.remove('active'));
+            document.getElementById('adminMainMenu').style.display = 'block';
+            document.getElementById('statMasterCount').innerText = masterDB.length;
+            document.getElementById('statHistoryCount').innerText = reportHistory.length;
+        }
+
+        function openSubView(viewId) {
+            document.getElementById('adminMainMenu').style.display = 'none';
+            document.querySelectorAll('.admin-subview').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if (viewId === 'viewManageProducts') renderAdminProducts();
+            if (viewId === 'viewHistory') renderHistoryList();
+        }
+
+        // Admin Features
+        function renderAdminProducts() {
+            const q = document.getElementById('adminSearchProd').value.toLowerCase();
+            const container = document.getElementById('adminProductsList');
+            const filtered = masterDB.filter(p => p.code.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">រកមិនឃើញទំនិញទេ</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(p => `
+                <div class="card" style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; color:var(--primary); font-size:14px;">${p.code} - ${p.name}</div>
+                        <div style="font-size:11px; color:var(--text-muted);">
+                            តម្លៃ: $${p.price} | ${p.variants.length > 0 ? `មាន ${p.variants.length} ពណ៌/ទំហំ` : 'អត់ពណ៌'}
+                        </div>
+                    </div>
+                    <button onclick="deleteMasterItem('${p.code}')" style="background:rgba(255,59,48,0.1); color:var(--danger); border:none; padding:6px 10px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">លុប</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteMasterItem(code) {
+            if (confirm(`តើបងចង់លុបទំនិញកូដ ${code} ចេញពីប្រព័ន្ធមែនទេ?`)) {
+                masterDB = masterDB.filter(p => p.code !== code);
+                saveData();
+                renderAdminProducts();
+            }
         }
 
         function addNewMasterItem() {
@@ -1046,23 +1186,134 @@
             const price = parseFloat(document.getElementById('newPrice').value) || 0;
 
             if (!code || !name) return alert("សូមបំពេញកូដ និងឈ្មោះទំនិញ!");
-
-            const variants = varsRaw 
-                ? varsRaw.split(',').map(v => ({ name: v.trim(), stock: 0 })).filter(v => v.name)
-                : [];
+            const variants = varsRaw ? varsRaw.split(',').map(v => ({ name: v.trim(), stock: 0 })).filter(v => v.name) : [];
 
             const idx = masterDB.findIndex(m => m.code === code);
-            if (idx >= 0) {
-                masterDB[idx] = { code, barcode: code, name, price, variants };
-            } else {
-                masterDB.push({ code, barcode: code, name, price, variants });
-            }
+            if (idx >= 0) masterDB[idx] = { code, barcode: code, name, price, variants };
+            else masterDB.push({ code, barcode: code, name, price, variants });
 
             saveData();
             alert(`បានរក្សាទុកទំនិញ ${code} រួចរាល់!`);
             document.getElementById('newCode').value = '';
             document.getElementById('newName').value = '';
             document.getElementById('newVariants').value = '';
+            backToAdminMenu();
+        }
+
+        function importExcel(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+                    const grouped = {};
+
+                    rows.slice(1).forEach(r => {
+                        if (!r || r.length === 0) return;
+                        const code = String(r[0] || r[1] || '').trim().toUpperCase();
+                        if (!code || code === 'CODE' || code === 'កូដ') return;
+                        const barcode = String(r[1] || code).trim();
+                        const name = String(r[2] || code).trim();
+                        const variantName = String(r[3] || '').trim();
+                        const price = parseFloat(r[4] || r[5] || 0) || 0;
+                        const stock = parseInt(r[5] || r[6] || 0) || 0;
+
+                        if (!grouped[code]) grouped[code] = { code, barcode, name, price, variants: [] };
+                        if (variantName && variantName !== '-' && variantName !== 'undefined') {
+                            grouped[code].variants.push({ name: variantName, stock });
+                        }
+                    });
+
+                    const list = Object.values(grouped);
+                    if (list.length > 0) {
+                        masterDB = list;
+                        saveData();
+                        document.getElementById('importLog').innerText = `បានទាញចូលទិន្នន័យចំនួន ${list.length} មុខជោគជ័យ!`;
+                    } else alert("រកមិនឃើញទិន្នន័យក្នុង File នេះទេ!");
+                } catch (err) { alert("មានបញ្ហាក្នុងការអាន File Excel!"); }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function exportMasterExcel() {
+            const rows = [["Code", "Barcode", "Product Name", "Variant (Color/Size)", "Price ($)", "Stock"]];
+            masterDB.forEach(p => {
+                if (p.variants && p.variants.length > 0) {
+                    p.variants.forEach(v => rows.push([p.code, p.barcode || p.code, p.name, v.name, p.price, v.stock || 0]));
+                } else {
+                    rows.push([p.code, p.barcode || p.code, p.name, "-", p.price, 0]);
+                }
+            });
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Master_List");
+            XLSX.writeFile(wb, `KhemStock_Master_${Date.now()}.xlsx`);
+        }
+
+        function renderHistoryList() {
+            const container = document.getElementById('historyList');
+            if (reportHistory.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">មិនទាន់មានរបាយការណ៍បានរក្សាទុកនៅឡើយទេ</p>`;
+                return;
+            }
+            container.innerHTML = reportHistory.map((h, idx) => `
+                <div class="card" style="padding:14px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <strong style="color:var(--primary); font-size:14px;">${h.store}</strong>
+                        <span style="font-size:11px; color:var(--text-muted);">${h.date}</span>
+                    </div>
+                    <div style="font-size:12px; margin-bottom:10px;">
+                        អ្នករាប់: ${h.counter} | ចំនួនសរុប: <strong>${h.totalQty}</strong> | ទឹកប្រាក់: <strong>$${h.totalPrice.toFixed(2)}</strong>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="loadHistoryToCart(${idx})" class="btn-primary" style="padding:7px 12px; font-size:12px;">បើកមើលក្នុងវិក្កយបត្រ</button>
+                        <button onclick="deleteHistory(${idx})" style="background:rgba(255,59,48,0.1); color:var(--danger); border:none; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">លុប</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryToCart(idx) {
+            const h = reportHistory[idx];
+            cart = JSON.parse(JSON.stringify(h.items));
+            document.getElementById('storeInput').value = h.store;
+            document.getElementById('counterInput').value = h.counter;
+            saveData();
+            renderAll();
+            closeAdmin();
+        }
+
+        function deleteHistory(idx) {
+            reportHistory.splice(idx, 1);
+            saveData();
+            renderHistoryList();
+        }
+
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ masterDB, reportHistory, storeSettings }));
+            const a = document.createElement('a');
+            a.href = dataStr;
+            a.download = `KhemStock_Backup_${Date.now()}.json`;
+            a.click();
+        }
+
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.masterDB) masterDB = data.masterDB;
+                    if (data.reportHistory) reportHistory = data.reportHistory;
+                    saveData();
+                    alert("Restore ទិន្នន័យជោគជ័យ!");
+                    backToAdminMenu();
+                } catch (err) { alert("File Backup មិនត្រឹមត្រូវ!"); }
+            };
+            reader.readAsText(file);
         }
 
         function saveNewPin() {
@@ -1072,60 +1323,17 @@
             localStorage.setItem('khem_admin_pin', adminPin);
             alert("បានប្តូរលេខ PIN ថ្មីជោគជ័យ!");
             document.getElementById('newPinInput').value = '';
+            backToAdminMenu();
         }
 
-        // Smart Excel Import (Groups identical codes with different colors/sizes automatically)
-        function importExcel(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const wb = XLSX.read(data, { type: 'array' });
-                    const sheet = wb.Sheets[wb.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-                    const grouped = {};
-                    rows.slice(1).forEach(r => {
-                        if (!r || r.length === 0) return;
-                        const code = String(r[0] || r[1] || '').trim().toUpperCase();
-                        if (!code || code === 'CODE' || code === 'កូដ') return;
-
-                        const barcode = String(r[1] || code).trim();
-                        const name = String(r[2] || code).trim();
-                        const variantName = String(r[3] || '').trim(); // Color or Size column
-                        const price = parseFloat(r[4] || r[5] || 0) || 0;
-                        const stock = parseInt(r[5] || r[6] || 0) || 0;
-
-                        if (!grouped[code]) {
-                            grouped[code] = { code, barcode, name, price, variants: [] };
-                        }
-                        if (variantName && variantName !== '-' && variantName !== 'undefined') {
-                            grouped[code].variants.push({ name: variantName, stock });
-                        }
-                    });
-
-                    const importedList = Object.values(grouped);
-                    if (importedList.length > 0) {
-                        masterDB = importedList;
-                        saveData();
-                        document.getElementById('importLog').innerText = `បានទាញចូលទិន្នន័យចំនួន ${importedList.length} មុខដោយជោគជ័យ!`;
-                    } else {
-                        alert("រកមិនឃើញទិន្នន័យត្រឹមត្រូវក្នុង File Excel នេះទេ!");
-                    }
-                } catch (err) {
-                    alert("មានបញ្ហាក្នុងការអាន File Excel!");
-                }
-            };
-            reader.readAsArrayBuffer(file);
+        function resetSystemData() {
+            if (confirm("ព្រមាន៖ សកម្មភាពនេះនឹងលុបទំនិញ និងប្រវត្តិទាំងអស់ចេញពីប្រព័ន្ធ! តើបងប្រាកដទេ?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
 
-        document.getElementById('scanInput').addEventListener('keypress', e => {
-            if (e.key === 'Enter') handleScan();
-        });
-
+        document.getElementById('scanInput').addEventListener('keypress', e => { if (e.key === 'Enter') handleScan(); });
         saveData();
         renderAll();
     </script>
