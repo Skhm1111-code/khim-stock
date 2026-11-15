@@ -221,4 +221,227 @@
         }
     </script>
 </body>
+</html> <!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>គីម ស្ដុក ខ្មែរ - ប្រព័ន្ធគ្រប់គ្រងស្តុក</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body class="bg-gray-100 font-sans pb-10">
+
+    <div class="container mx-auto p-3 max-w-md">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white p-4 rounded-2xl shadow-lg mb-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold flex items-center gap-2">
+                    <span>🚗</span> គីម ស្ដុក ខ្មែរ
+                </h1>
+                <p class="text-xs text-blue-100">ប្រព័ន្ធស្តុក Real-time សម្រាប់ iPhone</p>
+            </div>
+            <button onclick="toggleSettings()" class="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded-xl text-xs font-semibold shadow">
+                ⚙️ Settings
+            </button>
+        </header>
+
+        <!-- Settings Panel (Hidden by default) -->
+        <div id="settings-panel" class="bg-white p-4 rounded-2xl shadow-md mb-4 hidden border border-blue-200">
+            <h3 class="text-sm font-bold text-gray-700 mb-2">🔗 កែប្រែ Firebase Database URL</h3>
+            <input type="text" id="db-url-input" class="w-full border p-2 rounded-xl text-xs mb-2 font-mono" placeholder="https://...firebasedatabase.app">
+            <button onclick="saveDatabaseURL()" class="w-full bg-green-600 text-white py-2 rounded-xl text-xs font-semibold shadow hover:bg-green-700">រក្សាទុក Link Database</button>
+        </div>
+
+        <!-- Add Stock Form -->
+        <div class="bg-white p-4 rounded-2xl shadow-md mb-4">
+            <h2 class="text-sm font-bold mb-3 text-gray-700">➕ បន្ថែមទំនិញថ្មី</h2>
+            <form id="product-form" class="space-y-3">
+                <input type="text" id="p-name" placeholder="ឈ្មោះទំនិញ / ម៉ូដែល (ឧ. ស្បែកជើង Nike)" required class="w-full border p-2.5 rounded-xl text-sm">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="p-sku" placeholder="កូដ / Barcode" required class="border p-2.5 rounded-xl text-sm font-mono">
+                    <input type="number" id="p-qty" placeholder="ចំនួនស្តុក" required class="border p-2.5 rounded-xl text-sm">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-xl font-bold shadow hover:bg-blue-700 text-sm">
+                    រក្សាទុកចូល Cloud ☁️
+                </button>
+            </form>
+        </div>
+
+        <!-- Stock List -->
+        <div class="bg-white p-4 rounded-2xl shadow-md">
+            <h2 class="text-sm font-bold mb-3 text-gray-700">📦 បញ្ជីស្តុកបច្ចុប្បន្ន (Real-time)</h2>
+            <div id="stock-list" class="space-y-3">
+                <!-- Data will load here dynamically -->
+                <p class="text-center text-gray-400 text-xs py-4">កំពុងទាញទិន្នន័យ...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Canvas for Generating Receipt Image -->
+    <canvas id="receipt-canvas" width="600" height="900" style="display:none;"></canvas>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Default Firebase URL provided by user
+        const DEFAULT_URL = "https://stok-8afca-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        
+        // Get URL from localStorage or use default
+        let dbUrl = localStorage.getItem('firebase_db_url') || DEFAULT_URL;
+        document.getElementById('db-url-input').value = dbUrl;
+
+        // Initialize Firebase
+        let app, db;
+        try {
+            app = firebase.initializeApp({ databaseURL: dbUrl });
+            db = firebase.database();
+        } catch (e) {
+            console.error(e);
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function saveDatabaseURL() {
+            const newUrl = document.getElementById('db-url-input').value.trim();
+            if (newUrl) {
+                localStorage.setItem('firebase_db_url', newUrl);
+                alert('រក្សាទុក Link ជោគជ័យ! កម្មវិធីនឹង Refresh ឡើងវិញ។');
+                location.reload();
+            }
+        }
+
+        const productForm = document.getElementById('product-form');
+        const stockList = document.getElementById('stock-list');
+
+        // Add Product
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('p-name').value;
+            const sku = document.getElementById('p-sku').value;
+            const qty = document.getElementById('p-qty').value;
+
+            db.ref('products').push({
+                name: name,
+                sku: sku,
+                qty: Number(qty),
+                date: new Date().toLocaleDateString('km-KH')
+            });
+
+            productForm.reset();
+            alert('បានបញ្ចូលទំនិញជោគជ័យ!');
+        });
+
+        // Listen to Real-time Data
+        db.ref('products').on('value', (snapshot) => {
+            stockList.innerHTML = '';
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const item = data[key];
+                    const card = document.createElement('div');
+                    card.className = "bg-gray-50 border border-gray-200 p-3 rounded-xl flex justify-between items-center";
+                    card.innerHTML = `
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm">${item.name}</h3>
+                            <p class="text-xs text-gray-500 font-mono">កូដ: ${item.sku}</p>
+                            <p class="text-xs font-semibold text-blue-600 mt-1">ស្តុកសល់: ${item.qty} ឯកតា</p>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <button onclick="downloadReceipt('${item.name}', '${item.sku}', '${item.qty}')" class="bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow hover:bg-green-700">
+                                📥 Save Photo
+                            </button>
+                            <button onclick="deleteItem('${key}')" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow hover:bg-red-600">
+                                លុប
+                            </button>
+                        </div>
+                    `;
+                    stockList.appendChild(card);
+                });
+            } else {
+                stockList.innerHTML = `<p class="text-center text-gray-400 text-xs py-4">មិនទាន់មានទំនិញក្នុងស្តុកនៅឡើយទេ។</p>`;
+            }
+        });
+
+        function deleteItem(key) {
+            if (confirm('តើបងពិតជាចង់លុបទំនិញនេះមែនទេ?')) {
+                db.ref('products/' + key).remove();
+            }
+        }
+
+        // 1-Click Receipt Image Generator for iPhone / Photos
+        function downloadReceipt(name, sku, qty) {
+            const canvas = document.getElementById('receipt-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Border
+            ctx.strokeStyle = "#3b82f6";
+            ctx.lineWidth = 8;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            // Header
+            ctx.fillStyle = "#1e3a8a";
+            ctx.font = "bold 36px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("🚗 គីម ស្ដុក ខ្មែរ", canvas.width / 2, 100);
+
+            ctx.fillStyle = "#6b7280";
+            ctx.font = "20px sans-serif";
+            ctx.fillText("វិក្កយបត្របញ្ជាក់ស្តុកអីវ៉ាន់", canvas.width / 2, 140);
+
+            // Divider
+            ctx.beginPath();
+            ctx.moveTo(60, 180);
+            ctx.lineTo(canvas.width - 60, 180);
+            ctx.strokeStyle = "#e5e7eb";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Content Details
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 26px sans-serif";
+            ctx.fillText("ឈ្មោះទំនិញ:", 80, 260);
+            ctx.font = "28px sans-serif";
+            ctx.fillStyle = "#111827";
+            ctx.fillText(name, 80, 310);
+
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 26px sans-serif";
+            ctx.fillText("កូដ / Barcode:", 80, 400);
+            ctx.font = "28px monospace";
+            ctx.fillStyle = "#111827";
+            ctx.fillText(sku, 80, 450);
+
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 26px sans-serif";
+            ctx.fillText("ចំនួនស្តុកសរុប:", 80, 540);
+            ctx.fillStyle = "#2563eb";
+            ctx.font = "bold 42px sans-serif";
+            ctx.fillText(qty + " ឯកតា", 80, 600);
+
+            // Footer Date
+            ctx.fillStyle = "#9ca3af";
+            ctx.font = "18px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("កាលបរិច្ឆេទ: " + new Date().toLocaleString('km-KH'), canvas.width / 2, 800);
+
+            // Trigger Download on iPhone / Browser
+            const imageURL = canvas.toDataURL("image/png");
+            const link = document.createElement('a');
+            link.download = `Stok-${sku}.png`;
+            link.href = imageURL;
+            link.click();
+        }
+    </script>
+</body>
 </html>
