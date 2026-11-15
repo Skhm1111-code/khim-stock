@@ -3,276 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>គីម ស្ដុក ខ្មែរ - Khem Stock Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>គីម ស្ដុក ខ្មែរ - Khem Stock Pro Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --bg-body: #f2f2f7;
+            --bg-canvas: #f3f4f6;
+            --bg-sidebar: #ffffff;
             --bg-card: #ffffff;
-            --bg-input: #efeff4;
-            --text-main: #1c1c1e;
-            --text-muted: #8e8e93;
-            --border-color: rgba(60, 60, 67, 0.12);
-            --primary: #007aff;
-            --primary-soft: rgba(0, 122, 255, 0.12);
-            --success: #34c759;
-            --warning: #ff9500;
-            --danger: #ff3b30;
-            --purple: #af52de;
-            --shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
-            --radius-lg: 18px;
-            --radius-md: 12px;
+            --bg-subtle: #f8fafc;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-light: #e5e7eb;
+            --accent-blue: #2563eb;
+            --accent-soft: #eff6ff;
+            --grad-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --grad-orange: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            --shadow-card: 0 2px 12px rgba(17, 24, 39, 0.04);
+            --radius-xl: 20px;
+            --radius-lg: 14px;
+            --radius-md: 10px;
         }
 
         [data-theme="dark"] {
-            --bg-body: #000000;
-            --bg-card: #1c1c1e;
-            --bg-input: #2c2c2e;
-            --text-main: #ffffff;
-            --text-muted: #98989d;
-            --border-color: rgba(84, 84, 88, 0.45);
-            --primary: #0a84ff;
-            --primary-soft: rgba(10, 132, 255, 0.2);
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            --bg-canvas: #0f1115;
+            --bg-sidebar: #161920;
+            --bg-card: #1c2029;
+            --bg-subtle: #252a36;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-light: #2e3442;
+            --accent-blue: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.15);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding-bottom: 100px;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             transition: background-color 0.25s, color 0.25s;
         }
 
         svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
-        /* iOS Navigation Bar */
-        .app-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid var(--border-color);
+        /* Top Bar (Superpower Style) */
+        .topbar {
+            height: 60px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 12px 16px;
-        }
-        [data-theme="dark"] .app-header { background: rgba(28, 28, 30, 0.85); }
-
-        .header-inner {
-            max-width: 820px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(145deg, #007aff, #5856d6);
-            color: white;
-            border-radius: 12px;
+        .topbar-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            gap: 24px;
         }
 
-        .brand-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
-        .brand-text p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+        .brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.4px;
+        }
 
-        .header-actions { display: flex; gap: 8px; }
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
 
-        .btn-pill {
-            background: var(--bg-input);
+        .top-nav-pills {
+            display: flex;
+            gap: 6px;
+            background: var(--bg-subtle);
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .top-pill {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
             border: none;
-            color: var(--text-main);
-            padding: 8px 12px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .top-pill.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-subtle);
+            padding: 5px 12px 5px 6px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
+        }
+        .user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #10b981);
+            color: white;
             display: flex;
             align-items: center;
-            gap: 5px;
-            transition: 0.15s;
-        }
-        .btn-pill:active { transform: scale(0.95); opacity: 0.8; }
-
-        .btn-pill-primary {
-            background: var(--primary);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
         }
 
-        /* Main Container */
-        .container {
-            max-width: 820px;
-            margin: 16px auto;
-            padding: 0 16px;
+        .icon-circle-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* App Shell: Left Sidebar + Main Dashboard */
+        .app-shell {
+            display: flex;
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 230px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-light);
+            padding: 16px 12px;
             display: flex;
             flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .side-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.15s;
+        }
+        .side-item:hover { background: var(--bg-subtle); color: var(--text-primary); }
+        .side-item.active {
+            background: var(--accent-soft);
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        @media (max-width: 820px) {
+            .app-shell { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+                padding: 10px 12px;
+            }
+            .side-label { display: none; }
+            .side-item { white-space: nowrap; padding: 8px 14px; }
+            .top-nav-pills { display: none; }
+        }
+
+        /* Main Dashboard Workspace */
+        .workspace {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            overflow-x: hidden;
+        }
+
+        .view-section { display: none; flex-direction: column; gap: 18px; }
+        .view-section.active { display: flex; }
+
+        /* Hero Gradient Cards (Superpower 70 & 25 Style) */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
+        @media (max-width: 600px) { .hero-grid { grid-template-columns: 1fr; } }
 
-        .ios-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            box-shadow: var(--shadow);
+        .grad-card {
+            border-radius: var(--radius-xl);
+            padding: 22px 24px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 138px;
         }
+        .grad-card.green { background: var(--grad-green); }
+        .grad-card.orange { background: var(--grad-orange); }
 
-        .section-header {
+        .grad-card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.92;
         }
-        .section-title {
-            font-size: 14px;
+        .grad-badge {
+            background: rgba(255, 255, 255, 0.22);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .grad-number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin: 8px 0 4px;
+        }
+        .grad-sub { font-size: 12px; opacity: 0.88; }
+
+        /* Bento Cards */
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .card-head h2 {
+            font-size: 15px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
-        /* Store Inputs */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 680px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .field-box label {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            padding-left: 2px;
-        }
-
-        .ios-input {
+        .input-field {
             width: 100%;
             padding: 11px 14px;
-            background: var(--bg-input);
-            border: 1.5px solid transparent;
-            border-radius: var(--radius-md);
-            color: var(--text-main);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
             font-size: 14px;
             font-weight: 600;
             outline: none;
             transition: 0.2s;
         }
-        .ios-input:focus {
-            border-color: var(--primary);
-            background: var(--bg-card);
-        }
+        .input-field:focus { border-color: var(--accent-blue); background: var(--bg-card); }
 
-        /* Scanner Bar */
-        .scan-box {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .scan-input-wrap {
-            position: relative;
-            flex: 1;
-        }
-        .scan-input-wrap svg {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-        .scan-input-wrap input {
-            padding-left: 38px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            text-transform: uppercase;
-        }
-
-        .btn-ios {
-            background: var(--primary);
+        .btn-solid {
+            background: var(--accent-blue);
             color: white;
             border: none;
             padding: 11px 18px;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 7px;
             white-space: nowrap;
             transition: 0.15s;
         }
-        .btn-ios:active { transform: scale(0.96); opacity: 0.85; }
+        .btn-solid:active { transform: scale(0.97); }
 
-        .quick-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
-        }
-        .tag-btn {
-            background: var(--primary-soft);
-            color: var(--primary);
-            border: none;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
+        /* Quick Code Chips */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .code-chip {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
+        .code-chip:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
 
         /* Table */
-        .table-wrap {
+        .table-box {
             overflow-x: auto;
-            border-radius: var(--radius-md);
-            border: 0.5px solid var(--border-color);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
         }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th {
-            background: var(--bg-input);
-            color: var(--text-muted);
-            font-weight: 600;
-            padding: 10px 12px;
-            text-align: left;
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            font-weight: 700;
             font-size: 11px;
+            padding: 11px 14px;
+            text-align: left;
             white-space: nowrap;
         }
         td {
-            padding: 11px 12px;
-            border-top: 0.5px solid var(--border-color);
+            padding: 12px 14px;
+            border-top: 1px solid var(--border-light);
             vertical-align: middle;
         }
 
-        .color-pill {
+        .color-tag {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            background: var(--primary-soft);
-            color: var(--primary);
-            padding: 3px 9px;
+            gap: 6px;
+            background: var(--accent-soft);
+            color: var(--accent-blue);
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
         }
-        .color-dot {
-            width: 8px;
-            height: 8px;
+        .dot-swatch {
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             border: 1px solid rgba(0,0,0,0.2);
         }
@@ -280,7 +407,8 @@
         .stepper {
             display: inline-flex;
             align-items: center;
-            background: var(--bg-input);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
             border-radius: 10px;
             padding: 2px;
         }
@@ -289,81 +417,34 @@
             height: 26px;
             border: none;
             background: var(--bg-card);
-            color: var(--text-main);
-            border-radius: 8px;
+            color: var(--text-primary);
+            border-radius: 7px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         .stepper input {
             width: 40px;
             border: none;
             background: transparent;
             text-align: center;
-            color: var(--text-main);
+            color: var(--text-primary);
             font-weight: 700;
-            font-size: 13px;
             outline: none;
         }
 
-        .mini-price {
-            width: 60px;
-            padding: 5px;
-            border-radius: 8px;
-            border: none;
-            background: var(--bg-input);
-            color: var(--text-main);
-            text-align: center;
-            font-weight: 600;
-        }
-
-        /* Receipt Preview */
-        .receipt-paper {
-            background: #ffffff;
-            color: #1c1c1e;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e5e5ea;
-        }
-        .rec-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 1.5px dashed #d1d1d6;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
-        }
-        .rec-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            border-bottom: 0.5px solid #f2f2f7;
-            font-size: 13px;
-        }
-        .rec-bottom {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1.5px solid #1c1c1e;
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        /* Action Bar with Icons */
-        .action-bar {
+        /* Action Bar */
+        .export-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
+            margin-top: 14px;
         }
-        @media (max-width: 600px) { .action-bar { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .export-bar { grid-template-columns: 1fr; } }
 
-        .btn-export {
+        .btn-action-card {
             border: none;
-            color: #ffffff;
-            padding: 13px 14px;
+            color: white;
+            padding: 13px 16px;
             border-radius: 14px;
             font-size: 13px;
             font-weight: 700;
@@ -372,542 +453,379 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: 0.15s;
         }
-        .btn-export:active { transform: scale(0.97); }
-        .bg-save { background: linear-gradient(135deg, #af52de, #5856d6); }
-        .bg-png { background: linear-gradient(135deg, #34c759, #28a745); }
-        .bg-tg { background: linear-gradient(135deg, #007aff, #0056b3); }
 
-        /* iOS Bottom Sheet / Modals */
-        .modal-backdrop {
+        /* Receipt Artifact */
+        .receipt-card {
+            background: #ffffff;
+            color: #111827;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Variant Selector Modal */
+        .modal-bg {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(17, 24, 39, 0.55);
             backdrop-filter: blur(6px);
             z-index: 999;
             display: none;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        @media (min-width: 640px) { .modal-backdrop { align-items: center; padding: 16px; } }
-        .modal-backdrop.open { display: flex; }
-
-        .ios-modal {
-            background: var(--bg-body);
-            width: 100%;
-            max-width: 540px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: 24px 24px 0 0;
-            padding: 20px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.25);
-            animation: popUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @media (min-width: 640px) { .ios-modal { border-radius: 24px; } }
-        @keyframes popUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .sheet-handle {
-            width: 36px;
-            height: 5px;
-            background: rgba(142, 142, 147, 0.4);
-            border-radius: 3px;
-            margin: 0 auto 14px auto;
-        }
-
-        .modal-nav {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            justify-content: center;
+            padding: 16px;
         }
-        .modal-nav h3 { font-size: 17px; font-weight: 700; }
+        .modal-bg.open { display: flex; }
 
-        /* Variant Grid */
+        .modal-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 22px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 22px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+        }
+
         .variant-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
             gap: 10px;
-            margin-bottom: 16px;
+            margin: 16px 0;
         }
-        .v-card {
-            background: var(--bg-card);
-            border: 1.5px solid var(--border-color);
-            border-radius: 16px;
+        .v-box {
+            background: var(--bg-subtle);
+            border: 1.5px solid var(--border-light);
+            border-radius: 14px;
             padding: 12px 10px;
             text-align: center;
-            transition: 0.15s;
         }
-        .v-card.active {
-            border-color: var(--primary);
-            background: var(--primary-soft);
+        .v-box.active {
+            border-color: var(--accent-blue);
+            background: var(--accent-soft);
         }
-
-        /* iOS Settings List */
-        .ios-group-lbl {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin: 14px 0 6px 10px;
-            text-transform: uppercase;
-        }
-        .ios-list {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        .ios-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 16px;
-            border-bottom: 0.5px solid var(--border-color);
-            cursor: pointer;
-        }
-        .ios-item:last-child { border-bottom: none; }
-        .ios-item:active { background: var(--bg-input); }
-        .ios-item-left { display: flex; align-items: center; gap: 12px; }
-        .ios-badge-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        .subpage { display: none; }
-        .subpage.active { display: block; }
     </style>
 </head>
 <body>
 
-    <!-- Top iOS Navigation -->
-    <header class="app-header">
-        <div class="header-inner">
-            <div class="brand">
-                <div class="brand-logo">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                </div>
-                <div class="brand-text">
-                    <h1 id="appTitle">គីម ស្ដុក ខ្មែរ</h1>
-                    <p id="appSubtitle">ប្រព័ន្ធស្កែន និងគ្រប់គ្រងស្តុក iOS</p>
-                </div>
+    <!-- Top Navigation Bar (Superpower Style) -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="brand-mark">
+                <span class="brand-dot"></span>
+                <span>គីម ស្ដុក ខ្មែរ</span>
             </div>
-            <div class="header-actions">
-                <button class="btn-pill" onclick="toggleLang()" id="langBtn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    <span>EN</span>
-                </button>
-                <button class="btn-pill" onclick="toggleTheme()" id="themeBtn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </button>
-                <button class="btn-pill btn-pill-primary" onclick="openAdmin()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    <span>Admin</span>
-                </button>
+            <div class="top-nav-pills">
+                <button class="top-pill active" onclick="switchView('secDashboard', this)">Dashboard</button>
+                <button class="top-pill" onclick="switchView('secInventory', this)">បញ្ជីស្តុក (Data)</button>
+                <button class="top-pill" onclick="switchView('secHistory', this)">ប្រវត្តិ (Records)</button>
+                <button class="top-pill" onclick="switchView('secAdmin', this)">Admin Settings</button>
             </div>
+        </div>
+        <div class="topbar-right">
+            <div class="user-chip">
+                <div class="user-avatar">K</div>
+                <span id="topUserLabel">បងគីម (Khem)</span>
+            </div>
+            <button class="icon-circle-btn" onclick="toggleTheme()" title="ប្តូរពណ៌ Light/Dark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Store & Staff -->
-        <div class="ios-card">
-            <div class="grid-2">
-                <div class="field-box">
-                    <label>ឈ្មោះហាង / សាខា (Store)</label>
-                    <input type="text" id="storeInput" class="ios-input" oninput="saveStoreInfo(); renderAll()">
-                </div>
-                <div class="field-box">
-                    <label>អ្នករាប់ស្តុក (Counter)</label>
-                    <input type="text" id="counterInput" class="ios-input" oninput="saveStoreInfo(); renderAll()">
-                </div>
-            </div>
-        </div>
-
-        <!-- Scanner Input -->
-        <div class="ios-card">
-            <div class="section-header">
-                <span class="section-title">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
-                    <span>ស្កែន ឬ វាយកូដទំនិញ</span>
-                </span>
-                <span style="font-size:11px; font-weight:700; color:var(--primary); background:var(--primary-soft); padding:3px 9px; border-radius:20px;" id="masterCountPill">ស្តុក: 0 មុខ</span>
-            </div>
-            <div class="scan-box">
-                <div class="scan-input-wrap">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" id="scanInput" class="ios-input" placeholder="វាយកូដ ឧ. G1, BAG10, SH3540..." autofocus>
-                </div>
-                <button class="btn-ios" onclick="handleScan()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    <span>បន្ថែម</span>
-                </button>
-            </div>
-            <div class="quick-tags">
-                <button class="tag-btn" onclick="quickTest('G1')">G1 (ខ្មៅ, ដី, កាហ្វេ)</button>
-                <button class="tag-btn" onclick="quickTest('BAG10')">BAG10 (10 ពណ៌)</button>
-                <button class="tag-btn" onclick="quickTest('SH3540')">SH3540 (35-40)</button>
-                <button class="tag-btn" onclick="quickTest('Z471')">Z471 (អត់ពណ៌)</button>
-            </div>
-        </div>
-
-        <!-- Scanned Items Table -->
-        <div class="ios-card">
-            <div class="section-header">
-                <span class="section-title">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                    <span>បញ្ជីទំនិញបានរាប់ (<span id="cartCount">0</span>)</span>
-                </span>
-                <button onclick="clearCart()" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:12px; cursor:pointer;">លុបទាំងអស់</button>
-            </div>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>កូដ / ឈ្មោះទំនិញ</th>
-                            <th>ពណ៌ / ទំហំ</th>
-                            <th style="text-align:center;">តម្លៃ ($)</th>
-                            <th style="text-align:center;">ចំនួន</th>
-                            <th style="text-align:right;">លុប</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cartBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Receipt Preview -->
-        <div class="receipt-paper" id="receiptCapture">
-            <div class="rec-top">
-                <div>
-                    <h2 id="recStore" style="font-size:17px; font-weight:700; color:#007aff;">BOREY SHOP</h2>
-                    <p id="recCounter" style="font-size:12px; color:#8e8e93;">អ្នករាប់: បងគីម (Khem)</p>
-                </div>
-                <div style="text-align:right;">
-                    <span id="recDate" style="background:#f2f2f7; color:#1c1c1e; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:700;">15-11-2026</span>
-                    <p style="font-size:11px; color:#8e8e93; margin-top:4px;">វិក្កយបត្ររាប់ស្តុក</p>
-                </div>
-            </div>
-            <div id="recList"></div>
-            <div class="rec-bottom">
-                <span>សរុបចំនួន៖ <span id="recTotalQty" style="color:#007aff;">0</span> ឯកតា</span>
-                <span>សរុបទឹកប្រាក់៖ $<span id="recTotalPrice" style="color:#34c759;">0.00</span></span>
-            </div>
-        </div>
-
-        <!-- Save & Export Buttons with Crisp Icons -->
-        <div class="action-bar">
-            <button class="btn-export bg-save" onclick="saveReportToHistory()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                <span>រក្សាទុក (Save)</span>
+    <!-- App Shell -->
+    <div class="app-shell">
+        
+        <!-- Left Navigation Column -->
+        <aside class="sidebar">
+            <div class="side-label">ប្រតិបត្តិការស្តុក</div>
+            <button class="side-item active" id="nav-secDashboard" onclick="switchView('secDashboard', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>ផ្ទាំងរាប់ស្តុក (Scan)</span>
             </button>
-            <button class="btn-export bg-png" onclick="exportPNG()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <span>Export រូបភាព</span>
+            <button class="side-item" id="nav-secInventory" onclick="switchView('secInventory', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <span>ទំនិញក្នុងស្តុក (<span id="sideStockCount">0</span>)</span>
             </button>
-            <button class="btn-export bg-tg" onclick="copyTelegram()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                <span>ផ្ញើ Telegram</span>
+            <button class="side-item" id="nav-secHistory" onclick="switchView('secHistory', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>ប្រវត្តិ Save (<span id="sideHistCount">0</span>)</span>
             </button>
-        </div>
+
+            <div class="side-label">ការគ្រប់គ្រង ADMIN</div>
+            <button class="side-item" id="nav-secAddProduct" onclick="switchView('secAddProduct', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>បន្ថែមទំនិញ / ពណ៌ថ្មី</span>
+            </button>
+            <button class="side-item" id="nav-secAdmin" onclick="switchView('secAdmin', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Import / Export & PIN</span>
+            </button>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+
+            <!-- VIEW 1: MAIN DASHBOARD (SCAN & COUNT) -->
+            <section id="secDashboard" class="view-section active">
+                
+                <!-- 2 Prominent Gradient Hero Cards (Superpower Style) -->
+                <div class="hero-grid">
+                    <div class="grad-card green">
+                        <div class="grad-card-top">
+                            <span>ចំនួនទំនិញបានរាប់សរុប (Total Qty)</span>
+                            <span class="grad-badge" id="heroItemTypes">0 មុខ</span>
+                        </div>
+                        <div class="grad-number" id="heroTotalQty">0</div>
+                        <div class="grad-sub">ឯកតាដែលបានស្កែនបញ្ចូលក្នុងបញ្ជីជាក់ស្តែង</div>
+                    </div>
+
+                    <div class="grad-card orange">
+                        <div class="grad-card-top">
+                            <span>តម្លៃសរុបប៉ាន់ស្មាន (Total Value)</span>
+                            <span class="grad-badge" id="heroDateBadge">15-11-2026</span>
+                        </div>
+                        <div class="grad-number" id="heroTotalValue">$0.00</div>
+                        <div class="grad-sub">គណនាដោយស្វ័យប្រវត្តិតាមតម្លៃ និងចំនួន</div>
+                    </div>
+                </div>
+
+                <!-- Scanner & Store Bar -->
+                <div class="bento-card">
+                    <div class="grid-2" style="margin-bottom:14px;">
+                        <div>
+                            <label style="font-size:11px; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:4px;">ឈ្មោះហាង / សាខា (Store)</label>
+                            <input type="text" id="storeInput" class="input-field" oninput="saveStoreInfo(); renderAll()">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:4px;">អ្នករាប់ស្តុក (Counter)</label>
+                            <input type="text" id="counterInput" class="input-field" oninput="saveStoreInfo(); renderAll()">
+                        </div>
+                    </div>
+
+                    <label style="font-size:12px; font-weight:700; color:var(--text-primary); display:block; margin-bottom:6px;">ស្កែន Barcode ឬ វាយកូដទំនិញ</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="scanInput" class="input-field" placeholder="វាយកូដ ឧ. G1, BAG10, SH3540, Z471..." style="text-transform:uppercase;" autofocus>
+                        <button class="btn-solid" onclick="handleScan()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>បន្ថែម</span>
+                        </button>
+                    </div>
+
+                    <div class="chip-row">
+                        <button class="code-chip" onclick="quickTest('G1')">
+                            <span class="dot-swatch" style="background:#6f4e37;"></span> G1 (ខ្មៅ, ដី, កាហ្វេ)
+                        </button>
+                        <button class="code-chip" onclick="quickTest('BAG10')">
+                            <span class="dot-swatch" style="background:#2563eb;"></span> BAG10 (10 ពណ៌)
+                        </button>
+                        <button class="code-chip" onclick="quickTest('SH3540')">
+                            <span class="dot-swatch" style="background:#10b981;"></span> SH3540 (ស្បែកជើង 35-40)
+                        </button>
+                        <button class="code-chip" onclick="quickTest('Z471')">
+                            <span class="dot-swatch" style="background:#9ca3af;"></span> Z471 (អត់ពណ៌)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lower Section: Biomarkers -> Scanned Items & Receipt -->
+                <div class="grid-2">
+                    <!-- Left: Active Count Table -->
+                    <div class="bento-card">
+                        <div class="card-head">
+                            <h2>បញ្ជីទំនិញបានរាប់</h2>
+                            <button onclick="clearCart()" style="background:none; border:none; color:#ef4444; font-size:12px; font-weight:700; cursor:pointer;">លុបទាំងអស់</button>
+                        </div>
+                        <div class="table-box">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>កូដ / ឈ្មោះ</th>
+                                        <th>ពណ៌ / ទំហំ</th>
+                                        <th style="text-align:center;">តម្លៃ ($)</th>
+                                        <th style="text-align:center;">ចំនួន</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Exportable Receipt Card -->
+                    <div class="bento-card">
+                        <div class="card-head">
+                            <h2>វិក្កយបត្រ & Export</h2>
+                        </div>
+                        <div class="receipt-card" id="receiptCapture">
+                            <div style="display:flex; justify-content:space-between; border-bottom:1.5px dashed #d1d5db; padding-bottom:10px; margin-bottom:10px;">
+                                <div>
+                                    <div id="recStore" style="font-weight:800; font-size:16px; color:#2563eb;">BOREY SHOP</div>
+                                    <div id="recCounter" style="font-size:11px; color:#6b7280;">អ្នករាប់: បងគីម (Khem)</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <span id="recDate" style="background:#f3f4f6; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700;">15-11-2026</span>
+                                </div>
+                            </div>
+                            <div id="recList" style="font-size:12px;"></div>
+                            <div style="margin-top:12px; padding-top:10px; border-top:1.5px solid #111827; display:flex; justify-content:space-between; font-weight:800; font-size:13px;">
+                                <span>សរុប: <span id="recTotalQty" style="color:#059669;">0</span> ឯកតា</span>
+                                <span>$<span id="recTotalPrice" style="color:#ef4444;">0.00</span></span>
+                            </div>
+                        </div>
+
+                        <div class="export-bar">
+                            <button class="btn-action-card" style="background:#7c3aed;" onclick="saveReportToHistory()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                <span>Save ទុក</span>
+                            </button>
+                            <button class="btn-action-card" style="background:#059669;" onclick="exportPNG()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span>Export PNG</span>
+                            </button>
+                            <button class="btn-action-card" style="background:#2563eb;" onclick="copyTelegram()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                <span>Telegram</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 2: INVENTORY MASTER LIST -->
+            <section id="secInventory" class="view-section">
+                <div class="bento-card">
+                    <div class="card-head">
+                        <h2>បញ្ជីទំនិញ និងពណ៌ទាំងអស់ក្នុងប្រព័ន្ធ</h2>
+                        <button class="btn-solid" onclick="switchView('secAddProduct')">+ បន្ថែមថ្មី</button>
+                    </div>
+                    <input type="text" id="searchMasterInput" class="input-field" placeholder="ស្វែងរកកូដ ឧ. G1, BAG10..." oninput="renderMasterTable()" style="margin-bottom:14px;">
+                    <div class="table-box">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>កូដ (Code)</th>
+                                    <th>ឈ្មោះទំនិញ</th>
+                                    <th>ពណ៌ / ទំហំដែលមាន</th>
+                                    <th>តម្លៃ ($)</th>
+                                    <th style="text-align:right;">សកម្មភាព</th>
+                                </tr>
+                            </thead>
+                            <tbody id="masterTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: SAVED HISTORY -->
+            <section id="secHistory" class="view-section">
+                <div class="bento-card">
+                    <div class="card-head">
+                        <h2>ប្រវត្តិរបាយការណ៍ដែលបាន Save</h2>
+                    </div>
+                    <div id="historyContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+                </div>
+            </section>
+
+            <!-- VIEW 4: ADD NEW PRODUCT & COLORS -->
+            <section id="secAddProduct" class="view-section">
+                <div class="bento-card" style="max-width:560px;">
+                    <div class="card-head">
+                        <h2>បង្កើតកូដទំនិញ និងពណ៌/ទំហំថ្មី</h2>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">កូដទំនិញ (Code)</label>
+                            <input type="text" id="newCode" class="input-field" placeholder="ឧ. G1">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">ឈ្មោះទំនិញ (Name)</label>
+                            <input type="text" id="newName" class="input-field" placeholder="ឧ. ម៉ូត G1">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">ពណ៌ ឬ ទំហំ (ដាក់សញ្ញាក្បៀស , បើមានច្រើន / ទុកទំនេរបើអត់ពណ៌)</label>
+                            <input type="text" id="newVariants" class="input-field" placeholder="ឧ. ខ្មៅ, ដី, កាហ្វេ">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-secondary);">តម្លៃ ($)</label>
+                            <input type="number" step="0.1" id="newPrice" class="input-field" value="5.0">
+                        </div>
+                        <button class="btn-solid" style="padding:14px;" onclick="addNewMasterItem()">រក្សាទុកទំនិញចូលប្រព័ន្ធ</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 5: ADMIN SETTINGS (IMPORT / EXPORT / BACKUP / PIN) -->
+            <section id="secAdmin" class="view-section">
+                <div class="grid-2">
+                    <div class="bento-card">
+                        <div class="card-head"><h2>១. Import & Export Excel</h2></div>
+                        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">ទាញបញ្ចូល File Excel (.xlsx, .csv) ដើម្បីចាប់យកកូដ និងពណ៌ទាំងអស់ដោយស្វ័យប្រវត្តិ។</p>
+                        <input type="file" accept=".xlsx,.xls,.csv" onchange="importExcel(event)" class="input-field" style="margin-bottom:10px;">
+                        <p id="importLog" style="font-size:12px; color:#10b981; font-weight:700; margin-bottom:12px;"></p>
+                        <button class="btn-solid" style="width:100%; background:#059669;" onclick="exportMasterExcel()">Export ទិន្នន័យស្តុកជា Excel (.xlsx)</button>
+                    </div>
+
+                    <div class="bento-card">
+                        <div class="card-head"><h2>២. Save / Restore & សុវត្ថិភាព</h2></div>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <button class="btn-solid" onclick="downloadBackup()">Save ទិន្នន័យប្រព័ន្ធទុកជា File (.json)</button>
+                            <input type="file" accept=".json" onchange="restoreBackup(event)" class="input-field">
+                            <hr style="border:none; border-top:1px solid var(--border-light); margin:4px 0;">
+                            <button class="btn-solid" style="background:#ef4444;" onclick="resetSystemData()">សម្អាតទិន្នន័យទាំងអស់ (Reset)</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <!-- Variant Selector Sheet -->
-    <div class="modal-backdrop" id="variantModal">
-        <div class="ios-modal">
-            <div class="sheet-handle"></div>
-            <div class="modal-nav">
+    <!-- Modal: Variant Color/Size Picker -->
+    <div class="modal-bg" id="variantModal">
+        <div class="modal-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <h3 id="varModalTitle">ជ្រើសរើសពណ៌ / ទំហំ</h3>
-                    <p style="font-size:12px; color:var(--text-muted);">ចុចបូកចំនួនតាមពណ៌នីមួយៗ</p>
+                    <h3 id="varModalTitle" style="font-size:17px; font-weight:800;">ជ្រើសរើសពណ៌ / ទំហំ</h3>
+                    <p style="font-size:12px; color:var(--text-secondary);">ចុចបូកចំនួនតាមពណ៌នីមួយៗ</p>
                 </div>
-                <button onclick="closeVariantModal()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">បិទ</button>
+                <button onclick="closeVariantModal()" style="background:none; border:none; color:var(--accent-blue); font-weight:700; font-size:15px; cursor:pointer;">បិទ</button>
             </div>
             <div class="variant-grid" id="variantGrid"></div>
-            <button class="btn-ios" style="width:100%; padding:14px; font-size:15px;" onclick="confirmVariants()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>បញ្ចូលទៅក្នុងតារាងរាប់</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- iOS Admin Settings Sheet -->
-    <div class="modal-backdrop" id="adminModal">
-        <div class="ios-modal">
-            <div class="sheet-handle"></div>
-
-            <!-- PIN Screen -->
-            <div id="adminPinScreen">
-                <div class="modal-nav">
-                    <h3>សុវត្ថិភាព Admin</h3>
-                    <button onclick="closeAdmin()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">បិទ</button>
-                </div>
-                <div class="ios-card" style="text-align:center; padding:24px;">
-                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">បញ្ចូលលេខកូដ PIN (លេខដើម: 1234)</p>
-                    <input type="password" id="pinInput" class="ios-input" style="text-align:center; font-size:24px; letter-spacing:10px; margin-bottom:16px;" maxlength="6" placeholder="••••">
-                    <button class="btn-ios" style="width:100%; padding:14px;" onclick="checkPin()">ដោះសោចូល Admin</button>
-                </div>
-            </div>
-
-            <!-- Main Admin Menu -->
-            <div id="adminMainMenu" style="display:none;">
-                <div class="modal-nav">
-                    <h3>ការគ្រប់គ្រង Admin</h3>
-                    <button onclick="closeAdmin()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">រួចរាល់</button>
-                </div>
-
-                <div class="grid-2" style="margin-bottom:8px;">
-                    <div class="ios-card" style="padding:12px; text-align:center;">
-                        <div style="font-size:22px; font-weight:700; color:var(--primary);" id="statMasterCount">0</div>
-                        <div style="font-size:11px; color:var(--text-muted);">មុខទំនិញក្នុងប្រព័ន្ធ</div>
-                    </div>
-                    <div class="ios-card" style="padding:12px; text-align:center;">
-                        <div style="font-size:22px; font-weight:700; color:var(--purple);" id="statHistoryCount">0</div>
-                        <div style="font-size:11px; color:var(--text-muted);">របាយការណ៍បាន Save</div>
-                    </div>
-                </div>
-
-                <div class="ios-group-lbl">១. ទិន្នន័យស្តុក និង EXCEL</div>
-                <div class="ios-list">
-                    <div class="ios-item" onclick="openSubView('viewImport')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:var(--success);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">Import ឯកសារ Excel / CSV</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">ទាញបញ្ចូលកូដ និងពណ៌ទាំងអស់ពី Excel</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                    <div class="ios-item" onclick="exportMasterExcel()">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:var(--primary);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">Export ស្តុកចេញជា Excel (.xlsx)</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">ទាញយកបញ្ជីទំនិញទាំងអស់ទុកប្រើ</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                    <div class="ios-item" onclick="openSubView('viewManageProducts')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:var(--warning);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">ឆែកមើល និងកែប្រែបញ្ជីទំនិញ</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">មើលកូដ ពណ៌ ទំហំ ឬលុបទំនិញ</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                </div>
-
-                <div class="ios-group-lbl">២. បន្ថែមទំនិញ និងពណ៌ថ្មី</div>
-                <div class="ios-list">
-                    <div class="ios-item" onclick="openSubView('viewAddProduct')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:#5856d6;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">បង្កើតកូដទំនិញថ្មី</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">បញ្ចូលកូដ ឈ្មោះ ពណ៌ (ខ្មៅ, ដី, កាហ្វេ...) ឬទំហំ</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                </div>
-
-                <div class="ios-group-lbl">៣. ប្រវត្តិ SAVE និង BACKUP</div>
-                <div class="ios-list">
-                    <div class="ios-item" onclick="openSubView('viewHistory')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:var(--purple);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">ប្រវត្តិរបាយការណ៍ដែលបាន Save</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">បើកមើលវិក្កយបត្រចាស់ៗ និង Export រូបភាព</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                    <div class="ios-item" onclick="openSubView('viewBackup')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:#32ade6;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">Save / Restore ទិន្នន័យប្រព័ន្ធ</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">ទាញទុកជា File សុវត្ថិភាព</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                </div>
-
-                <div class="ios-group-lbl">៤. សុវត្ថិភាព</div>
-                <div class="ios-list">
-                    <div class="ios-item" onclick="openSubView('viewPin')">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:#8e8e93;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600;">ប្តូរលេខសម្ងាត់ PIN</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">កំណត់លេខ PIN ថ្មី</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                    <div class="ios-item" onclick="resetSystemData()">
-                        <div class="ios-item-left">
-                            <div class="ios-badge-icon" style="background:var(--danger);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            </div>
-                            <div>
-                                <h4 style="font-size:14px; font-weight:600; color:var(--danger);">សម្អាតទិន្នន័យទាំងអស់ (Reset)</h4>
-                                <p style="font-size:11px; color:var(--text-muted);">លុបទិន្នន័យចាស់ចោលទាំងអស់</p>
-                            </div>
-                        </div>
-                        <span style="color:var(--text-muted); font-weight:700;">›</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Subview: Import Excel -->
-            <div id="viewImport" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>Import Excel</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <div class="ios-card">
-                    <p style="font-size:13px; font-weight:700; margin-bottom:6px;">ជ្រើសរើស File Excel របស់បង (.xlsx, .xls, .csv)</p>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">ប្រព័ន្ធនឹងចាប់យកកូដ (ឧ. G1) និងប្រមូលគ្រប់ពណ៌ទាំងអស់ (ខ្មៅ, ដី, កាហ្វេ...) មកបង្ហាញក្នុងបញ្ជីតែមួយដោយស្វ័យប្រវត្តិ។</p>
-                    <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="importExcel(event)" class="ios-input">
-                    <p id="importLog" style="font-size:13px; color:var(--success); font-weight:700; margin-top:12px;"></p>
-                </div>
-            </div>
-
-            <!-- Subview: Manage Products -->
-            <div id="viewManageProducts" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>បញ្ជីទំនិញក្នុងប្រព័ន្ធ</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <input type="text" id="adminSearchProd" class="ios-input" placeholder="ស្វែងរកកូដ ឧ. G1..." oninput="renderAdminProducts()" style="margin-bottom:12px;">
-                <div id="adminProductsList" style="display:flex; flex-direction:column; gap:8px;"></div>
-            </div>
-
-            <!-- Subview: Add Product -->
-            <div id="viewAddProduct" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>បង្កើតកូដទំនិញថ្មី</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <div class="ios-card" style="display:flex; flex-direction:column; gap:12px;">
-                    <div class="field-box">
-                        <label>កូដទំនិញ (Code)</label>
-                        <input type="text" id="newCode" class="ios-input" placeholder="ឧ. G1">
-                    </div>
-                    <div class="field-box">
-                        <label>ឈ្មោះទំនិញ (Name)</label>
-                        <input type="text" id="newName" class="ios-input" placeholder="ឧ. អាវម៉ូត G1">
-                    </div>
-                    <div class="field-box">
-                        <label>ពណ៌ ឬ ទំហំ (ដាក់សញ្ញាក្បៀស , បើមានច្រើន)</label>
-                        <input type="text" id="newVariants" class="ios-input" placeholder="ឧ. ខ្មៅ, ដី, កាហ្វេ">
-                    </div>
-                    <div class="field-box">
-                        <label>តម្លៃ ($)</label>
-                        <input type="number" step="0.1" id="newPrice" class="ios-input" value="5.0">
-                    </div>
-                    <button class="btn-ios" style="width:100%; padding:14px;" onclick="addNewMasterItem()">រក្សាទុកទំនិញ</button>
-                </div>
-            </div>
-
-            <!-- Subview: History -->
-            <div id="viewHistory" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>ប្រវត្តិរបាយការណ៍</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <div id="historyList" style="display:flex; flex-direction:column; gap:10px;"></div>
-            </div>
-
-            <!-- Subview: Backup -->
-            <div id="viewBackup" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>Save / Restore ទិន្នន័យ</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <div class="ios-card" style="display:flex; flex-direction:column; gap:12px;">
-                    <button class="btn-ios" onclick="downloadBackup()">Save ទិន្នន័យទុកជា File (.json)</button>
-                    <hr style="border:none; border-top:0.5px solid var(--border-color);">
-                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">ទាញទិន្នន័យចាស់មកប្រើវិញ (Restore)៖</label>
-                    <input type="file" accept=".json" onchange="restoreBackup(event)" class="ios-input">
-                </div>
-            </div>
-
-            <!-- Subview: PIN -->
-            <div id="viewPin" class="subpage">
-                <div class="modal-nav">
-                    <button onclick="backToAdminMenu()" style="background:none; border:none; color:var(--primary); font-weight:700; font-size:15px; cursor:pointer;">‹ ត្រឡប់</button>
-                    <h3>ប្តូរលេខសម្ងាត់ PIN</h3>
-                    <span style="width:40px;"></span>
-                </div>
-                <div class="ios-card" style="display:flex; flex-direction:column; gap:12px;">
-                    <input type="text" id="newPinInput" class="ios-input" placeholder="បញ្ចូលលេខ PIN ថ្មី">
-                    <button class="btn-ios" onclick="saveNewPin()">រក្សាទុក PIN ថ្មី</button>
-                </div>
-            </div>
+            <button class="btn-solid" style="width:100%; padding:14px; font-size:14px;" onclick="confirmVariants()">បញ្ចូលទៅក្នុងតារាងរាប់</button>
         </div>
     </div>
 
     <script>
-        // Color Dot Helper for Khmer & English Color Names
         function getColorHex(name) {
             const n = name.toLowerCase();
-            if (n.includes('ខ្មៅ') || n.includes('black')) return '#1c1c1e';
+            if (n.includes('ខ្មៅ') || n.includes('black')) return '#111827';
             if (n.includes('ស') || n.includes('white')) return '#ffffff';
-            if (n.includes('ដី') || n.includes('beige') || n.includes('cream') || n.includes('khaki')) return '#c8ad7f';
+            if (n.includes('ដី') || n.includes('beige') || n.includes('khaki') || n.includes('cream')) return '#c8ad7f';
             if (n.includes('កាហ្វេ') || n.includes('ត្នោត') || n.includes('brown') || n.includes('coffee')) return '#6f4e37';
-            if (n.includes('ក្រហម') || n.includes('red')) return '#ff3b30';
-            if (n.includes('ខៀវ') || n.includes('blue')) return '#007aff';
-            if (n.includes('ផ្កាឈូក') || n.includes('pink')) return '#ff2d55';
-            if (n.includes('បៃតង') || n.includes('green')) return '#34c759';
-            if (n.includes('លឿង') || n.includes('yellow')) return '#ffcc00';
-            if (n.includes('ស្វាយ') || n.includes('purple')) return '#af52de';
-            if (n.includes('ប្រផេះ') || n.includes('grey') || n.includes('gray')) return '#8e8e93';
-            return '#007aff';
+            if (n.includes('ក្រហម') || n.includes('red')) return '#ef4444';
+            if (n.includes('ខៀវ') || n.includes('blue')) return '#2563eb';
+            if (n.includes('ផ្កាឈូក') || n.includes('pink')) return '#ec4899';
+            if (n.includes('បៃតង') || n.includes('green')) return '#10b981';
+            if (n.includes('លឿង') || n.includes('yellow')) return '#f59e0b';
+            if (n.includes('ស្វាយ') || n.includes('purple')) return '#8b5cf6';
+            if (n.includes('ប្រផេះ') || n.includes('grey')) return '#6b7280';
+            return '#2563eb';
         }
 
-        // Default Master Database (Includes G1 with Black, Khaki/Clay, Coffee)
-        let masterDB = JSON.parse(localStorage.getItem('khem_master_db_v2')) || [
+        let masterDB = JSON.parse(localStorage.getItem('khem_master_db_v3')) || [
             {
                 code: "G1",
                 barcode: "G1",
                 name: "ម៉ូត G1",
                 price: 5.0,
                 variants: [
-                    { name: "ខ្មៅ", stock: 10 },
-                    { name: "ដី", stock: 10 },
-                    { name: "កាហ្វេ", stock: 10 }
+                    { name: "ខ្មៅ", stock: 12 },
+                    { name: "ដី", stock: 15 },
+                    { name: "កាហ្វេ", stock: 9 }
                 ]
             },
             {
@@ -942,9 +860,7 @@
 
         let cart = JSON.parse(localStorage.getItem('khem_cart')) || [];
         let reportHistory = JSON.parse(localStorage.getItem('khem_history')) || [];
-        let adminPin = localStorage.getItem('khem_admin_pin') || "1234";
         let storeSettings = JSON.parse(localStorage.getItem('khem_store_info')) || { store: "BOREY SHOP", counter: "បងគីម (Khem)" };
-        let currentLang = 'km';
         let activeProduct = null;
         let tempVariantCounts = {};
 
@@ -957,13 +873,15 @@
                 counter: document.getElementById('counterInput').value
             };
             localStorage.setItem('khem_store_info', JSON.stringify(storeSettings));
+            document.getElementById('topUserLabel').innerText = storeSettings.counter || 'បងគីម';
         }
 
         function saveData() {
-            localStorage.setItem('khem_master_db_v2', JSON.stringify(masterDB));
+            localStorage.setItem('khem_master_db_v3', JSON.stringify(masterDB));
             localStorage.setItem('khem_cart', JSON.stringify(cart));
             localStorage.setItem('khem_history', JSON.stringify(reportHistory));
-            document.getElementById('masterCountPill').innerText = `ស្តុក: ${masterDB.length} មុខ`;
+            document.getElementById('sideStockCount').innerText = masterDB.length;
+            document.getElementById('sideHistCount').innerText = reportHistory.length;
         }
 
         function toggleTheme() {
@@ -971,10 +889,17 @@
             document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
         }
 
-        function toggleLang() {
-            currentLang = currentLang === 'km' ? 'en' : 'km';
-            document.getElementById('langBtn').querySelector('span').innerText = currentLang === 'km' ? 'EN' : 'ខ្មែរ';
-            document.getElementById('appTitle').innerText = currentLang === 'km' ? 'គីម ស្ដុក ខ្មែរ' : 'Khem Stock Pro';
+        function switchView(viewId, btnEl) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+
+            document.querySelectorAll('.side-item, .top-pill').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            const sideBtn = document.getElementById('nav-' + viewId);
+            if (sideBtn) sideBtn.classList.add('active');
+
+            if (viewId === 'secInventory') renderMasterTable();
+            if (viewId === 'secHistory') renderHistoryList();
         }
 
         function quickTest(code) {
@@ -1014,12 +939,12 @@
                 tempVariantCounts[idx] = 0;
                 const hex = getColorHex(v.name);
                 grid.innerHTML += `
-                    <div class="v-card" id="varCard_${idx}">
+                    <div class="v-box" id="varCard_${idx}">
                         <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:4px;">
-                            <span class="color-dot" style="background:${hex}; width:12px; height:12px;"></span>
+                            <span class="dot-swatch" style="background:${hex}; width:12px; height:12px;"></span>
                             <span style="font-weight:700; font-size:14px;">${v.name}</span>
                         </div>
-                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">ស្តុក: ${v.stock || 0}</div>
+                        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">ស្តុក: ${v.stock || 0}</div>
                         <div class="stepper">
                             <button onclick="adjustVar(${idx}, -1)">-</button>
                             <input type="number" id="varQty_${idx}" value="0" min="0" onchange="setVar(${idx}, this.value)">
@@ -1102,19 +1027,24 @@
         function renderAll() {
             const tbody = document.getElementById('cartBody');
             const recList = document.getElementById('recList');
-            document.getElementById('cartCount').innerText = cart.length;
-
             const store = document.getElementById('storeInput').value || 'BOREY SHOP';
             const counter = document.getElementById('counterInput').value || 'បងគីម';
+
             document.getElementById('recStore').innerText = store;
             document.getElementById('recCounter').innerText = `អ្នករាប់: ${counter}`;
+            document.getElementById('topUserLabel').innerText = counter;
 
             const now = new Date();
-            document.getElementById('recDate').innerText = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}`;
+            const dateStr = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}`;
+            document.getElementById('recDate').innerText = dateStr;
+            document.getElementById('heroDateBadge').innerText = dateStr;
+            document.getElementById('heroItemTypes').innerText = `${cart.length} មុខ`;
 
             if (cart.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:28px; color:var(--text-muted);">មិនទាន់មានទំនិញបានស្កែននៅឡើយទេ...</td></tr>`;
-                recList.innerHTML = `<p style="text-align:center; color:#8e8e93; font-size:12px; padding:14px 0;">មិនទាន់មានទិន្នន័យ</p>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:28px; color:var(--text-secondary);">មិនទាន់មានទំនិញបានស្កែននៅឡើយទេ...</td></tr>`;
+                recList.innerHTML = `<p style="text-align:center; color:#9ca3af; padding:14px 0;">មិនទាន់មានទិន្នន័យ</p>`;
+                document.getElementById('heroTotalQty').innerText = '0';
+                document.getElementById('heroTotalValue').innerText = '$0.00';
                 document.getElementById('recTotalQty').innerText = '0';
                 document.getElementById('recTotalPrice').innerText = '0.00';
                 return;
@@ -1129,13 +1059,11 @@
                 tableHtml += `
                     <tr>
                         <td>
-                            <div style="font-weight:700; color:var(--primary);">${item.code}</div>
-                            <div style="font-size:12px; color:var(--text-muted);">${item.name}</div>
+                            <div style="font-weight:700; color:var(--accent-blue);">${item.code}</div>
+                            <div style="font-size:11px; color:var(--text-secondary);">${item.name}</div>
                         </td>
-                        <td>
-                            ${item.variant ? `<span class="color-pill"><span class="color-dot" style="background:${hex};"></span>${item.variant}</span>` : `<span style="color:var(--text-muted);">-</span>`}
-                        </td>
-                        <td style="text-align:center;"><input type="number" step="0.1" class="mini-price" value="${item.price}" onchange="updateCartPrice(${idx}, this.value)"></td>
+                        <td>${item.variant ? `<span class="color-tag"><span class="dot-swatch" style="background:${hex};"></span>${item.variant}</span>` : `<span style="color:var(--text-secondary);">-</span>`}</td>
+                        <td style="text-align:center;"><input type="number" step="0.1" value="${item.price}" onchange="updateCartPrice(${idx}, this.value)" style="width:58px; padding:5px; border-radius:8px; border:1px solid var(--border-light); background:var(--bg-subtle); color:var(--text-primary); text-align:center; font-weight:700;"></td>
                         <td style="text-align:center;">
                             <div class="stepper">
                                 <button onclick="updateCartQty(${idx}, ${item.qty - 1})">-</button>
@@ -1143,25 +1071,74 @@
                                 <button onclick="updateCartQty(${idx}, ${item.qty + 1})">+</button>
                             </div>
                         </td>
-                        <td style="text-align:right;"><button onclick="removeCartItem(${idx})" style="background:none; border:none; color:var(--danger); font-weight:700; font-size:16px; cursor:pointer;">&times;</button></td>
+                        <td style="text-align:right;"><button onclick="removeCartItem(${idx})" style="background:none; border:none; color:#ef4444; font-weight:700; font-size:16px; cursor:pointer;">&times;</button></td>
                     </tr>
                 `;
 
                 recHtml += `
-                    <div class="rec-item">
+                    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f3f4f6;">
                         <div>
                             <strong>${item.code}</strong> - ${item.name}
-                            ${item.variant ? `<span style="background:#f2f2f7; color:#007aff; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:700; margin-left:4px;">${item.variant}</span>` : ''}
+                            ${item.variant ? `<span style="background:#eff6ff; color:#2563eb; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700; margin-left:4px;">${item.variant}</span>` : ''}
                         </div>
-                        <div style="text-align:right; white-space:nowrap;"><strong>${item.qty}</strong> &times; $${item.price.toFixed(2)}</div>
+                        <div style="white-space:nowrap;"><strong>${item.qty}</strong> &times; $${item.price.toFixed(2)}</div>
                     </div>
                 `;
             });
 
             tbody.innerHTML = tableHtml;
             recList.innerHTML = recHtml;
+            document.getElementById('heroTotalQty').innerText = totalQty;
+            document.getElementById('heroTotalValue').innerText = `$${totalPrice.toFixed(2)}`;
             document.getElementById('recTotalQty').innerText = totalQty;
             document.getElementById('recTotalPrice').innerText = totalPrice.toFixed(2);
+        }
+
+        function renderMasterTable() {
+            const q = document.getElementById('searchMasterInput').value.toLowerCase();
+            const tbody = document.getElementById('masterTableBody');
+            const filtered = masterDB.filter(p => p.code.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
+
+            tbody.innerHTML = filtered.map(p => `
+                <tr>
+                    <td style="font-weight:700; color:var(--accent-blue);">${p.code}</td>
+                    <td>${p.name}</td>
+                    <td>${p.variants.length > 0 ? p.variants.map(v => `<span class="color-tag" style="margin:2px;"><span class="dot-swatch" style="background:${getColorHex(v.name)};"></span>${v.name}</span>`).join('') : '<span style="color:var(--text-secondary);">អត់ពណ៌</span>'}</td>
+                    <td style="font-weight:700;">$${p.price.toFixed(2)}</td>
+                    <td style="text-align:right;">
+                        <button onclick="quickTest('${p.code}'); switchView('secDashboard')" class="btn-solid" style="padding:5px 10px; font-size:11px;">រាប់</button>
+                        <button onclick="deleteMasterItem('${p.code}')" style="background:rgba(239,68,68,0.12); color:#ef4444; border:none; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; margin-left:4px;">លុប</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteMasterItem(code) {
+            if (confirm(`លុបកូដ ${code}?`)) {
+                masterDB = masterDB.filter(p => p.code !== code);
+                saveData();
+                renderMasterTable();
+            }
+        }
+
+        function addNewMasterItem() {
+            const code = document.getElementById('newCode').value.trim().toUpperCase();
+            const name = document.getElementById('newName').value.trim();
+            const varsRaw = document.getElementById('newVariants').value.trim();
+            const price = parseFloat(document.getElementById('newPrice').value) || 0;
+            if (!code || !name) return alert("សូមបំពេញកូដ និងឈ្មោះ!");
+
+            const variants = varsRaw ? varsRaw.split(',').map(v => ({ name: v.trim(), stock: 0 })).filter(v => v.name) : [];
+            const idx = masterDB.findIndex(m => m.code === code);
+            if (idx >= 0) masterDB[idx] = { code, barcode: code, name, price, variants };
+            else masterDB.push({ code, barcode: code, name, price, variants });
+
+            saveData();
+            alert(`បានរក្សាទុក ${code} រួចរាល់!`);
+            document.getElementById('newCode').value = '';
+            document.getElementById('newName').value = '';
+            document.getElementById('newVariants').value = '';
+            switchView('secInventory');
         }
 
         function saveReportToHistory() {
@@ -1177,8 +1154,39 @@
                 totalPrice: cart.reduce((s, i) => s + (i.qty * i.price), 0)
             });
             saveData();
-            alert("បាន Save របាយការណ៍ទុកក្នុងប្រព័ន្ធ Admin រួចរាល់!");
+            alert("បាន Save របាយការណ៍ទុករួចរាល់!");
         }
+
+        function renderHistoryList() {
+            const container = document.getElementById('historyContainer');
+            if (reportHistory.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:24px;">មិនទាន់មានរបាយការណ៍បាន Save នៅឡើយទេ</p>`;
+                return;
+            }
+            container.innerHTML = reportHistory.map((h, idx) => `
+                <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <strong style="color:var(--accent-blue);">${h.store}</strong> <span style="font-size:11px; color:var(--text-secondary);">(${h.date})</span>
+                        <div style="font-size:12px; margin-top:4px;">អ្នករាប់: ${h.counter} | សរុប: <strong>${h.totalQty} ឯកតា</strong> | <strong>$${h.totalPrice.toFixed(2)}</strong></div>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="loadHistoryToCart(${idx})" class="btn-solid" style="padding:7px 12px; font-size:12px;">បើកមើល</button>
+                        <button onclick="deleteHistory(${idx})" style="background:rgba(239,68,68,0.12); color:#ef4444; border:none; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">លុប</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryToCart(idx) {
+            const h = reportHistory[idx];
+            cart = JSON.parse(JSON.stringify(h.items));
+            document.getElementById('storeInput').value = h.store;
+            document.getElementById('counterInput').value = h.counter;
+            saveData();
+            renderAll();
+            switchView('secDashboard');
+        }
+        function deleteHistory(idx) { reportHistory.splice(idx, 1); saveData(); renderHistoryList(); }
 
         function exportPNG() {
             html2canvas(document.getElementById('receiptCapture'), { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
@@ -1202,81 +1210,6 @@
             alert("បាន Copy របាយការណ៍រួចរាល់! អាច Paste ចូល Telegram បាន។");
         }
 
-        // Admin Controls
-        function openAdmin() {
-            document.getElementById('adminModal').classList.add('open');
-            document.getElementById('adminPinScreen').style.display = 'block';
-            document.getElementById('adminMainMenu').style.display = 'none';
-            document.querySelectorAll('.subpage').forEach(el => el.classList.remove('active'));
-            document.getElementById('pinInput').value = '';
-        }
-        function closeAdmin() { document.getElementById('adminModal').classList.remove('open'); }
-        function checkPin() {
-            if (document.getElementById('pinInput').value === adminPin) {
-                document.getElementById('adminPinScreen').style.display = 'none';
-                backToAdminMenu();
-            } else alert("លេខកូដ PIN មិនត្រឹមត្រូវ!");
-        }
-        function backToAdminMenu() {
-            document.querySelectorAll('.subpage').forEach(el => el.classList.remove('active'));
-            document.getElementById('adminMainMenu').style.display = 'block';
-            document.getElementById('statMasterCount').innerText = masterDB.length;
-            document.getElementById('statHistoryCount').innerText = reportHistory.length;
-        }
-        function openSubView(id) {
-            document.getElementById('adminMainMenu').style.display = 'none';
-            document.querySelectorAll('.subpage').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if (id === 'viewManageProducts') renderAdminProducts();
-            if (id === 'viewHistory') renderHistoryList();
-        }
-
-        function renderAdminProducts() {
-            const q = document.getElementById('adminSearchProd').value.toLowerCase();
-            const container = document.getElementById('adminProductsList');
-            const filtered = masterDB.filter(p => p.code.toLowerCase().includes(q) || p.name.toLowerCase().includes(q));
-            container.innerHTML = filtered.map(p => `
-                <div class="ios-card" style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-weight:700; color:var(--primary); font-size:14px;">${p.code} - ${p.name}</div>
-                        <div style="font-size:11px; color:var(--text-muted);">
-                            តម្លៃ: $${p.price} | ${p.variants.length > 0 ? p.variants.map(v => v.name).join(', ') : 'អត់ពណ៌'}
-                        </div>
-                    </div>
-                    <button onclick="deleteMasterItem('${p.code}')" style="background:rgba(255,59,48,0.12); color:var(--danger); border:none; padding:6px 10px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">លុប</button>
-                </div>
-            `).join('');
-        }
-
-        function deleteMasterItem(code) {
-            if (confirm(`លុបកូដ ${code}?`)) {
-                masterDB = masterDB.filter(p => p.code !== code);
-                saveData();
-                renderAdminProducts();
-            }
-        }
-
-        function addNewMasterItem() {
-            const code = document.getElementById('newCode').value.trim().toUpperCase();
-            const name = document.getElementById('newName').value.trim();
-            const varsRaw = document.getElementById('newVariants').value.trim();
-            const price = parseFloat(document.getElementById('newPrice').value) || 0;
-            if (!code || !name) return alert("សូមបំពេញកូដ និងឈ្មោះ!");
-
-            const variants = varsRaw ? varsRaw.split(',').map(v => ({ name: v.trim(), stock: 0 })).filter(v => v.name) : [];
-            const idx = masterDB.findIndex(m => m.code === code);
-            if (idx >= 0) masterDB[idx] = { code, barcode: code, name, price, variants };
-            else masterDB.push({ code, barcode: code, name, price, variants });
-
-            saveData();
-            alert(`បានរក្សាទុក ${code} រួចរាល់!`);
-            document.getElementById('newCode').value = '';
-            document.getElementById('newName').value = '';
-            document.getElementById('newVariants').value = '';
-            backToAdminMenu();
-        }
-
-        // Smart Excel Import (Detects Color Column OR Splits Color from Product Name like "G1 ខ្មៅ", "G1 ដី")
         function importExcel(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1298,7 +1231,6 @@
                         let price = parseFloat(r[4] || r[5] || 0) || 0;
                         let stock = parseInt(r[5] || r[6] || 0) || 0;
 
-                        // If variant column is empty, check if code or name has color suffix (e.g., "G1 ខ្មៅ" or "G1-ដី")
                         if (!variantName || variantName === '-' || variantName === 'undefined') {
                             const parts = name.split(/[\s\-_/]+/);
                             if (parts.length > 1 && parts[0].toUpperCase() === rawCode) {
@@ -1307,9 +1239,7 @@
                             }
                         }
 
-                        if (!grouped[rawCode]) {
-                            grouped[rawCode] = { code: rawCode, barcode, name, price, variants: [] };
-                        }
+                        if (!grouped[rawCode]) grouped[rawCode] = { code: rawCode, barcode, name, price, variants: [] };
                         if (variantName && variantName !== '-' && variantName !== 'undefined') {
                             if (!grouped[rawCode].variants.some(v => v.name === variantName)) {
                                 grouped[rawCode].variants.push({ name: variantName, stock });
@@ -1321,7 +1251,7 @@
                     if (list.length > 0) {
                         masterDB = list;
                         saveData();
-                        document.getElementById('importLog').innerText = `បានទាញចូលទំនិញចំនួន ${list.length} មុខ និងពណ៌ទាំងអស់ដោយជោគជ័យ!`;
+                        document.getElementById('importLog').innerText = `បានទាញចូលទំនិញ ${list.length} មុខ និងពណ៌ទាំងអស់ដោយជោគជ័យ!`;
                     } else alert("រកមិនឃើញទិន្នន័យក្នុង File នេះទេ!");
                 } catch (err) { alert("មានបញ្ហាក្នុងការអាន File Excel!"); }
             };
@@ -1333,49 +1263,13 @@
             masterDB.forEach(p => {
                 if (p.variants && p.variants.length > 0) {
                     p.variants.forEach(v => rows.push([p.code, p.barcode || p.code, p.name, v.name, p.price, v.stock || 0]));
-                } else {
-                    rows.push([p.code, p.barcode || p.code, p.name, "-", p.price, 0]);
-                }
+                } else rows.push([p.code, p.barcode || p.code, p.name, "-", p.price, 0]);
             });
             const ws = XLSX.utils.aoa_to_sheet(rows);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Master_List");
             XLSX.writeFile(wb, `KhemStock_Export_${Date.now()}.xlsx`);
         }
-
-        function renderHistoryList() {
-            const container = document.getElementById('historyList');
-            if (reportHistory.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">មិនទាន់មានរបាយការណ៍បាន Save នៅឡើយទេ</p>`;
-                return;
-            }
-            container.innerHTML = reportHistory.map((h, idx) => `
-                <div class="ios-card" style="padding:14px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-                        <strong style="color:var(--primary); font-size:14px;">${h.store}</strong>
-                        <span style="font-size:11px; color:var(--text-muted);">${h.date}</span>
-                    </div>
-                    <div style="font-size:12px; margin-bottom:10px;">
-                        អ្នករាប់: ${h.counter} | ចំនួនសរុប: <strong>${h.totalQty}</strong> | ទឹកប្រាក់: <strong>$${h.totalPrice.toFixed(2)}</strong>
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <button onclick="loadHistoryToCart(${idx})" class="btn-ios" style="padding:7px 12px; font-size:12px;">បើកមើលវិក្កយបត្រ</button>
-                        <button onclick="deleteHistory(${idx})" style="background:rgba(255,59,48,0.12); color:var(--danger); border:none; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">លុប</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function loadHistoryToCart(idx) {
-            const h = reportHistory[idx];
-            cart = JSON.parse(JSON.stringify(h.items));
-            document.getElementById('storeInput').value = h.store;
-            document.getElementById('counterInput').value = h.counter;
-            saveData();
-            renderAll();
-            closeAdmin();
-        }
-        function deleteHistory(idx) { reportHistory.splice(idx, 1); saveData(); renderHistoryList(); }
 
         function downloadBackup() {
             const a = document.createElement('a');
@@ -1394,20 +1288,9 @@
                     if (data.reportHistory) reportHistory = data.reportHistory;
                     saveData();
                     alert("Restore ទិន្នន័យជោគជ័យ!");
-                    backToAdminMenu();
                 } catch (err) { alert("File មិនត្រឹមត្រូវ!"); }
             };
             reader.readAsText(file);
-        }
-
-        function saveNewPin() {
-            const p = document.getElementById('newPinInput').value.trim();
-            if (p.length < 4) return alert("លេខ PIN ត្រូវមានយ៉ាងតិច ៤ ខ្ទង់!");
-            adminPin = p;
-            localStorage.setItem('khem_admin_pin', adminPin);
-            alert("បានប្តូរ PIN ថ្មីជោគជ័យ!");
-            document.getElementById('newPinInput').value = '';
-            backToAdminMenu();
         }
 
         function resetSystemData() {
