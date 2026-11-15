@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KHIM - ប្រព័ន្ធរាប់ស្តុក</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <title>KHIM - ប្រព័ន្ធស្កែនរាប់ស្តុក</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        :root {
+            --bg-page: #f3f4f6;
+            --bg-card: #ffffff;
+            --bg-soft: #f8fafc;
+            --text-main: #111827;
+            --text-sub: #6b7280;
+            --green-dark: #14532d;
+            --green-accent: #16a34a;
+            --green-soft: #dcfce7;
+            --border-color: #e5e7eb;
+            --shadow-card: 0 10px 30px rgba(17, 24, 39, 0.06);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,310 +30,395 @@
         }
 
         body {
-            background-color: #f4f5f7;
-            color: #111827;
+            background-color: var(--bg-page);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* 1. Top Header Bar (Logo + KHIM left, Hamburger menu right) */
-        .top-header {
+        /* 1. Top Header Bar: Logo + KHIM left, Hamburger (3 lines) right */
+        .app-header {
             width: 100%;
-            max-width: 480px;
-            background: #ffffff;
+            max-width: 520px;
+            background: var(--bg-card);
             padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1.5px solid #e5e7eb;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 50;
         }
 
-        .brand-left {
+        .brand-wrap {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .brand-square {
-            width: 32px;
-            height: 32px;
-            border: 2.2px solid #111827;
-            border-radius: 8px;
+        .brand-logo {
+            width: 34px;
+            height: 34px;
+            background: var(--green-dark);
+            color: #ffffff;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
-            font-size: 15px;
-            background: #f9fafb;
+            font-size: 16px;
         }
 
-        .brand-title {
+        .brand-name {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 21px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: 0.5px;
-            color: #111827;
+            color: var(--text-main);
         }
 
-        .menu-trigger {
+        .sync-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green-dark);
+            background: var(--green-soft);
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+
+        .hamburger-btn {
             width: 40px;
             height: 40px;
-            border: none;
-            background: transparent;
+            border: 1px solid var(--border-color);
+            background: var(--bg-soft);
+            border-radius: 11px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 5px;
             cursor: pointer;
-            border-radius: 10px;
         }
-        .menu-trigger:active { background: #f3f4f6; }
-        .menu-line {
-            width: 22px;
-            height: 2.4px;
-            background: #111827;
+        .hamburger-btn:active { background: #e5e7eb; }
+        .hamburger-btn span {
+            width: 20px;
+            height: 2.3px;
+            background: var(--text-main);
             border-radius: 2px;
         }
 
-        /* Main Mobile Frame */
-        .mobile-wrap {
+        /* Main Workspace */
+        .main-shell {
             width: 100%;
-            max-width: 480px;
-            padding: 18px 20px 40px;
+            max-width: 520px;
+            padding: 16px 18px 44px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         /* 2. Search / Scan Box with Magnifying Glass */
-        .search-box {
+        .scan-wrapper {
             width: 100%;
             position: relative;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
-        .search-box input {
+        .scan-input {
             width: 100%;
-            height: 50px;
-            padding: 0 48px 0 18px;
-            background: #ffffff;
-            border: 2px solid #111827;
-            border-radius: 14px;
+            height: 52px;
+            padding: 0 52px 0 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--text-main);
+            border-radius: 15px;
             font-size: 16px;
             font-weight: 700;
-            color: #111827;
+            color: var(--text-main);
             outline: none;
-            text-transform: uppercase;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
-        .search-box input::placeholder {
+        .scan-input::placeholder {
             color: #9ca3af;
             font-weight: 500;
-            text-transform: none;
+            font-size: 14px;
+        }
+        .scan-input:focus {
+            border-color: var(--green-dark);
         }
 
-        .search-btn {
+        .scan-submit-btn {
             position: absolute;
             right: 6px;
             top: 50%;
             transform: translateY(-50%);
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border: none;
-            background: transparent;
-            color: #111827;
+            background: var(--text-main);
+            color: #ffffff;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
         }
 
-        /* 3. Center Main Card (Y300 / ក្រដាសសើម / 1.5$ / = 340 / 15.11.26) */
-        .product-card {
-            width: 100%;
+        /* Search Dropdown Suggestions when multiple matches */
+        .search-results {
+            position: absolute;
+            top: 56px;
+            left: 0;
+            right: 0;
             background: #ffffff;
-            border: 2px solid #111827;
-            border-radius: 22px;
-            padding: 22px 22px 18px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            border: 1.5px solid #111827;
+            border-radius: 14px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            z-index: 80;
+            max-height: 260px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-results.show { display: block; }
+        .search-item {
+            padding: 11px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .search-item:hover { background: #f8fafc; }
+
+        /* 3. Center Product Card (Clean Y65 / Y300 Style) */
+        .receipt-card {
+            width: 100%;
+            background: #fdfdfb;
+            border: 1.8px solid #d6d9d2;
+            border-radius: 26px;
+            padding: 24px 22px 20px;
+            box-shadow: var(--shadow-card);
             position: relative;
         }
 
-        .card-top-row {
+        .card-head {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            padding-bottom: 14px;
+            border-bottom: 1.5px dashed #e2e5de;
         }
 
-        .item-code {
+        .code-title {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 800;
             color: #14532d;
             line-height: 1.1;
+            letter-spacing: -0.5px;
         }
 
-        .item-price {
+        .prod-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-top: 5px;
+        }
+
+        .prod-group-tag {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #4b5563;
+            background: #eef0eb;
+            padding: 3px 9px;
+            border-radius: 8px;
+        }
+
+        .price-box {
+            text-align: right;
+        }
+
+        .prod-price {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             color: #111827;
             line-height: 1.1;
         }
 
-        .item-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #374151;
+        .prod-date {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
             margin-top: 6px;
-            padding-bottom: 14px;
-            border-bottom: 1.5px dashed #e5e7eb;
         }
 
-        /* Center Body: Colors List on Left + Big "= 340" Total on Right/Center */
-        .card-middle {
+        /* Color Variants Rows */
+        .variants-section {
+            padding: 8px 0;
+        }
+
+        .variant-line {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 22px 0;
-            min-height: 135px;
+            padding: 13px 0;
+            border-bottom: 1px solid #eceee8;
+            gap: 10px;
+        }
+        .variant-line:last-child {
+            border-bottom: none;
+        }
+
+        .v-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .v-barcode {
+            font-size: 11px;
+            color: #9ca3af;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .v-right {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .color-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 1;
-        }
-
-        .color-bullet {
+        .qty-controls {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 16px;
-            font-weight: 700;
-            color: #1f2937;
-            background: #f9fafb;
-            padding: 6px 10px;
+            gap: 4px;
+            background: #f3f4f6;
+            padding: 3px;
             border-radius: 10px;
             border: 1px solid #e5e7eb;
         }
 
-        .color-bullet-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .mini-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .mini-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
+        .q-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
             background: #ffffff;
+            color: #111827;
+            font-size: 17px;
             font-weight: 800;
-            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .mini-btn.add {
+        .q-btn.plus {
             background: #14532d;
             color: #ffffff;
-            border-color: #14532d;
         }
 
-        .big-total-box {
-            text-align: right;
-            padding-left: 8px;
-        }
-
-        .big-total-num {
+        .q-input {
+            width: 44px;
+            border: none;
+            background: transparent;
+            text-align: center;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 38px;
+            font-size: 18px;
             font-weight: 800;
             color: #111827;
-            letter-spacing: -1px;
-            white-space: nowrap;
+            outline: none;
         }
 
-        /* Single item direct stepper when no colors */
-        .single-stepper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-            justify-content: flex-end;
-        }
-
-        .card-bottom-date {
+        .sys-col {
             text-align: right;
+            min-width: 68px;
+        }
+
+        .actual-big {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
+            color: #111827;
+            line-height: 1.1;
+        }
+
+        .sys-small {
+            font-size: 12px;
+            font-weight: 600;
             color: #6b7280;
-            padding-top: 8px;
-            border-top: 1px solid #f3f4f6;
+            margin-top: 2px;
         }
 
-        /* 4. Bottom 3 Action Buttons (Download arrow, Copy, Edit) */
-        .bottom-actions {
+        /* Card Footer Summary (= Total) */
+        .card-footer-sum {
+            margin-top: 10px;
+            padding-top: 14px;
+            border-top: 1.5px solid #111827;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 18px;
-            margin-top: 22px;
-            width: 100%;
         }
 
-        .action-box-btn {
-            width: 58px;
-            height: 54px;
+        .sum-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4b5563;
+        }
+
+        .sum-value {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #14532d;
+        }
+
+        /* 4. Bottom 3 Action Buttons (Download PNG, Copy Telegram, Edit Card) */
+        .bottom-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            margin-top: 18px;
+        }
+
+        .act-btn {
             background: #ffffff;
-            border: 2px solid #111827;
+            border: 1.8px solid #111827;
             border-radius: 14px;
+            padding: 11px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 4px;
             cursor: pointer;
             color: #111827;
+            font-size: 12px;
+            font-weight: 700;
             box-shadow: 0 3px 0 #111827;
             transition: 0.1s;
         }
-        .action-box-btn:active {
+        .act-btn:active {
             transform: translateY(2px);
             box-shadow: 0 1px 0 #111827;
         }
-        .action-box-btn span {
-            font-size: 10px;
-            font-weight: 700;
-        }
 
-        /* Quick Switch Pills below actions */
-        .quick-bar {
+        /* Quick Sample Codes */
+        .sample-pills {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
+            gap: 7px;
+            margin-top: 20px;
             width: 100%;
         }
-        .q-tag {
+        .s-pill {
             background: #ffffff;
             border: 1px solid #d1d5db;
             padding: 6px 12px;
@@ -330,56 +428,67 @@
             color: #374151;
             cursor: pointer;
         }
-        .q-tag.active {
-            background: #111827;
+        .s-pill.active {
+            background: #14532d;
             color: #ffffff;
-            border-color: #111827;
+            border-color: #14532d;
         }
 
-        /* Drawer Modal for Menu (Add Item / Import Excel) */
-        .drawer-bg {
+        /* Modal & Admin Drawer */
+        .modal-bg {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(17, 24, 39, 0.55);
+            backdrop-filter: blur(4px);
             z-index: 200;
             display: none;
             align-items: flex-end;
             justify-content: center;
         }
-        .drawer-bg.open { display: flex; }
+        .modal-bg.open { display: flex; }
 
-        .drawer-sheet {
+        .sheet-box {
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
             background: #ffffff;
             border-radius: 24px 24px 0 0;
             padding: 22px 20px 32px;
-            max-height: 88vh;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
-        .field-label {
+        .sheet-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .lbl {
+            display: block;
             font-size: 12px;
             font-weight: 700;
             color: #4b5563;
-            display: block;
             margin: 10px 0 4px;
         }
-        .sheet-input {
+
+        .inp {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 13px;
             border: 1.5px solid #d1d5db;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
             outline: none;
         }
-        .sheet-input:focus { border-color: #111827; }
+        .inp:focus { border-color: #14532d; }
 
-        .btn-black {
+        .btn-solid-green {
             width: 100%;
             padding: 13px;
-            background: #111827;
+            background: #14532d;
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -388,169 +497,260 @@
             cursor: pointer;
             margin-top: 12px;
         }
+
+        .admin-section {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        .admin-section h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        /* Hide controls when capturing PNG */
+        .capturing .qty-controls { display: none !important; }
     </style>
 </head>
 <body>
 
     <!-- 1. Top Header Bar -->
-    <header class="top-header">
-        <div class="brand-left">
-            <div class="brand-square">K</div>
-            <div class="brand-title">KHIM</div>
+    <header class="app-header">
+        <div class="brand-wrap">
+            <div class="brand-logo">K</div>
+            <div>
+                <div class="brand-name">KHIM</div>
+            </div>
+            <span class="sync-badge" id="lastSyncBadge">ស្តុករួចរាល់</span>
         </div>
-        <button class="menu-trigger" onclick="openDrawer()" aria-label="Menu">
-            <div class="menu-line"></div>
-            <div class="menu-line"></div>
-            <div class="menu-line"></div>
+
+        <!-- Hamburger (3 lines) for Admin Settings -->
+        <button class="hamburger-btn" onclick="openAdminModal()" aria-label="Admin Settings">
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
     </header>
 
     <!-- Main Mobile Container -->
-    <main class="mobile-wrap">
+    <main class="main-shell">
 
-        <!-- 2. Search / Scan Input -->
-        <div class="search-box">
-            <input type="text" id="scanInput" placeholder="ស្កែន ឬ វាយកូដ ឧ. Y300, G1..." autofocus>
-            <button class="search-btn" onclick="handleSearch()">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 2. Search / Scan Box -->
+        <div class="scan-wrapper">
+            <input type="text" id="scanInput" class="scan-input" placeholder="ស្កែន Barcode ឬ វាយកូដ ឧ. Y65, G1, Y300..." oninput="handleLiveSearch()" autofocus>
+            <button class="scan-submit-btn" onclick="handleExactSearch()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </button>
+            <div class="search-results" id="searchDropdown"></div>
         </div>
 
-        <!-- 3. Center Product Card (Matches Hand-Drawn Sketch) -->
-        <div class="product-card" id="captureCard">
-            <div class="card-top-row">
-                <div class="item-code" id="dispCode">Y300</div>
-                <div class="item-price" id="dispPrice">1.5$</div>
-            </div>
-            <div class="item-name" id="dispName">ក្រដាសសើម</div>
-
-            <div class="card-middle">
-                <!-- Left: Color / Variant Lines -->
-                <div class="color-list" id="dispColors"></div>
-
-                <!-- Right/Center: Big "= 340" Total -->
-                <div class="big-total-box">
-                    <div class="big-total-num" id="dispTotal">= 340</div>
-                    <div class="single-stepper" id="singleControls" style="display:none;">
-                        <button class="mini-btn" onclick="changeSingleQty(-1)">−</button>
-                        <button class="mini-btn add" onclick="changeSingleQty(1)">+</button>
-                    </div>
+        <!-- 3. Center Product Card (Matches Y65 & Y300 Sketches) -->
+        <div class="receipt-card" id="productCard">
+            <div class="card-head">
+                <div>
+                    <div class="code-title" id="dispCode">Y65</div>
+                    <div class="prod-name" id="dispName">កែវ</div>
+                    <div class="prod-group-tag" id="dispGroup">កែវទឹក</div>
+                </div>
+                <div class="price-box">
+                    <div class="prod-price" id="dispPrice">2.0$</div>
+                    <div class="prod-date" id="dispDate">15.11.26</div>
                 </div>
             </div>
 
-            <div class="card-bottom-date" id="dispDate">15.11.26</div>
+            <div class="variants-section" id="dispVariants">
+                <!-- Variants injected here -->
+            </div>
+
+            <div class="card-footer-sum">
+                <span class="sum-label" id="dispSysSum">ស្តុកប្រព័ន្ធសរុប: 41</span>
+                <span class="sum-value" id="dispActualSum">= 37</span>
+            </div>
         </div>
 
-        <!-- 4. Bottom 3 Action Buttons (Download, Copy, Edit) -->
-        <div class="bottom-actions">
-            <!-- Button 1: Download PNG (Downward Arrow) -->
-            <button class="action-box-btn" onclick="downloadCardImage()" title="ទាញយករូបភាព">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 4. Bottom 3 Action Buttons -->
+        <div class="bottom-bar">
+            <button class="act-btn" onclick="downloadPNG()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="4" x2="12" y2="16"></line>
                     <polyline points="7 11 12 16 17 11"></polyline>
                     <line x1="5" y1="20" x2="19" y2="20"></line>
                 </svg>
-                <span>រូបភាព</span>
+                <span>រូបភាព PNG</span>
             </button>
 
-            <!-- Button 2: Copy Text -->
-            <button class="action-box-btn" onclick="copyCardText()" title="Copy ផ្ញើ Telegram">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <button class="act-btn" onclick="copyTelegram()">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                 </svg>
-                <span>Copy</span>
+                <span>Copy Telegram</span>
             </button>
 
-            <!-- Button 3: Edit / Add New -->
-            <button class="action-box-btn" onclick="openDrawer()" title="កែប្រែ / បន្ថែមកូដ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <button class="act-btn" onclick="openEditModal()">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                 </svg>
-                <span>កែប្រែ</span>
+                <span>កែប្រែតារាង</span>
             </button>
         </div>
 
-        <!-- Quick Code Switcher -->
-        <div class="quick-bar" id="quickTags"></div>
+        <!-- Quick Sample Codes -->
+        <div class="sample-pills" id="quickSampleBar"></div>
 
     </main>
 
-    <!-- Slide-up Menu Drawer (Add Code & Upload Excel) -->
-    <div class="drawer-bg" id="menuDrawer" onclick="if(event.target===this) closeDrawer()">
-        <div class="drawer-sheet">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="font-size:18px; font-weight:800;">បញ្ចូលកូដ និង File Excel</h3>
-                <button onclick="closeDrawer()" style="border:none; background:#f3f4f6; padding:6px 12px; border-radius:10px; font-weight:700; cursor:pointer;">បិទ</button>
+    <!-- ========================================================== -->
+    <!-- MODAL 1: EDIT CURRENT CARD DIRECTLY (Name, Price, Colors)  -->
+    <!-- ========================================================== -->
+    <div class="modal-bg" id="editModal" onclick="if(event.target===this) closeEditModal()">
+        <div class="sheet-box">
+            <div class="sheet-head">
+                <h3 style="font-size:17px; font-weight:800;">កែប្រែព័ត៌មានលើតារាងផ្ទាល់</h3>
+                <button onclick="closeEditModal()" style="border:none; background:#f3f4f6; padding:6px 12px; border-radius:10px; font-weight:700; cursor:pointer;">បិទ</button>
             </div>
 
-            <label class="field-label">កូដអីវ៉ាន់ (ឧ. Y300, G1, G2)</label>
-            <input type="text" id="editCode" class="sheet-input" placeholder="Y300">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                    <label class="lbl">កូដកាត់ (Code)</label>
+                    <input type="text" id="edCode" class="inp">
+                </div>
+                <div>
+                    <label class="lbl">តម្លៃពេញ ($)</label>
+                    <input type="number" step="0.01" id="edPrice" class="inp">
+                </div>
+            </div>
 
-            <label class="field-label">ឈ្មោះអីវ៉ាន់ (ឧ. ក្រដាសសើម)</label>
-            <input type="text" id="editName" class="sheet-input" placeholder="ក្រដាសសើម">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                    <label class="lbl">ឈ្មោះអីវ៉ាន់</label>
+                    <input type="text" id="edName" class="inp">
+                </div>
+                <div>
+                    <label class="lbl">ប្រភេទអីវ៉ាន់</label>
+                    <input type="text" id="edGroup" class="inp">
+                </div>
+            </div>
 
-            <label class="field-label">តម្លៃ ($)</label>
-            <input type="number" step="0.1" id="editPrice" class="sheet-input" value="1.5">
+            <label class="lbl" style="margin-top:14px;">បញ្ជីពណ៌ ចំនួនរាប់ជាក់ស្ដែង និងស្តុកប្រព័ន្ធ</label>
+            <div id="edColorsList" style="display:flex; flex-direction:column; gap:8px; margin-top:6px;"></div>
 
-            <label class="field-label">ពណ៌ និងចំនួន (ដាក់ក្បៀស , បើមានច្រើន / ឬវាយតែចំនួនសរុប)</label>
-            <input type="text" id="editColors" class="sheet-input" placeholder="ឧ. ខ្មៅ:120, ដី:220 (ឬ 340)">
+            <button onclick="addVariantRowInEditor()" style="width:100%; padding:10px; background:#f3f4f6; border:1px dashed #9ca3af; border-radius:10px; font-size:13px; font-weight:700; margin-top:8px; cursor:pointer;">+ បន្ថែមពណ៌ថ្មីមួយជួរទៀត</button>
 
-            <button class="btn-black" onclick="saveItemFromDrawer()">រក្សាទុកអីវ៉ាន់</button>
+            <button class="btn-solid-green" onclick="applyCardEdits()">រក្សាទុកការកែប្រែ</button>
+        </div>
+    </div>
 
-            <hr style="border:none; border-top:1px solid #e5e7eb; margin:18px 0;">
+    <!-- ========================================================== -->
+    <!-- MODAL 2: ADMIN SETTINGS (3-Line Hamburger Menu)            -->
+    <!-- ========================================================== -->
+    <div class="modal-bg" id="adminModal" onclick="if(event.target===this) closeAdminModal()">
+        <div class="sheet-box">
+            <div class="sheet-head">
+                <h3 style="font-size:18px; font-weight:800;">Admin Settings & Update File</h3>
+                <button onclick="closeAdminModal()" style="border:none; background:#f3f4f6; padding:6px 12px; border-radius:10px; font-weight:700; cursor:pointer;">បិទ</button>
+            </div>
 
-            <label class="field-label">នាំចូល File Excel (.xlsx, .csv)</label>
-            <input type="file" accept=".xlsx,.xls,.csv" onchange="importExcel(event)" class="sheet-input">
-            <p id="excelStatus" style="font-size:12px; color:#14532d; font-weight:700; margin-top:6px;"></p>
+            <!-- Section 1: Daily Excel Update -->
+            <div class="admin-section">
+                <h4>១. Update File Excel ថ្មីប្រចាំថ្ងៃ (Product List)</h4>
+                <p style="font-size:12px; color:#6b7280; margin-bottom:10px;">
+                    រើស File Excel ចេញពីប្រព័ន្ធលក់ (ឧ. <code>8281.Product List...xlsx</code>) ដើម្បី Update ស្តុកប្រព័ន្ធ តម្លៃ និងពណ៌ទាំងអស់។
+                </p>
+                <input type="file" accept=".xlsx,.xls,.csv" onchange="importProductListExcel(event)" class="inp" style="background:#ffffff;">
+                <div id="uploadStatusText" style="font-size:12px; font-weight:700; color:#16a34a; margin-top:8px;"></div>
+            </div>
 
-            <button class="btn-black" style="background:#14532d;" onclick="exportExcel()">Export ជា File Excel (.xlsx)</button>
+            <!-- Section 2: Create New Product Manually -->
+            <div class="admin-section">
+                <h4>២. បង្កើតកូដអីវ៉ាន់ថ្មីដោយដៃ</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <input type="text" id="newCode" class="inp" placeholder="កូដ ឧ. Y300" style="background:#ffffff;">
+                    <input type="number" step="0.01" id="newPrice" class="inp" placeholder="តម្លៃ ($)" style="background:#ffffff;">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+                    <input type="text" id="newName" class="inp" placeholder="ឈ្មោះអីវ៉ាន់" style="background:#ffffff;">
+                    <input type="text" id="newGroup" class="inp" placeholder="ប្រភេទអីវ៉ាន់" style="background:#ffffff;">
+                </div>
+                <input type="text" id="newColors" class="inp" placeholder="ពណ៌ (ដាក់ក្បៀស , ឧ. ខ្មៅ, ដី, ឈូក)" style="background:#ffffff; margin-top:8px;">
+                <button class="btn-solid-green" onclick="createNewProduct()">បន្ថែមកូដថ្មីចូលប្រព័ន្ធ</button>
+            </div>
+
+            <!-- Section 3: Export Report & System Status -->
+            <div class="admin-section" style="margin-bottom:0;">
+                <h4>៣. Export របាយការណ៍ត្រួតពិនិត្យស្តុក</h4>
+                <p style="font-size:12px; color:#6b7280; margin-bottom:8px;" id="dbStatsLine">ទិន្នន័យសរុបក្នុងម៉ាស៊ីន: 0 មុខ</p>
+                <button class="btn-solid-green" style="background:#111827; margin-top:0;" onclick="exportCountedExcel()">ទាញយក File Excel លទ្ធផលរាប់ស្តុក (.xlsx)</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let itemsDB = JSON.parse(localStorage.getItem('khim_mobile_db_v1')) || [
+        // Initial realistic sample data matching the user's exact Excel file (Y65, G1, Y300)
+        let productDB = JSON.parse(localStorage.getItem('khim_prod_db_v2')) || [
             {
-                code: "Y300",
-                name: "ក្រដាសសើម",
-                price: 1.5,
-                singleQty: 340,
-                colors: []
-            },
-            {
-                code: "G1",
-                name: "ម៉ូត G1",
-                price: 5.0,
-                singleQty: 0,
-                colors: [
-                    { name: "ខ្មៅ", qty: 12 },
-                    { name: "ដី", qty: 18 }
+                shortCode: "Y65",
+                name: "កែវ",
+                group: "កែវទឹក",
+                price: 2.0,
+                variants: [
+                    { pCode: "P0078648", barcode: "", color: "មេឃ", sysStock: 11, actual: 9 },
+                    { pCode: "P0078649", barcode: "", color: "កាហ្វេ", sysStock: 12, actual: 11 },
+                    { pCode: "P0078650", barcode: "", color: "ឈូក", sysStock: 18, actual: 17 }
                 ]
             },
             {
-                code: "G2",
-                name: "ម៉ូត G2",
-                price: 5.5,
-                singleQty: 0,
-                colors: [
-                    { name: "ខ្មៅ", qty: 9 },
-                    { name: "ដី", qty: 15 }
+                shortCode: "G1",
+                name: "គូសភ្នែក",
+                group: "គ្រឿងសម្អាង",
+                price: 0.8,
+                variants: [
+                    { pCode: "P0011167", barcode: "6973641475626", color: "1 -ខ្មៅ", sysStock: 495, actual: 0 },
+                    { pCode: "P0011168", barcode: "6973641475633", color: "2 -កាហ្វេ", sysStock: 195, actual: 0 }
+                ]
+            },
+            {
+                shortCode: "Y300",
+                name: "ស្រោមជើង",
+                group: "ស្រោមជើង",
+                price: 0.6,
+                variants: [
+                    { pCode: "P0082782", barcode: "", color: "ស", sysStock: 95, actual: 0 },
+                    { pCode: "P0082783", barcode: "", color: "ប្រផេះ", sysStock: 43, actual: 0 },
+                    { pCode: "P0082784", barcode: "", color: "ខ្មៅ", sysStock: 23, actual: 0 }
                 ]
             }
         ];
 
-        let activeCode = "Y300";
+        let currentShortCode = localStorage.getItem('khim_active_code') || "Y65";
+        let lastSyncDate = localStorage.getItem('khim_last_sync') || "";
 
-        function saveStorage() {
-            localStorage.setItem('khim_mobile_db_v1', JSON.stringify(itemsDB));
-            renderQuickTags();
+        function saveToLocal() {
+            try {
+                localStorage.setItem('khim_prod_db_v2', JSON.stringify(productDB));
+                localStorage.setItem('khim_active_code', currentShortCode);
+            } catch (e) {
+                console.warn("Storage quota exceeded for large Excel; keeping active in RAM.");
+            }
+            updateSyncUI();
         }
 
-        function getShortDate() {
+        function updateSyncUI() {
+            document.getElementById('dbStatsLine').innerText = `ទិន្នន័យសរុបក្នុងប្រព័ន្ធ: ${productDB.length.toLocaleString()} កូដ`;
+            if (lastSyncDate) {
+                document.getElementById('lastSyncBadge').innerText = `Update: ${lastSyncDate}`;
+            }
+        }
+
+        function getFormattedDate() {
             const d = new Date();
             const dd = String(d.getDate()).padStart(2, '0');
             const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -558,255 +758,447 @@
             return `${dd}.${mm}.${yy}`;
         }
 
-        function handleSearch() {
-            const input = document.getElementById('scanInput');
-            const q = input.value.trim().toUpperCase();
-            if (!q) return;
-            input.value = '';
+        // Smart Search: Matches ShortCode (Y65, G1), Barcode (6973...), P-Code (P0078648), or Khmer Name
+        function handleLiveSearch() {
+            const q = document.getElementById('scanInput').value.trim().toLowerCase();
+            const drop = document.getElementById('searchDropdown');
+            if (!q) {
+                drop.classList.remove('show');
+                return;
+            }
 
-            const found = itemsDB.find(i => i.code.toUpperCase() === q);
-            if (found) {
-                activeCode = found.code;
-                renderCard();
+            // Check exact Barcode or P-code match first for instant scanner response
+            const exactBarcodeMatch = productDB.find(p => 
+                p.variants.some(v => (v.barcode && v.barcode.toLowerCase() === q) || (v.pCode && v.pCode.toLowerCase() === q))
+            );
+            if (exactBarcodeMatch) {
+                currentShortCode = exactBarcodeMatch.shortCode;
+                document.getElementById('scanInput').value = '';
+                drop.classList.remove('show');
+                renderProductCard();
+                return;
+            }
+
+            const matches = productDB.filter(p => 
+                p.shortCode.toLowerCase().startsWith(q) || 
+                p.name.toLowerCase().includes(q)
+            ).slice(0, 15);
+
+            if (matches.length === 0) {
+                drop.innerHTML = `<div class="search-item" style="color:#6b7280;">រកមិនឃើញកូដ "${q.toUpperCase()}" ទេ</div>`;
             } else {
-                alert(`រកមិនឃើញកូដ "${q}" ទេ! ចុចប៊ូតុង "កែប្រែ" ដើម្បីបង្កើតកូដថ្មី។`);
+                drop.innerHTML = matches.map(m => `
+                    <div class="search-item" onclick="selectProduct('${m.shortCode}')">
+                        <div>
+                            <strong style="color:#14532d; font-size:15px;">${m.shortCode}</strong>
+                            <span style="margin-left:8px; font-weight:600;">${m.name}</span>
+                        </div>
+                        <span style="font-size:12px; color:#6b7280;">${m.variants.length} ពណ៌ • ${m.price}$</span>
+                    </div>
+                `).join('');
+            }
+            drop.classList.add('show');
+        }
+
+        function handleExactSearch() {
+            const input = document.getElementById('scanInput');
+            const q = input.value.trim().toLowerCase();
+            if (!q) return;
+
+            const found = productDB.find(p => 
+                p.shortCode.toLowerCase() === q ||
+                p.variants.some(v => (v.barcode && v.barcode.toLowerCase() === q) || (v.pCode && v.pCode.toLowerCase() === q))
+            ) || productDB.find(p => p.shortCode.toLowerCase().startsWith(q) || p.name.toLowerCase().includes(q));
+
+            if (found) {
+                selectProduct(found.shortCode);
+            } else {
+                alert(`រកមិនឃើញកូដ "${q.toUpperCase()}" នៅក្នុងប្រព័ន្ធទេ!`);
             }
         }
 
-        function selectCode(code) {
-            activeCode = code;
-            renderCard();
+        function selectProduct(shortCode) {
+            currentShortCode = shortCode;
+            document.getElementById('scanInput').value = '';
+            document.getElementById('searchDropdown').classList.remove('show');
+            saveToLocal();
+            renderProductCard();
         }
 
-        function changeColorQty(idx, delta) {
-            const item = itemsDB.find(i => i.code === activeCode);
-            if (!item || !item.colors[idx]) return;
-            item.colors[idx].qty = Math.max(0, (item.colors[idx].qty || 0) + delta);
-            saveStorage();
-            renderCard();
+        function adjustVariantQty(vIdx, delta) {
+            const item = productDB.find(p => p.shortCode === currentShortCode);
+            if (!item || !item.variants[vIdx]) return;
+            item.variants[vIdx].actual = Math.max(0, (item.variants[vIdx].actual || 0) + delta);
+            saveToLocal();
+            renderProductCard();
         }
 
-        function changeSingleQty(delta) {
-            const item = itemsDB.find(i => i.code === activeCode);
+        function setVariantQty(vIdx, val) {
+            const item = productDB.find(p => p.shortCode === currentShortCode);
+            if (!item || !item.variants[vIdx]) return;
+            item.variants[vIdx].actual = Math.max(0, parseInt(val) || 0);
+            saveToLocal();
+            renderProductCard();
+        }
+
+        function renderProductCard() {
+            const item = productDB.find(p => p.shortCode === currentShortCode) || productDB[0];
             if (!item) return;
-            item.singleQty = Math.max(0, (item.singleQty || 0) + delta);
-            saveStorage();
-            renderCard();
-        }
+            currentShortCode = item.shortCode;
 
-        function renderCard() {
-            const item = itemsDB.find(i => i.code === activeCode) || itemsDB[0];
-            if (!item) return;
-            activeCode = item.code;
-
-            document.getElementById('dispCode').innerText = item.code;
+            document.getElementById('dispCode').innerText = item.shortCode;
             document.getElementById('dispName').innerText = item.name;
+            document.getElementById('dispGroup').innerText = item.group || 'ទូទៅ';
             document.getElementById('dispPrice').innerText = `${item.price}$`;
-            document.getElementById('dispDate').innerText = getShortDate();
+            document.getElementById('dispDate').innerText = getFormattedDate();
 
-            const colorBox = document.getElementById('dispColors');
-            const singleCtrl = document.getElementById('singleControls');
+            const box = document.getElementById('dispVariants');
+            let totalSys = 0;
+            let totalActual = 0;
 
-            if (item.colors && item.colors.length > 0) {
-                singleCtrl.style.display = 'none';
-                let sum = 0;
-                colorBox.innerHTML = item.colors.map((c, idx) => {
-                    sum += (c.qty || 0);
-                    return `
-                        <div class="color-bullet">
-                            <div class="color-bullet-left">
-                                <span>• ${c.name}</span>
+            box.innerHTML = item.variants.map((v, idx) => {
+                totalSys += (v.sysStock || 0);
+                totalActual += (v.actual || 0);
+                const label = v.color && v.color !== '-' ? v.color : 'ស្តុកទូទៅ';
+                return `
+                    <div class="variant-line">
+                        <div>
+                            <div class="v-name">${label}</div>
+                            ${v.pCode ? `<div class="v-barcode">${v.pCode}${v.barcode ? ' • ' + v.barcode : ''}</div>` : ''}
+                        </div>
+                        <div class="v-right">
+                            <div class="qty-controls">
+                                <button class="q-btn" onclick="adjustVariantQty(${idx}, -1)">−</button>
+                                <input type="number" class="q-input" value="${v.actual || 0}" onchange="setVariantQty(${idx}, this.value)">
+                                <button class="q-btn plus" onclick="adjustVariantQty(${idx}, 1)">+</button>
                             </div>
-                            <div class="mini-controls">
-                                <button class="mini-btn" onclick="changeColorQty(${idx}, -1)">−</button>
-                                <span style="min-width:22px; text-align:center;">${c.qty}</span>
-                                <button class="mini-btn add" onclick="changeColorQty(${idx}, 1)">+</button>
+                            <div class="sys-col">
+                                <div class="actual-big">${v.actual || 0}</div>
+                                <div class="sys-small">ប្រព័ន្ធ ${v.sysStock || 0}</div>
                             </div>
                         </div>
-                    `;
-                }).join('');
-                document.getElementById('dispTotal').innerText = `= ${sum}`;
-            } else {
-                singleCtrl.style.display = 'flex';
-                colorBox.innerHTML = `
-                    <div style="color:#6b7280; font-size:14px; font-weight:600; line-height:1.8;">
-                        <div>• ស្តុកទូទៅ</div>
-                        <div>• គ្មានបែងចែកពណ៌</div>
                     </div>
                 `;
-                document.getElementById('dispTotal').innerText = `= ${item.singleQty || 0}`;
-            }
+            }).join('');
 
-            renderQuickTags();
-        }
+            document.getElementById('dispSysSum').innerText = `ស្តុកប្រព័ន្ធសរុប: ${totalSys}`;
+            document.getElementById('dispActualSum').innerText = `= ${totalActual}`;
 
-        function renderQuickTags() {
-            const bar = document.getElementById('quickTags');
-            bar.innerHTML = itemsDB.map(i => `
-                <button class="q-tag ${i.code === activeCode ? 'active' : ''}" onclick="selectCode('${i.code}')">${i.code}</button>
+            // Render quick sample pills
+            const samples = ["Y65", "G1", "Y300"];
+            const extra = productDB.slice(0, 6).map(p => p.shortCode);
+            const uniquePills = [...new Set([...samples, ...extra])].filter(c => productDB.some(p => p.shortCode === c)).slice(0, 6);
+
+            document.getElementById('quickSampleBar').innerHTML = uniquePills.map(c => `
+                <button class="s-pill ${c === currentShortCode ? 'active' : ''}" onclick="selectProduct('${c}')">${c}</button>
             `).join('');
         }
 
-        function downloadCardImage() {
-            // Hide +/- buttons cleanly during PNG capture so image looks pure like sketch
-            const btns = document.querySelectorAll('.mini-btn, #singleControls');
-            btns.forEach(b => b.style.visibility = 'hidden');
-
-            html2canvas(document.getElementById('captureCard'), { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
-                btns.forEach(b => b.style.visibility = 'visible');
+        // Download Clean PNG Image
+        function downloadPNG() {
+            const card = document.getElementById('productCard');
+            card.classList.add('capturing');
+            html2canvas(card, { scale: 3, backgroundColor: '#fdfdfb' }).then(canvas => {
+                card.classList.remove('capturing');
                 const a = document.createElement('a');
-                a.download = `KHIM_${activeCode}_${Date.now()}.png`;
+                a.download = `KHIM_${currentShortCode}_${getFormattedDate()}.png`;
                 a.href = canvas.toDataURL('image/png');
                 a.click();
             });
         }
 
-        function copyCardText() {
-            const item = itemsDB.find(i => i.code === activeCode);
+        // Copy Summary for Telegram
+        function copyTelegram() {
+            const item = productDB.find(p => p.shortCode === currentShortCode);
             if (!item) return;
-            let txt = `${item.code} - ${item.name} (${item.price}$)\n`;
-            if (item.colors && item.colors.length > 0) {
-                let sum = 0;
-                item.colors.forEach(c => {
-                    sum += c.qty;
-                    txt += `- ${c.name}: ${c.qty}\n`;
+            let totalAct = 0, totalSys = 0;
+            let lines = `${item.shortCode} - ${item.name} (${item.price}$)\n📅 ថ្ងៃទី: ${getFormattedDate()}\n----------------------\n`;
+            item.variants.forEach(v => {
+                totalAct += (v.actual || 0);
+                totalSys += (v.sysStock || 0);
+                const cName = v.color && v.color !== '-' ? v.color : 'ស្តុកទូទៅ';
+                lines += `• ${cName}: ${v.actual || 0} (ប្រព័ន្ធ ${v.sysStock || 0})\n`;
+            });
+            lines += `----------------------\nសរុបរាប់បាន: = ${totalAct} (ប្រព័ន្ធ ${totalSys})`;
+            navigator.clipboard.writeText(lines);
+            alert(`បាន Copy ${item.shortCode} រួចរាល់! អាច Paste ចូល Telegram បាន។`);
+        }
+
+        // ==========================================
+        // DIRECT CARD EDITOR MODAL
+        // ==========================================
+        function openEditModal() {
+            const item = productDB.find(p => p.shortCode === currentShortCode);
+            if (!item) return;
+
+            document.getElementById('edCode').value = item.shortCode;
+            document.getElementById('edPrice').value = item.price;
+            document.getElementById('edName').value = item.name;
+            document.getElementById('edGroup').value = item.group || '';
+
+            const list = document.getElementById('edColorsList');
+            list.innerHTML = item.variants.map((v, i) => `
+                <div class="ed-var-row" style="display:grid; grid-template-columns:1.3fr 0.8fr 0.8fr auto; gap:6px; align-items:center;">
+                    <input type="text" class="inp ed-v-color" value="${v.color || ''}" placeholder="ឈ្មោះពណ៌" style="padding:8px;">
+                    <input type="number" class="inp ed-v-actual" value="${v.actual || 0}" placeholder="រាប់បាន" style="padding:8px;">
+                    <input type="number" class="inp ed-v-sys" value="${v.sysStock || 0}" placeholder="ប្រព័ន្ធ" style="padding:8px;">
+                    <button onclick="this.parentElement.remove()" style="border:none; background:#fee2e2; color:#dc2626; width:32px; height:36px; border-radius:8px; font-weight:800; cursor:pointer;">×</button>
+                </div>
+            `).join('');
+
+            document.getElementById('editModal').classList.add('open');
+        }
+
+        function addVariantRowInEditor() {
+            const list = document.getElementById('edColorsList');
+            const div = document.createElement('div');
+            div.className = 'ed-var-row';
+            div.style.cssText = 'display:grid; grid-template-columns:1.3fr 0.8fr 0.8fr auto; gap:6px; align-items:center;';
+            div.innerHTML = `
+                <input type="text" class="inp ed-v-color" placeholder="ពណ៌ថ្មី" style="padding:8px;">
+                <input type="number" class="inp ed-v-actual" value="0" placeholder="រាប់បាន" style="padding:8px;">
+                <input type="number" class="inp ed-v-sys" value="0" placeholder="ប្រព័ន្ធ" style="padding:8px;">
+                <button onclick="this.parentElement.remove()" style="border:none; background:#fee2e2; color:#dc2626; width:32px; height:36px; border-radius:8px; font-weight:800; cursor:pointer;">×</button>
+            `;
+            list.appendChild(div);
+        }
+
+        function applyCardEdits() {
+            const item = productDB.find(p => p.shortCode === currentShortCode);
+            if (!item) return;
+
+            const newCode = document.getElementById('edCode').value.trim().toUpperCase();
+            if (!newCode) return alert("សូមបញ្ចូលកូដ!");
+
+            item.shortCode = newCode;
+            item.price = parseFloat(document.getElementById('edPrice').value) || 0;
+            item.name = document.getElementById('edName').value.trim() || newCode;
+            item.group = document.getElementById('edGroup').value.trim() || 'ទូទៅ';
+
+            const rows = document.querySelectorAll('.ed-var-row');
+            const updatedVars = [];
+            rows.forEach((row, idx) => {
+                const oldVar = item.variants[idx] || {};
+                const color = row.querySelector('.ed-v-color').value.trim() || '-';
+                const actual = parseInt(row.querySelector('.ed-v-actual').value) || 0;
+                const sysStock = parseInt(row.querySelector('.ed-v-sys').value) || 0;
+                updatedVars.push({
+                    pCode: oldVar.pCode || '',
+                    barcode: oldVar.barcode || '',
+                    color,
+                    actual,
+                    sysStock
                 });
-                txt += `= ${sum}\n`;
-            } else {
-                txt += `= ${item.singleQty}\n`;
-            }
-            txt += `📅 ${getShortDate()}`;
-            navigator.clipboard.writeText(txt);
-            alert(`បាន Copy ${item.code} រួចរាល់!`);
+            });
+
+            if (updatedVars.length > 0) item.variants = updatedVars;
+            currentShortCode = newCode;
+            saveToLocal();
+            renderProductCard();
+            closeEditModal();
         }
 
-        function openDrawer() {
-            const item = itemsDB.find(i => i.code === activeCode);
-            if (item) {
-                document.getElementById('editCode').value = item.code;
-                document.getElementById('editName').value = item.name;
-                document.getElementById('editPrice').value = item.price;
-                if (item.colors && item.colors.length > 0) {
-                    document.getElementById('editColors').value = item.colors.map(c => `${c.name}:${c.qty}`).join(', ');
-                } else {
-                    document.getElementById('editColors').value = item.singleQty || 0;
-                }
-            }
-            document.getElementById('menuDrawer').classList.add('open');
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('open');
         }
 
-        function closeDrawer() {
-            document.getElementById('menuDrawer').classList.remove('open');
+        // ==========================================
+        // ADMIN SETTINGS & DAILY EXCEL PARSER
+        // ==========================================
+        function openAdminModal() {
+            updateSyncUI();
+            document.getElementById('adminModal').classList.add('open');
+        }
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('open');
         }
 
-        function saveItemFromDrawer() {
-            const code = document.getElementById('editCode').value.trim().toUpperCase();
-            const name = document.getElementById('editName').value.trim();
-            const price = parseFloat(document.getElementById('editPrice').value) || 0;
-            const raw = document.getElementById('editColors').value.trim();
+        function createNewProduct() {
+            const code = document.getElementById('newCode').value.trim().toUpperCase();
+            const price = parseFloat(document.getElementById('newPrice').value) || 0;
+            const name = document.getElementById('newName').value.trim() || code;
+            const group = document.getElementById('newGroup').value.trim() || 'ទូទៅ';
+            const colorsRaw = document.getElementById('newColors').value.trim();
 
-            if (!code || !name) return alert("សូមបំពេញកូដ និងឈ្មោះអីវ៉ាន់!");
+            if (!code) return alert("សូមវាយកូដអីវ៉ាន់!");
 
-            let colors = [];
-            let singleQty = 0;
-
-            if (raw && isNaN(raw)) {
-                raw.split(',').forEach(part => {
-                    const clean = part.trim();
-                    if (!clean) return;
-                    if (clean.includes(':')) {
-                        const [cName, cQty] = clean.split(':');
-                        colors.push({ name: cName.trim(), qty: parseInt(cQty) || 0 });
-                    } else {
-                        colors.push({ name: clean, qty: 0 });
-                    }
+            const variants = [];
+            if (colorsRaw) {
+                colorsRaw.split(',').forEach(c => {
+                    const clean = c.trim();
+                    if (clean) variants.push({ pCode: '', barcode: '', color: clean, sysStock: 0, actual: 0 });
                 });
-            } else {
-                singleQty = parseInt(raw) || 0;
+            }
+            if (variants.length === 0) {
+                variants.push({ pCode: '', barcode: '', color: '-', sysStock: 0, actual: 0 });
             }
 
-            const idx = itemsDB.findIndex(i => i.code === code);
-            if (idx >= 0) itemsDB[idx] = { code, name, price, singleQty, colors };
-            else itemsDB.push({ code, name, price, singleQty, colors });
+            const existingIdx = productDB.findIndex(p => p.shortCode === code);
+            if (existingIdx >= 0) {
+                productDB[existingIdx] = { shortCode: code, name, group, price, variants };
+            } else {
+                productDB.unshift({ shortCode: code, name, group, price, variants });
+            }
 
-            activeCode = code;
-            saveStorage();
-            renderCard();
-            closeDrawer();
+            currentShortCode = code;
+            saveToLocal();
+            renderProductCard();
+            closeAdminModal();
+            alert(`បានបន្ថែមកូដ ${code} រួចរាល់!`);
         }
 
-        function importExcel(event) {
+        // Exact Parser for "8281.Product List.YYYYMMDD.xlsx" (50,000+ rows)
+        function importProductListExcel(event) {
             const file = event.target.files[0];
             if (!file) return;
+
+            const statusEl = document.getElementById('uploadStatusText');
+            statusEl.innerText = "កំពុងអាន និងរៀបចំទិន្នន័យ Excel សូមរង់ចាំបន្តិច...";
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                try {
-                    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-                    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
-                    const map = {};
+                setTimeout(() => {
+                    try {
+                        const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                        const sheet = wb.Sheets[wb.SheetNames[0]];
+                        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
 
-                    rows.slice(1).forEach(r => {
-                        if (!r || r.length === 0) return;
-                        let col0 = String(r[0] || '').trim();
-                        if (!col0 || col0.toUpperCase() === 'CODE' || col0 === 'កូដ') return;
-
-                        let code = col0.toUpperCase();
-                        let name = String(r[1] || code).trim();
-                        let colorName = String(r[2] || '').trim();
-                        let price = parseFloat(r[3]) || 0;
-                        let qty = parseInt(r[4]) || 0;
-
-                        if (!colorName && col0.includes(' ')) {
-                            const parts = col0.split(/\s+/);
-                            code = parts[0].toUpperCase();
-                            colorName = parts.slice(1).join(' ');
+                        // Auto-locate header row containing "Code" and "Name"
+                        let headerIdx = 3;
+                        for (let i = 0; i < Math.min(15, rows.length); i++) {
+                            const rStr = rows[i].join('|').toLowerCase();
+                            if (rStr.includes('code') && rStr.includes('name')) {
+                                headerIdx = i;
+                                break;
+                            }
                         }
 
-                        if (!map[code]) map[code] = { code, name, price, singleQty: 0, colors: [] };
-                        if (colorName && colorName !== '-' && colorName !== 'undefined') {
-                            const ex = map[code].colors.find(c => c.name === colorName);
-                            if (!ex) map[code].colors.push({ name: colorName, qty });
-                            else ex.qty += qty;
+                        const headers = rows[headerIdx].map(h => String(h).trim().toLowerCase());
+                        const idxCode = headers.indexOf('code') >= 0 ? headers.indexOf('code') : 1;
+                        const idxBarcode = headers.indexOf('barcode') >= 0 ? headers.indexOf('barcode') : 2;
+                        const idxName = headers.indexOf('name') >= 0 ? headers.indexOf('name') : 3;
+                        const idxAttr = headers.indexOf('attributes') >= 0 ? headers.indexOf('attributes') : 6;
+                        const idxPrice = headers.indexOf('price') >= 0 ? headers.indexOf('price') : 7;
+                        const idxStock = headers.findIndex(h => h.includes('stock qty')) >= 0 ? headers.findIndex(h => h.includes('stock qty')) : 8;
+                        const idxGroup = headers.findIndex(h => h.includes('product group')) >= 0 ? headers.findIndex(h => h.includes('product group')) : 12;
+
+                        // Preserve previously counted actual numbers if updating daily file
+                        const prevCounts = {};
+                        productDB.forEach(p => {
+                            p.variants.forEach(v => {
+                                if (v.actual > 0) {
+                                    prevCounts[`${p.shortCode}__${v.color}`] = v.actual;
+                                }
+                            });
+                        });
+
+                        const groupedMap = new Map();
+
+                        for (let r = headerIdx + 1; r < rows.length; r++) {
+                            const row = rows[r];
+                            if (!row || row.length === 0) continue;
+
+                            const rawPCode = String(row[idxCode] || '').trim();
+                            const rawBarcode = String(row[idxBarcode] || '').trim();
+                            const rawFullName = String(row[idxName] || '').trim();
+                            if (!rawFullName && !rawPCode) continue;
+
+                            // Split Short Code (e.g. "Y65 កែវ" -> shortCode: "Y65", name: "កែវ")
+                            let shortCode = '';
+                            let cleanName = rawFullName;
+                            const spacePos = rawFullName.indexOf(' ');
+                            if (spacePos > 0) {
+                                shortCode = rawFullName.substring(0, spacePos).trim().toUpperCase();
+                                cleanName = rawFullName.substring(spacePos + 1).trim();
+                            } else {
+                                shortCode = (rawFullName || rawPCode).toUpperCase();
+                            }
+
+                            // Clean Attribute/Color (e.g. "-មេឃ" -> "មេឃ")
+                            let colorAttr = String(row[idxAttr] || '').trim();
+                            if (colorAttr.startsWith('-')) {
+                                colorAttr = colorAttr.substring(1).trim();
+                            }
+                            if (!colorAttr) colorAttr = '-';
+
+                            const price = parseFloat(row[idxPrice]) || 0;
+                            const sysStock = parseFloat(row[idxStock]) || 0;
+                            const group = String(row[idxGroup] || 'ទូទៅ').trim();
+
+                            if (!groupedMap.has(shortCode)) {
+                                groupedMap.set(shortCode, {
+                                    shortCode,
+                                    name: cleanName || shortCode,
+                                    group,
+                                    price,
+                                    variants: []
+                                });
+                            }
+
+                            const entry = groupedMap.get(shortCode);
+                            if (price > 0 && entry.price === 0) entry.price = price;
+
+                            const savedActual = prevCounts[`${shortCode}__${colorAttr}`] || 0;
+                            entry.variants.push({
+                                pCode: rawPCode,
+                                barcode: rawBarcode,
+                                color: colorAttr,
+                                sysStock: Math.round(sysStock),
+                                actual: savedActual
+                            });
+                        }
+
+                        const parsedList = Array.from(groupedMap.values());
+                        if (parsedList.length > 0) {
+                            productDB = parsedList;
+                            lastSyncDate = getFormattedDate();
+                            localStorage.setItem('khim_last_sync', lastSyncDate);
+                            if (!productDB.some(p => p.shortCode === currentShortCode)) {
+                                currentShortCode = productDB[0].shortCode;
+                            }
+                            saveToLocal();
+                            renderProductCard();
+                            statusEl.innerText = `Update ជោគជ័យ! បានទាញចូល ${parsedList.length.toLocaleString()} កូដអីវ៉ាន់ និងពណ៌ទាំងអស់។`;
                         } else {
-                            map[code].singleQty += qty;
+                            statusEl.innerText = "រកមិនឃើញទិន្នន័យក្នុង File នេះទេ!";
                         }
-                    });
-
-                    const list = Object.values(map);
-                    if (list.length > 0) {
-                        itemsDB = list;
-                        activeCode = list[0].code;
-                        saveStorage();
-                        renderCard();
-                        document.getElementById('excelStatus').innerText = `ទាញចូលជោគជ័យ ${list.length} កូដ!`;
+                    } catch (err) {
+                        console.error(err);
+                        statusEl.innerText = "មានបញ្ហាក្នុងការអាន File Excel!";
                     }
-                } catch (err) {
-                    alert("មានបញ្ហាក្នុងការអាន File Excel!");
-                }
+                }, 50);
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function exportExcel() {
-            const rows = [["Code", "Name", "Color", "Price", "Qty"]];
-            itemsDB.forEach(i => {
-                if (i.colors && i.colors.length > 0) {
-                    i.colors.forEach(c => rows.push([i.code, i.name, c.name, i.price, c.qty]));
-                } else {
-                    rows.push([i.code, i.name, "-", i.price, i.singleQty || 0]);
-                }
+        function exportCountedExcel() {
+            const rows = [["Short Code", "P-Code", "Barcode", "Product Name", "Group", "Color", "Price ($)", "System Stock", "Actual Counted", "Diff"]];
+            productDB.forEach(p => {
+                p.variants.forEach(v => {
+                    const diff = (v.actual || 0) - (v.sysStock || 0);
+                    rows.push([p.shortCode, v.pCode, v.barcode, p.name, p.group, v.color, p.price, v.sysStock, v.actual || 0, diff]);
+                });
             });
             const ws = XLSX.utils.aoa_to_sheet(rows);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "KHIM_Stock");
-            XLSX.writeFile(wb, `KHIM_Stock_${getShortDate()}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "KHIM_Stock_Audit");
+            XLSX.writeFile(wb, `KHIM_Stock_Check_${getFormattedDate()}.xlsx`);
         }
 
+        // Keyboard Enter on Search
         document.getElementById('scanInput').addEventListener('keypress', e => {
-            if (e.key === 'Enter') handleSearch();
+            if (e.key === 'Enter') handleExactSearch();
         });
 
-        renderCard();
+        // Close search dropdown when clicking outside
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.scan-wrapper')) {
+                document.getElementById('searchDropdown').classList.remove('show');
+            }
+        });
+
+        updateSyncUI();
+        renderProductCard();
     </script>
 </body>
 </html>
