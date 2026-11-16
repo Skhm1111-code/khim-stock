@@ -143,9 +143,9 @@
             color: #111827; outline: none;
         }
 
-        .sys-col { text-align: right; min-width: 68px; }
-        .actual-big { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800; color: #111827; line-height: 1.1; }
-        .sys-small { font-size: 12px; font-weight: 600; color: #6b7280; margin-top: 2px; }
+        .sys-col { text-align: right; min-width: 78px; }
+        .actual-big { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 800; color: #14532d; line-height: 1.1; }
+        .sys-small { font-size: 11px; font-weight: 600; color: #6b7280; margin-top: 2px; }
 
         .card-footer-sum {
             margin-top: 10px; padding-top: 14px; border-top: 1.5px solid #111827;
@@ -380,12 +380,10 @@
             return `${dd}.${mm}.${yy}`;
         }
 
-        // AUTO-SCAN GUN HANDLER: When hardware scanner scans a specific variant barcode or P-code
         function handleScanGunInput(rawCode) {
             const q = rawCode.trim().toLowerCase();
             if (!q) return false;
 
-            // 1. Search if q matches a specific variant's Barcode or P-Code directly
             for (let p of productDB) {
                 for (let i = 0; i < p.variants.length; i++) {
                     const v = p.variants[i];
@@ -393,7 +391,6 @@
                     const vPCode = (v.pCode || '').toLowerCase();
                     
                     if ((vBar && vBar === q) || (vPCode && vPCode === q)) {
-                        // MATCH FOUND! Auto-switch to this product and increment this exact color by +1
                         currentShortCode = p.shortCode;
                         v.actual = (v.actual || 0) + 1;
                         lastScannedVariantKey = `${p.shortCode}_${i}`;
@@ -404,7 +401,6 @@
                 }
             }
 
-            // 2. If it's a short code (e.g. Y65, G1) or product name
             const foundProd = productDB.find(p => 
                 p.shortCode.toLowerCase() === q || p.name.toLowerCase() === q
             );
@@ -424,7 +420,6 @@
             const drop = document.getElementById('searchDropdown');
             if (!q) { drop.classList.remove('show'); return; }
 
-            // If scanned rapidly with barcode gun (ends with enter or length > 8 digits numeric)
             if (q.length >= 8 || q.includes('\n') || q.includes('\r')) {
                 const clean = q.replace(/[\n\r]+/g, '').trim();
                 const matched = handleScanGunInput(clean);
@@ -435,7 +430,6 @@
                 }
             }
 
-            // Manual dropdown typing suggestions
             const matches = productDB.filter(p => 
                 p.shortCode.toLowerCase().startsWith(q.toLowerCase()) || p.name.toLowerCase().includes(q.toLowerCase())
             ).slice(0, 15);
@@ -466,7 +460,6 @@
             document.getElementById('searchDropdown').classList.remove('show');
 
             if (!matched) {
-                // Try partial search
                 const found = productDB.find(p => p.shortCode.toLowerCase().startsWith(q.toLowerCase()) || p.name.toLowerCase().includes(q.toLowerCase()));
                 if (found) {
                     selectProduct(found.shortCode);
@@ -532,7 +525,7 @@
                                 <button class="q-btn plus" onclick="adjustVariantQty(${idx}, 1)">+</button>
                             </div>
                             <div class="sys-col">
-                                <div class="actual-big">${v.actual || 0}</div>
+                                <div class="actual-big">= ${v.actual || 0}</div>
                                 <div class="sys-small">ប្រព័ន្ធ ${v.sysStock || 0}</div>
                             </div>
                         </div>
@@ -577,7 +570,7 @@
                 totalAct += (v.actual || 0);
                 totalSys += (v.sysStock || 0);
                 const cName = v.color && v.color !== '-' ? v.color : 'ស្តុកទូទៅ';
-                lines += `• ${cName}: ${v.actual || 0} (ប្រព័ន្ធ ${v.sysStock || 0})\n`;
+                lines += `• ${cName}: = ${v.actual || 0} (ប្រព័ន្ធ ${v.sysStock || 0})\n`;
             });
             lines += `----------------------\nសរុបរាប់បាន: = ${totalAct} (ប្រព័ន្ធ ${totalSys})`;
             navigator.clipboard.writeText(lines);
