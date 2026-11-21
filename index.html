@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KHIM - រាប់ស្តុក</title>
+
+<!-- iOS Web App Fullscreen & Title -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KHIM Stock">
+<meta name="theme-color" content="#14532d">
+<link id="iosIcon" rel="apple-touch-icon" sizes="180x180">
+<link id="favIcon" rel="icon" type="image/png">
+<link id="manifestLink" rel="manifest">
+
 <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -13,10 +23,12 @@
 body{background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center}
 .hdr{width:100%;max-width:520px;background:var(--card);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:50}
 .brand{display:flex;align-items:center;gap:9px}
-.logo{width:34px;height:34px;background:var(--g);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}
-.bname{font-size:20px;font-weight:800}
+.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.3px;color:var(--g)}
 .badge{font-size:11px;font-weight:600;color:var(--g);background:var(--gs);padding:3px 8px;border-radius:20px}
 .badge.bad{color:#991b1b;background:#fee2e2}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.app-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#166534,#14532d);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(20,83,45,.22);flex-shrink:0}
+.app-logo svg{width:22px;height:22px;color:#fff}
 .burger{width:40px;height:40px;border:1px solid var(--bd);background:#f8fafc;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
 .burger span{width:20px;height:2.3px;background:var(--tx);border-radius:2px}
 main{width:100%;max-width:520px;padding:14px 16px 40px}
@@ -63,16 +75,16 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .sl{font-size:14px;font-weight:700;color:#4b5563}
 .sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
 
-/* Clean PNG capture mode: smart 2-column grid when many variants */
-.capturing{box-shadow:none!important;border-radius:20px!important;border-color:#d6d9d2!important;padding-bottom:28px!important}
+/* Clean PNG capture mode: single-column compact horizontal rows */
+.capturing{width:460px!important;max-width:none!important;box-shadow:none!important;border-radius:20px!important;border-color:#d6d9d2!important;padding:20px 20px 30px!important}
 .capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
+.capturing .vl{padding:9px 4px!important}
 .capturing .vl.hl{background:transparent!important}
-.capturing.multi-col{width:680px!important;max-width:none!important}
-.capturing.multi-col #dVars{display:grid!important;grid-template-columns:1fr 1fr;gap:0 24px}
-.capturing.multi-col .vl{padding:10px 8px;border-bottom:1px solid #e5e7eb}
-.capturing.multi-col .vl:nth-last-child(-n+2){border-bottom:none}
-.capturing.multi-col .vl:nth-child(odd){border-right:1px dashed #e2e5de;padding-right:16px}
-.capturing.multi-col .foot{padding-right:85px}
+.capturing .sc{display:flex;align-items:baseline;justify-content:flex-end;gap:10px;min-width:auto}
+.capturing .big{font-size:24px!important;order:3;min-width:56px;text-align:right}
+.capturing .sm{font-size:13px!important;order:1;margin-top:0}
+.capturing .st{font-size:13px!important;order:2;margin-top:0;min-width:58px;text-align:right}
+.capturing .foot{padding-right:78px;padding-top:12px}
 
 /* Professional Modern Action Bar */
 .bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
@@ -116,8 +128,21 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 </head>
 <body>
 <header class="hdr">
-  <div class="brand"><div class="logo">K</div><div class="bname">KHIM</div><span class="badge" id="saveBadge">កំពុងផ្ទុក…</span></div>
-  <button class="burger" onclick="openM('adminModal')" aria-label="Admin"><span></span><span></span><span></span></button>
+  <div class="brand">
+    <div class="bname">KHIM</div>
+    <span class="badge" id="saveBadge">កំពុងផ្ទុក…</span>
+  </div>
+  <div class="hdr-right">
+    <div class="app-logo" title="KHIM Stock App">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+        <path d="m3.3 7 8.7 5 8.7-5"/>
+        <path d="M12 22V12"/>
+        <path d="m9 15 2 2 4-4" stroke="#86efac" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <button class="burger" onclick="openM('adminModal')" aria-label="Admin"><span></span><span></span><span></span></button>
+  </div>
 </header>
 <div id="toast"></div>
 <main>
@@ -228,6 +253,56 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* Auto-generate High-Res iOS Home Screen Icon & Web App Manifest */
+(function setupAppIcon(){
+  try{
+    const c=document.createElement('canvas');c.width=512;c.height=512;
+    const x=c.getContext('2d');
+    const grd=x.createLinearGradient(0,0,512,512);
+    grd.addColorStop(0,'#166534');grd.addColorStop(1,'#14532d');
+    x.fillStyle=grd;x.fillRect(0,0,512,512);
+
+    // Subtle decorative ring
+    x.strokeStyle='rgba(255,255,255,0.12)';x.lineWidth=14;
+    x.beginPath();x.arc(256,256,210,0,Math.PI*2);x.stroke();
+
+    // Box icon
+    x.strokeStyle='#ffffff';x.lineWidth=22;x.lineCap='round';x.lineJoin='round';
+    x.beginPath();
+    x.moveTo(256,115);x.lineTo(380,185);x.lineTo(380,315);x.lineTo(256,385);x.lineTo(132,315);x.lineTo(132,185);x.closePath();
+    x.moveTo(132,185);x.lineTo(256,255);x.lineTo(380,185);
+    x.moveTo(256,255);x.lineTo(256,385);
+    x.stroke();
+
+    // Checkmark badge
+    x.fillStyle='#86efac';
+    x.beginPath();x.arc(365,355,68,0,Math.PI*2);x.fill();
+    x.strokeStyle='#14532d';x.lineWidth=18;
+    x.beginPath();x.moveTo(335,355);x.lineTo(356,376);x.lineTo(398,334);x.stroke();
+
+    // Brand text
+    x.fillStyle='#ffffff';x.font='800 54px "Plus Jakarta Sans",sans-serif';x.textAlign='center';
+    x.fillText('KHIM',256,462);
+
+    const pngUrl=c.toDataURL('image/png');
+    $('iosIcon').href=pngUrl;
+    $('favIcon').href=pngUrl;
+
+    const manifest={
+      name:'KHIM - រាប់ស្តុក',
+      short_name:'KHIM Stock',
+      start_url:location.href,
+      display:'standalone',
+      background_color:'#f3f4f6',
+      theme_color:'#14532d',
+      icons:[{src:pngUrl,sizes:'512x512',type:'image/png'}]
+    };
+    const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+    $('manifestLink').href=URL.createObjectURL(mBlob);
+  }catch(e){}
+})();
+
 const SAMPLE=[{shortCode:'Y65',name:'កែវ',group:'កែវទឹក',price:2,variants:[
   {pCode:'P0078648',barcode:'',color:'មេឃ',sysStock:11},
   {pCode:'P0078649',barcode:'',color:'កាហ្វេ',sysStock:12},
@@ -614,12 +689,10 @@ function resetCounts(){
 function downloadPNG(){
   const p=curP();
   const card=$('card');
-  const isMulti=p&&p.variants&&p.variants.length>=6;
   card.classList.add('capturing');
-  if(isMulti)card.classList.add('multi-col');
 
   html2canvas(card,{scale:3,backgroundColor:'#ffffff',useCORS:true}).then(cv=>{
-    card.classList.remove('capturing','multi-col');
+    card.classList.remove('capturing');
     cv.toBlob(b=>{
       if(!b)return toast('បង្កើត PNG មិនបាន','err');
       const fname=`KHIM_${meta.active}_${fmtDate()}.png`;
@@ -632,7 +705,7 @@ function downloadPNG(){
       }
     },'image/png');
   }).catch(()=>{
-    card.classList.remove('capturing','multi-col');
+    card.classList.remove('capturing');
     toast('បង្កើត PNG មិនបាន','err');
   });
 }
