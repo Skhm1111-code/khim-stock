@@ -63,10 +63,16 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .sl{font-size:14px;font-weight:700;color:#4b5563}
 .sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
 
-/* Clean PNG capture mode: hide controls, P-codes, export tags, and row highlight */
-.capturing{box-shadow:none!important;border-radius:18px!important;border-color:#d6d9d2!important}
+/* Clean PNG capture mode: smart 2-column grid when many variants */
+.capturing{box-shadow:none!important;border-radius:20px!important;border-color:#d6d9d2!important;padding-bottom:28px!important}
 .capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
 .capturing .vl.hl{background:transparent!important}
+.capturing.multi-col{width:680px!important;max-width:none!important}
+.capturing.multi-col #dVars{display:grid!important;grid-template-columns:1fr 1fr;gap:0 24px}
+.capturing.multi-col .vl{padding:10px 8px;border-bottom:1px solid #e5e7eb}
+.capturing.multi-col .vl:nth-last-child(-n+2){border-bottom:none}
+.capturing.multi-col .vl:nth-child(odd){border-right:1px dashed #e2e5de;padding-right:16px}
+.capturing.multi-col .foot{padding-right:85px}
 
 /* Professional Modern Action Bar */
 .bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
@@ -607,9 +613,13 @@ function resetCounts(){
 
 function downloadPNG(){
   const p=curP();
-  const card=$('card');card.classList.add('capturing');
+  const card=$('card');
+  const isMulti=p&&p.variants&&p.variants.length>=6;
+  card.classList.add('capturing');
+  if(isMulti)card.classList.add('multi-col');
+
   html2canvas(card,{scale:3,backgroundColor:'#ffffff',useCORS:true}).then(cv=>{
-    card.classList.remove('capturing');
+    card.classList.remove('capturing','multi-col');
     cv.toBlob(b=>{
       if(!b)return toast('បង្កើត PNG មិនបាន','err');
       const fname=`KHIM_${meta.active}_${fmtDate()}.png`;
@@ -621,7 +631,10 @@ function downloadPNG(){
         dl(fname,b);
       }
     },'image/png');
-  }).catch(()=>{card.classList.remove('capturing');toast('បង្កើត PNG មិនបាន','err')});
+  }).catch(()=>{
+    card.classList.remove('capturing','multi-col');
+    toast('បង្កើត PNG មិនបាន','err');
+  });
 }
 function copyTelegram(){
   const p=curP();if(!p)return;
