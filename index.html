@@ -8,8 +8,8 @@
 <!-- iOS Web App Fullscreen & Title -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="KHIM">
-<meta name="theme-color" content="#052e16">
+<meta name="apple-mobile-web-app-title" content="KHIM Stock">
+<meta name="theme-color" content="#14532d">
 <link id="iosIcon" rel="apple-touch-icon" sizes="180x180">
 <link id="favIcon" rel="icon" type="image/png">
 <link id="manifestLink" rel="manifest">
@@ -23,12 +23,12 @@
 body{background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center}
 .hdr{width:100%;max-width:520px;background:var(--card);padding:11px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:50}
 .brand{display:flex;align-items:center;gap:9px}
-.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:.5px;color:#052e16}
+.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:.3px;color:#14532d}
 .badge{font-size:11px;font-weight:600;color:var(--g);background:var(--gs);padding:3px 8px;border-radius:20px}
 .badge.bad{color:#991b1b;background:#fee2e2}
 .hdr-right{display:flex;align-items:center;gap:10px}
-.app-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(145deg,#064e3b,#052e16);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(5,46,22,.28),inset 0 1px 0 rgba(255,255,255,.2);border:1px solid rgba(212,175,55,.45);flex-shrink:0}
-.app-logo svg{width:28px;height:28px}
+.app-logo{width:42px;height:42px;border-radius:12px;background:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(15,23,42,.08);border:1px solid #e2e8f0;flex-shrink:0;padding:3px}
+.app-logo svg{width:100%;height:100%}
 .burger{width:40px;height:40px;border:1px solid var(--bd);background:#f8fafc;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
 .burger span{width:20px;height:2.3px;background:var(--tx);border-radius:2px}
 main{width:100%;max-width:520px;padding:14px 16px 40px}
@@ -75,7 +75,7 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .sl{font-size:14px;font-weight:700;color:#4b5563}
 .sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#111827}
 
-/* Clean PNG capture mode: balanced width like IMG_7889, stack '= N' over 'ប្រព័ន្ធ N', subtle diff on left */
+/* Clean PNG capture mode */
 .capturing{width:390px!important;max-width:none!important;box-shadow:none!important;border-radius:22px!important;border-color:#d6d9d2!important;padding:22px 20px 28px!important}
 .capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
 .capturing .vl{padding:11px 2px!important}
@@ -138,22 +138,26 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
     <span class="badge" id="saveBadge">កំពុងផ្ទុក…</span>
   </div>
   <div class="hdr-right">
-    <div class="app-logo" title="KHIM Luxury Monogram">
-      <svg viewBox="0 0 40 40" fill="none">
-        <defs>
-          <linearGradient id="goldGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#fde68a"/>
-            <stop offset="50%" stop-color="#d4af37"/>
-            <stop offset="100%" stop-color="#b45309"/>
-          </linearGradient>
-        </defs>
-        <!-- Outer precision hexagon frame -->
-        <polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" stroke="url(#goldGrad)" stroke-width="1.6" fill="none"/>
-        <!-- Sharp geometric K monogram -->
-        <path d="M13 11.5V28.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
-        <path d="M26.5 11.5L16.5 20L27 28.5" stroke="url(#goldGrad)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Accent emerald dot -->
-        <circle cx="27.5" cy="20" r="2" fill="#4ade80"/>
+    <!-- Google App Style KH Stock Logo with compact checkmark -->
+    <div class="app-logo" title="KHIM Stock">
+      <svg viewBox="0 0 100 100" fill="none">
+        <!-- Isometric Box (Top Lime, Right Emerald, Dark Green Outline) -->
+        <polygon points="55,14 82,29 55,44 28,29" fill="#84cc16" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <!-- Tape lines on top -->
+        <line x1="42" y1="21.5" x2="69" y2="36.5" stroke="#14532d" stroke-width="4"/>
+        <!-- Right face of box -->
+        <polygon points="55,44 82,29 82,62 55,77" fill="#16a34a" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <!-- Tape flap on right face -->
+        <polygon points="65,38.5 72,34.5 72,48 65,52" fill="#14532d"/>
+        <!-- Left face (Integrated 'H' negative/lime shape) -->
+        <polygon points="28,29 55,44 55,77 28,62" fill="#ffffff" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M46 40 V71 M32 53 H46 M32 45 L24 53 L32 61 Z" fill="#84cc16" stroke="#84cc16" stroke-width="3" stroke-linejoin="round"/>
+        <!-- Bold Rounded 'K' on Left -->
+        <path d="M13 33 V69" stroke="#15803d" stroke-width="8.5" stroke-linecap="round"/>
+        <path d="M27 36 L14 51 L27 67" stroke="#15803d" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Compact Circular Checkmark Badge (Bottom Right) -->
+        <circle cx="77" cy="69" r="15.5" fill="#16a34a" stroke="#ffffff" stroke-width="3.5"/>
+        <path d="M71 69 L75 73 L83 64.5" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
     <button class="burger" onclick="openM('adminModal')" aria-label="Admin"><span></span><span></span><span></span></button>
@@ -269,77 +273,91 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* Auto-generate High-Res Luxury Monogram App Icon for iOS Home Screen */
+/* Auto-generate High-Res Google App Style Icon (KHIM STOCK + compact checkmark) for iOS Home Screen */
 (function setupAppIcon(){
   try{
     const c=document.createElement('canvas');c.width=512;c.height=512;
     const x=c.getContext('2d');
 
-    // Deep luxury emerald background
-    const bg=x.createLinearGradient(0,0,512,512);
-    bg.addColorStop(0,'#064e3b');
-    bg.addColorStop(0.5,'#052e16');
-    bg.addColorStop(1,'#022c22');
-    x.fillStyle=bg;x.fillRect(0,0,512,512);
+    // Clean pure white Google App Icon background
+    x.fillStyle='#ffffff';
+    x.fillRect(0,0,512,512);
 
-    // Subtle radial highlight
-    const rad=x.createRadialGradient(256,210,30,256,256,280);
-    rad.addColorStop(0,'rgba(74,222,128,0.16)');
-    rad.addColorStop(1,'rgba(0,0,0,0)');
-    x.fillStyle=rad;x.fillRect(0,0,512,512);
+    x.save();
+    x.translate(46, 22);
+    x.scale(4.2, 4.2);
 
-    // Metallic Gold Gradient
-    const gold=x.createLinearGradient(90,90,420,420);
-    gold.addColorStop(0,'#fef08a');
-    gold.addColorStop(0.45,'#d4af37');
-    gold.addColorStop(1,'#92400e');
-
-    // Precision Outer Hexagon Frame
-    x.strokeStyle=gold;x.lineWidth=14;x.lineJoin='round';
+    // 1. Isometric Box Top (Lime Green)
+    x.fillStyle='#84cc16';
+    x.strokeStyle='#14532d';
+    x.lineWidth=4.2;
+    x.lineJoin='round';
     x.beginPath();
-    x.moveTo(256,56);
-    x.lineTo(426,154);
-    x.lineTo(426,350);
-    x.lineTo(256,448);
-    x.lineTo(86,350);
-    x.lineTo(86,154);
+    x.moveTo(55,14);x.lineTo(82,29);x.lineTo(55,44);x.lineTo(28,29);
     x.closePath();
+    x.fill();x.stroke();
+
+    // Tape line on top
+    x.beginPath();
+    x.moveTo(42,21.5);x.lineTo(69,36.5);
     x.stroke();
 
-    // Inner thin hairline border
-    x.strokeStyle='rgba(255,255,255,0.14)';x.lineWidth=3;
+    // 2. Right face of box (Emerald Green)
+    x.fillStyle='#16a34a';
     x.beginPath();
-    x.moveTo(256,76);
-    x.lineTo(408,164);
-    x.lineTo(408,340);
-    x.lineTo(256,428);
-    x.lineTo(104,340);
-    x.lineTo(104,164);
+    x.moveTo(55,44);x.lineTo(82,29);x.lineTo(82,62);x.lineTo(55,77);
     x.closePath();
-    x.stroke();
+    x.fill();x.stroke();
 
-    // Sharp Geometric 'K' Monogram
-    // Vertical stem (crisp white)
-    x.strokeStyle='#ffffff';x.lineWidth=34;x.lineCap='round';
-    x.beginPath();x.moveTo(186,145);x.lineTo(186,345);x.stroke();
-
-    // Diagonal arms (metallic gold)
-    x.strokeStyle=gold;x.lineWidth=34;x.lineCap='round';x.lineJoin='round';
+    // Tape flap on right face
+    x.fillStyle='#14532d';
     x.beginPath();
-    x.moveTo(328,145);
-    x.lineTo(215,245);
-    x.lineTo(334,345);
-    x.stroke();
+    x.moveTo(65,38.5);x.lineTo(72,34.5);x.lineTo(72,48);x.lineTo(65,52);
+    x.closePath();
+    x.fill();
 
-    // Emerald Accent Jewel Dot
-    x.fillStyle='#4ade80';
-    x.beginPath();x.arc(338,245,16,0,Math.PI*2);x.fill();
+    // 3. Left face of box (White + Lime 'H' arrow cutout)
+    x.fillStyle='#ffffff';
+    x.beginPath();
+    x.moveTo(28,29);x.lineTo(55,44);x.lineTo(55,77);x.lineTo(28,62);
+    x.closePath();
+    x.fill();x.stroke();
 
-    // Brand Wordmark
-    x.fillStyle='rgba(255,255,255,0.9)';
-    x.font='800 34px "Plus Jakarta Sans",sans-serif';
+    x.fillStyle='#84cc16';
+    x.fillRect(43,40,6,31);
+    x.fillRect(31,50,15,6);
+    x.beginPath();
+    x.moveTo(32,45);x.lineTo(23,53);x.lineTo(32,61);
+    x.closePath();
+    x.fill();
+
+    // 4. Bold Rounded 'K' on Left
+    x.strokeStyle='#15803d';
+    x.lineWidth=8.5;
+    x.lineCap='round';
+    x.lineJoin='round';
+    x.beginPath();x.moveTo(13,33);x.lineTo(13,69);x.stroke();
+    x.beginPath();x.moveTo(27,36);x.lineTo(14,51);x.lineTo(27,67);x.stroke();
+
+    // 5. Compact Circular Checkmark Badge (Bottom Right)
+    x.fillStyle='#16a34a';
+    x.strokeStyle='#ffffff';
+    x.lineWidth=3.5;
+    x.beginPath();x.arc(77,69,14.5,0,Math.PI*2);x.fill();x.stroke();
+
+    x.strokeStyle='#ffffff';
+    x.lineWidth=3.4;
+    x.beginPath();x.moveTo(71.5,69);x.lineTo(75.2,72.8);x.lineTo(82.5,65);x.stroke();
+
+    x.restore();
+
+    // 6. Clean Dark Green Wordmark "KHIM" & "STOCK"
+    x.fillStyle='#14532d';
     x.textAlign='center';
-    x.fillText('KHIM',256,404);
+    x.font='800 66px "Plus Jakarta Sans",sans-serif';
+    x.fillText('KHIM',256,422);
+    x.font='800 32px "Plus Jakarta Sans",sans-serif';
+    x.fillText('STOCK',256,464);
 
     const pngUrl=c.toDataURL('image/png');
     $('iosIcon').href=pngUrl;
@@ -347,11 +365,808 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 
     const manifest={
       name:'KHIM - រាប់ស្តុក',
-      short_name:'KHIM',
+      short_name:'KHIM Stock',
       start_url:location.href,
       display:'standalone',
-      background_color:'#f3f4f6',
-      theme_color:'#052e16',
+      background_color:'#ffffff',
+      theme_color:'#14532d',
+      icons:[{src:pngUrl,sizes:'512x512',type:'image/png'}]
+    };
+    const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+    $('manifestLink').href=URL.createObjectURL(mBlob);
+  }catch(e){}
+})();
+
+const SAMPLE=[{shortCode:'Y65',name:'កែវ',group:'កែវទឹក',price:2,variants:[
+  {pCode:'P0078648',barcode:'',color:'មេឃ',sysStock:11},
+  {pCode:'P0078649',barcode:'',color:'កាហ្វេ',sysStock:12},
+  {pCode:'P0078650',barcode:'',color:'ឈូក',sysStock:18}]}];
+
+let catalog=[];
+let ledger={};
+let meta={active:'',sync:'',exported:{}};
+let index=new Map(), dups=new Set();
+let undoStack=[], hlKey=null;
+
+const vKey=(p,v)=>v.pCode?'p:'+v.pCode:'c:'+p.shortCode+'__'+v.color;
+const cnt=(p,v)=>ledger[vKey(p,v)]?.n||0;
+const counted=(p,v)=>!!ledger[vKey(p,v)];
+const curP=()=>catalog.find(p=>p.shortCode===meta.active)||catalog[0];
+const fmtDate=t=>{const d=t?new Date(t):new Date();return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getFullYear()).slice(-2)};
+
+function productLastCountTime(p){
+  return Math.max(0,...p.variants.map(v=>ledger[vKey(p,v)]?.t||0));
+}
+function isProductUnsavedExport(p){
+  if(!p)return false;
+  const lastCnt=productLastCountTime(p);
+  if(!lastCnt)return false;
+  const lastExp=(meta.exported&&meta.exported[p.shortCode])||0;
+  return lastExp < lastCnt;
+}
+function markExported(code){
+  if(!meta.exported)meta.exported={};
+  meta.exported[code]=Date.now();
+  save('meta');
+  render();
+}
+
+let _db;
+function idb(){return _db||(_db=new Promise((res,rej)=>{
+  const r=indexedDB.open('khim_db',1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('kv');
+  r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}));}
+async function idbGet(k){const db=await idb();return new Promise((res,rej)=>{const q=db.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}
+async function idbPutMany(o){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction('kv','readwrite'),s=t.objectStore('kv');for(const k in o)s.put(o[k],k);t.oncomplete=res;t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)})}
+
+const dirty=new Set();let saveTimer;
+function save(...keys){
+  keys.forEach(k=>dirty.add(k));
+  setBadge('កំពុងរក្សា…');
+  clearTimeout(saveTimer);saveTimer=setTimeout(flush,300);
+}
+async function flush(){
+  clearTimeout(saveTimer);
+  if(!dirty.size)return;
+  const src={catalog,ledger,meta},out={};
+  dirty.forEach(k=>out[k]=src[k]);dirty.clear();
+  try{await idbPutMany(out);setBadge('✓ Saved '+(meta.sync?'· '+meta.sync:''))}
+  catch(e){setBadge('Save បរាជ័យ!',true);alert('Save មិនបាន! សូមទាញ Backup JSON ភ្លាមៗ។\n'+e)}
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
+window.addEventListener('pagehide',flush);
+function setBadge(t,bad){const b=$('saveBadge');b.textContent=t;b.classList.toggle('bad',!!bad)}
+
+let ac;
+function beep(ok){
+  try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);
+    o.type=ok?'sine':'square';o.frequency.value=ok?1200:220;g.gain.value=.15;
+    o.start();o.stop(ac.currentTime+(ok?.08:.35));}catch(e){}
+  if(navigator.vibrate)navigator.vibrate(ok?30:[120,60,120]);
+}
+let toastT;
+function toast(msg,type='ok'){const t=$('toast');t.textContent=msg;t.className=type;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',type==='err'?2600:1400)}
+
+function buildIndex(){
+  index=new Map();dups=new Set();
+  catalog.forEach(p=>p.variants.forEach(v=>{
+    [v.barcode,v.pCode].forEach(k=>{
+      if(!k)return;const kl=String(k).toLowerCase(),ex=index.get(kl);
+      if(ex&&ex.v!==v)dups.add(kl);else index.set(kl,{p,v});
+    });
+  }));
+}
+
+function bump(p,v,d){
+  const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null,cur=prev||0,n=Math.max(0,cur+d);
+  undoStack.push({key,prev});if(undoStack.length>50)undoStack.shift();
+  ledger[key]={n,t:Date.now()};
+  save('ledger','meta');
+}
+function setCount(p,v,n){
+  const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null;
+  undoStack.push({key,prev});ledger[key]={n:Math.max(0,n|0),t:Date.now()};save('ledger');
+}
+function undo(){
+  const u=undoStack.pop();if(!u)return toast('គ្មានអ្វីត្រូវ Undo','warn');
+  if(u.prev===null)delete ledger[u.key];else ledger[u.key]={n:u.prev,t:Date.now()};
+  save('ledger');render();toast('Undo រួចរាល់');
+}
+
+function scan(raw){
+  const q=raw.trim();if(!q)return false;
+  const ql=q.toLowerCase(),hit=index.get(ql);
+  if(hit){
+    meta.active=hit.p.shortCode;hlKey=vKey(hit.p,hit.v);
+    bump(hit.p,hit.v,1);render();beep(true);
+    if(dups.has(ql))toast('⚠ Barcode ស្ទួន! ពិនិត្យមើលផលិតផល','warn');
+    return true;
+  }
+  const p=catalog.find(x=>x.shortCode.toLowerCase()===ql);
+  if(p){selectProduct(p.shortCode);return true}
+  return false;
+}
+function onEnter(){
+  const inp=$('scanInput'),q=inp.value.trim();if(!q)return;
+  inp.value='';$('drop').classList.remove('show');
+  if(scan(q))return;
+  const ql=q.toLowerCase();
+  const f=catalog.find(p=>p.shortCode.toLowerCase().startsWith(ql)||p.name.toLowerCase().includes(ql));
+  if(f){selectProduct(f.shortCode)}
+  else{beep(false);toast('រកមិនឃើញ "'+q+'"','err')}
+}
+function liveSearch(){
+  const q=$('scanInput').value.trim().toLowerCase(),d=$('drop');
+  if(!q){d.classList.remove('show');return}
+  const m=catalog.filter(p=>p.shortCode.toLowerCase().startsWith(q)||p.name.toLowerCase().includes(q)).slice(0,15);
+  d.innerHTML=m.length?m.map(p=>`<div class="it" data-code="${esc(p.shortCode)}"><div><strong style="color:var(--g);font-size:15px">${esc(p.shortCode)}</strong> <span style="font-weight:600">${esc(p.name)}</span></div><span style="font-size:12px;color:var(--mut)">${p.variants.length} ពណ៌ • ${esc(p.price)}$</span></div>`).join(''):`<div class="it" style="color:var(--mut)">រកមិនឃើញ</div>`;
+  d.classList.add('show');
+}
+function selectProduct(code){
+  meta.active=code;hlKey=null;$('scanInput').value='';$('drop').classList.remove('show');
+  save('meta');render();
+}
+
+function statusOf(n,sys,has){
+  if(!has)return['pend','មិនទាន់រាប់'];
+  const d=n-sys;
+  if(d===0)return['ok','✓ ត្រូវ'];
+  return d<0?['short','ខ្វះ '+(-d)]:['over','លើស '+d];
+}
+function render(){
+  const p=curP();
+  if(!p){$('dCode').textContent='—';$('dVars').innerHTML='<div class="vn" style="padding:14px 0;color:var(--mut)">សូម Upload Excel ក្នុង Admin</div>';updateProgress();return}
+  meta.active=p.shortCode;
+  $('dCode').textContent=p.shortCode;$('dName').textContent=p.name;$('dGroup').textContent=p.group||'ទូទៅ';
+  $('dPrice').textContent=p.price+'$';
+  const last=productLastCountTime(p);
+  $('dDate').textContent=last?'រាប់: '+fmtDate(last):'មិនទាន់រាប់';
+
+  const unsaved=isProductUnsavedExport(p);
+  const expEl=$('dExpStatus');
+  if(!last){
+    expEl.style.display='none';
+    $('card').classList.remove('need-export');
+    $('btnPng').classList.remove('remind');
+    $('btnTg').classList.remove('remind');
+  }else if(unsaved){
+    expEl.style.display='inline-block';
+    expEl.className='exp-tag no';
+    expEl.textContent='⚠ មិនទាន់ Save រូប/ផ្ញើ';
+    $('card').classList.add('need-export');
+    $('btnPng').classList.add('remind');
+    $('btnTg').classList.add('remind');
+  }else{
+    expEl.style.display='inline-block';
+    expEl.className='exp-tag yes';
+    expEl.textContent='✓ Save រូប/ផ្ញើរួច';
+    $('card').classList.remove('need-export');
+    $('btnPng').classList.remove('remind');
+    $('btnTg').classList.remove('remind');
+  }
+
+  let sS=0,sA=0;
+  $('dVars').innerHTML=p.variants.map((v,i)=>{
+    const n=cnt(p,v),sys=v.sysStock||0;sS+=sys;sA+=n;
+    const [cls,txt]=statusOf(n,sys,counted(p,v));
+    return `<div class="vl ${hlKey===vKey(p,v)?'hl':''}">
+      <div>
+        <div class="vn">${esc(v.color&&v.color!=='-'?v.color:'ស្តុកទូទៅ')}</div>
+        ${v.pCode?`<div class="vb">${esc(v.pCode)}${v.barcode?' • '+esc(v.barcode):''}</div>`:''}
+      </div>
+      <div class="vr">
+        <div class="qc"><button class="qb" data-a="m" data-i="${i}">−</button><input type="number" class="qi" data-i="${i}" value="${n}" inputmode="numeric"><button class="qb p" data-a="p" data-i="${i}">+</button></div>
+        <div class="sc">
+          <div class="big">= ${n}</div>
+          <div class="sm">ប្រព័ន្ធ ${sys}</div>
+          <div class="st ${cls}">${txt}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  $('dSys').textContent='ស្តុកប្រព័ន្ធសរុប: '+sS;
+  $('dAct').textContent='= '+sA;
+  $('pills').innerHTML=catalog.slice(0,6).map(x=>{
+    const u=isProductUnsavedExport(x);
+    return `<button class="pill ${x.shortCode===p.shortCode?'a':''} ${u?'unexp':''}" data-code="${esc(x.shortCode)}">${esc(x.shortCode)}${u?' •':''}</button>`;
+  }).join('');
+  updateProgress();
+}
+function updateProgress(){
+  let done=0,bad=0,unsavedList=[];
+  catalog.forEach(p=>{
+    if(p.variants.some(v=>counted(p,v))){
+      done++;
+      if(p.variants.some(v=>counted(p,v)&&cnt(p,v)!==(v.sysStock||0)))bad++;
+      if(isProductUnsavedExport(p))unsavedList.push(p);
+    }
+  });
+  $('progA').textContent=`រាប់ហើយ ${done.toLocaleString()}/${catalog.length.toLocaleString()} កូដ`;
+  $('progB').textContent=bad?`មិនត្រូវ ${bad} កូដ`:'';
+  const up=$('unsavedPill');
+  if(unsavedList.length>0){
+    up.classList.add('show');
+    up.textContent=`⚠ ភ្លេច Save រូប: ${unsavedList.length} កូដ`;
+  }else{
+    up.classList.remove('show');
+  }
+  $('stats').textContent=`catalog ${catalog.length.toLocaleString()} កូដ • រាប់ហើយ ${done.toLocaleString()} • មិនត្រូវគ្នា ${bad}`;
+}
+
+function openUnsavedModal(){
+  const list=catalog.filter(p=>isProductUnsavedExport(p));
+  const box=$('unsavedList');
+  if(!list.length){
+    box.innerHTML='<p style="color:var(--g);font-weight:700;padding:12px 0">✓ កូដដែលបានរាប់ទាំងអស់ សុទ្ធតែបាន Save រូប/ផ្ញើរួចរាល់ហើយ!</p>';
+  }else{
+    box.innerHTML=list.map(p=>{
+      const tot=p.variants.reduce((acc,v)=>acc+cnt(p,v),0);
+      return `<div class="ulist-item" onclick="selectProduct('${esc(p.shortCode)}');closeM('unsavedModal')">
+        <div>
+          <strong style="color:var(--g);font-size:16px">${esc(p.shortCode)}</strong>
+          <span style="font-weight:700;margin-left:6px">${esc(p.name)}</span>
+          <div style="font-size:11px;color:var(--mut);margin-top:2px">រាប់សរុបបាន: = ${tot}</div>
+        </div>
+        <span style="font-size:12px;font-weight:800;color:#b45309;background:var(--orgs);padding:4px 9px;border-radius:8px">បើក Save ➔</span>
+      </div>`;
+    }).join('');
+  }
+  openM('unsavedModal');
+}
+
+$('dVars').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const p=curP(),v=p.variants[+b.dataset.i];hlKey=vKey(p,v);
+  bump(p,v,b.dataset.a==='p'?1:-1);render();
+});
+$('dVars').addEventListener('change',e=>{
+  if(!e.target.classList.contains('qi'))return;
+  const p=curP(),v=p.variants[+e.target.dataset.i];setCount(p,v,parseInt(e.target.value)||0);render();
+});
+function codeClick(e){const t=e.target.closest('[data-code]');if(t)selectProduct(t.dataset.code)}
+$('drop').addEventListener('click',codeClick);
+$('pills').addEventListener('click',codeClick);
+$('scanInput').addEventListener('input',liveSearch);
+$('scanInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();onEnter()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.sw'))$('drop').classList.remove('show')});
+
+function openM(id){if(id==='adminModal')updateProgress();$(id).classList.add('open')}
+function closeM(id){$(id).classList.remove('open');if(id==='adminModal')$('scanInput').focus()}
+
+function edRow(v,i){
+  return `<div class="erow" data-i="${i}"><input class="inp c" value="${esc(v.color||'')}" placeholder="ពណ៌"><input class="inp n" type="number" value="${v.n||0}"><input class="inp s" type="number" value="${v.sys||0}"><button class="del" onclick="this.parentElement.remove()">×</button></div>`;
+}
+function openEdit(){
+  const p=curP();if(!p)return;
+  $('edCode').value=p.shortCode;$('edPrice').value=p.price;$('edName').value=p.name;$('edGroup').value=p.group||'';
+  $('edRows').innerHTML=p.variants.map((v,i)=>edRow({color:v.color,n:cnt(p,v),sys:v.sysStock},i)).join('');
+  openM('editModal');
+}
+function addEdRow(){$('edRows').insertAdjacentHTML('beforeend',edRow({},-1))}
+function applyEdit(){
+  const p=curP(),newCode=$('edCode').value.trim().toUpperCase();
+  if(!newCode)return alert('សូមបញ្ចូលកូដ!');
+  if(newCode!==p.shortCode&&catalog.some(x=>x.shortCode===newCode))return alert('កូដ '+newCode+' មានរួចហើយ!');
+  const rows=[...document.querySelectorAll('#edRows .erow')];
+  if(!rows.length)return alert('ត្រូវមានយ៉ាងតិច ១ ពណ៌!');
+  const old=p.variants.map(v=>({key:vKey(p,v),e:ledger[vKey(p,v)]}));
+  const nv=rows.map(r=>{
+    const i=+r.dataset.i,b=i>=0?p.variants[i]:{pCode:'',barcode:''};
+    return {v:{pCode:b.pCode,barcode:b.barcode,color:r.querySelector('.c').value.trim()||'-',sysStock:parseInt(r.querySelector('.s').value)||0},
+            n:parseInt(r.querySelector('.n').value)||0,prev:i>=0?old[i].e:null};
+  });
+  old.forEach(o=>delete ledger[o.key]);
+  p.shortCode=newCode;p.price=parseFloat($('edPrice').value)||0;
+  p.name=$('edName').value.trim()||newCode;p.group=$('edGroup').value.trim()||'ទូទៅ';
+  p.variants=nv.map(x=>x.v);
+  nv.forEach(x=>{if(x.n>0||x.prev)ledger[vKey(p,x.v)]={n:x.n,t:x.prev?.t||Date.now()}});
+  meta.active=newCode;buildIndex();save('catalog','ledger','meta');render();closeM('editModal');
+}
+function deleteProduct(){
+  const p=curP();if(!p||!confirm('លុបកូដ '+p.shortCode+' ពី catalog?'))return;
+  p.variants.forEach(v=>delete ledger[vKey(p,v)]);
+  if(meta.exported)delete meta.exported[p.shortCode];
+  catalog=catalog.filter(x=>x!==p);meta.active=catalog[0]?.shortCode||'';
+  buildIndex();save('catalog','ledger','meta');render();closeM('editModal');
+}
+function createProduct(){
+  const code=$('nCode').value.trim().toUpperCase();if(!code)return alert('សូមវាយកូដអីវ៉ាន់!');
+  if(catalog.some(p=>p.shortCode===code)&&!confirm('កូដ '+code+' មានរួចហើយ។ ជំនួសវា?'))return;
+  const cols=$('nColors').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const variants=(cols.length?cols:['-']).map(c=>({pCode:'',barcode:'',color:c,sysStock:0}));
+  const np={shortCode:code,name:$('nName').value.trim()||code,group:$('nGroup').value.trim()||'ទូទៅ',price:parseFloat($('nPrice').value)||0,variants};
+  const i=catalog.findIndex(p=>p.shortCode===code);
+  if(i>=0)catalog[i]=np;else catalog.unshift(np);
+  meta.active=code;buildIndex();save('catalog','meta');render();closeM('adminModal');toast('បានបន្ថែម '+code);
+}
+
+function importExcel(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const st=$('upStatus');st.textContent='កំពុងអាន File…';
+  const rd=new FileReader();
+  rd.onload=e=>setTimeout(()=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:'',raw:false});
+      let h=3;
+      for(let i=0;i<Math.min(15,rows.length);i++){const s=rows[i].join('|').toLowerCase();if(s.includes('code')&&s.includes('name')){h=i;break}}
+      const hd=rows[h].map(x=>String(x).trim().toLowerCase());
+      const col=(n,d)=>{const i=hd.indexOf(n);return i>=0?i:d};
+      const fi=(s,d)=>{const i=hd.findIndex(x=>x.includes(s));return i>=0?i:d};
+      const iC=col('code',1),iB=col('barcode',2),iN=col('name',3),iA=col('attributes',6),iP=col('price',7),iS=fi('stock qty',8),iG=fi('product group',12);
+      const map=new Map(),seen=new Set();
+      for(let r=h+1;r<rows.length;r++){
+        const row=rows[r];if(!row||!row.length)continue;
+        const pc=String(row[iC]||'').trim(),bc=String(row[iB]||'').trim(),full=String(row[iN]||'').trim();
+        if(!full&&!pc)continue;
+        if(pc&&seen.has(pc))continue;if(pc)seen.add(pc);
+        let sc,nm=full;const sp=full.indexOf(' ');
+        if(sp>0){sc=full.slice(0,sp).trim().toUpperCase();nm=full.slice(sp+1).trim()}else sc=(full||pc).toUpperCase();
+        let color=String(row[iA]||'').trim();if(color.startsWith('-'))color=color.slice(1).trim();if(!color)color='-';
+        const price=parseFloat(String(row[iP]).replace(/[^0-9.]/g,''))||0;
+        const sys=Math.round(parseFloat(String(row[iS]).replace(/,/g,''))||0);
+        const grp=String(row[iG]||'').trim()||'ទូទៅ';
+        if(!map.has(sc))map.set(sc,{shortCode:sc,name:nm||sc,group:grp,price,variants:[]});
+        const en=map.get(sc);if(price>0&&!en.price)en.price=price;
+        en.variants.push({pCode:pc,barcode:bc,color,sysStock:sys});
+      }
+      const list=[...map.values()];
+      if(!list.length){st.textContent='រកមិនឃើញទិន្នន័យក្នុង File!';return}
+      if(!confirm(`ជំនួស catalog ដោយ ${list.length.toLocaleString()} កូដ? ចំនួនដែលបានរាប់នៅដដែល។`)){st.textContent='បោះបង់';return}
+      catalog=list;meta.sync=fmtDate();if(!curP()||meta.active!==curP().shortCode)meta.active=catalog[0].shortCode;
+      buildIndex();
+      const keys=new Set();catalog.forEach(p=>p.variants.forEach(v=>keys.add(vKey(p,v))));
+      const orphan=Object.keys(ledger).filter(k=>!keys.has(k)).length;
+      save('catalog','meta');render();
+      st.textContent=`✓ ជោគជ័យ ${list.length.toLocaleString()} កូដ`+(orphan?` • ចំនួនរាប់ ${orphan} មិនមានក្នុង File ថ្មី (រក្សាទុកដដែល)`:'')+(dups.size?` • ⚠ Barcode ស្ទួន ${dups.size}`:'');
+    }catch(err){st.textContent='មានបញ្ហាក្នុងការអាន File!';console.error(err)}
+    ev.target.value='';
+  },30);
+  rd.readAsArrayBuffer(file);
+}
+
+function exportExcel(){
+  const head=['Short Code','P-Code','Barcode','Product Name','Group','Color','Price ($)','System Stock','Counted','Diff','Status','Counted At'];
+  const all=[head],bad=[head];
+  catalog.forEach(p=>p.variants.forEach(v=>{
+    const e=ledger[vKey(p,v)],n=e?.n||0,d=n-(v.sysStock||0);
+    const s=!e?'មិនទាន់រាប់':d===0?'ត្រូវ':d<0?'ខ្វះ':'លើស';
+    const r=[p.shortCode,v.pCode,v.barcode,p.name,p.group,v.color,p.price,v.sysStock||0,n,d,s,e?new Date(e.t).toLocaleString():''];
+    all.push(r);if(e&&d!==0)bad.push(r);
+  }));
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(all),'Stock_Audit');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(bad),'Mismatch');
+  XLSX.writeFile(wb,`KHIM_Stock_Check_${fmtDate()}.xlsx`);
+}
+function dl(name,blob){const a=document.createElement('a');a.download=name;a.href=URL.createObjectURL(blob);a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function backupJSON(){dl(`KHIM_backup_${fmtDate()}.json`,new Blob([JSON.stringify({v:1,catalog,ledger,meta})],{type:'application/json'}))}
+function restoreJSON(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{
+    const d=JSON.parse(r.result);if(!Array.isArray(d.catalog)||typeof d.ledger!=='object')throw 0;
+    if(!confirm('Restore នឹងជំនួសទិន្នន័យបច្ចុប្បន្នទាំងអស់។ បន្ត?'))return;
+    catalog=d.catalog;ledger=d.ledger;meta=d.meta||{active:'',sync:'',exported:{}};if(!meta.exported)meta.exported={};undoStack=[];
+    buildIndex();save('catalog','ledger','meta');render();toast('Restore ជោគជ័យ');
+  }catch(e){alert('File Backup មិនត្រឹមត្រូវ!')}ev.target.value=''};
+  r.readAsText(f);
+}
+function resetCounts(){
+  if(!confirm('លុបចំនួនរាប់ទាំងអស់? (Catalog នៅដដែល) — គួរទាញ Backup មុន។'))return;
+  if(!confirm('ប្រាកដមែនទេ? មិនអាចយកមកវិញបានទេ។'))return;
+  ledger={};meta.exported={};undoStack=[];save('ledger','meta');render();toast('បានលុបចំនួនរាប់');
+}
+
+function downloadPNG(){
+  const p=curP();
+  const card=$('card');
+  card.classList.add('capturing');
+
+  html2canvas(card,{scale:3,backgroundColor:'#ffffff',useCORS:true}).then(cv=>{
+    card.classList.remove('capturing');
+    cv.toBlob(b=>{
+      if(!b)return toast('បង្កើត PNG មិនបាន','err');
+      const fname=`KHIM_${meta.active}_${fmtDate()}.png`;
+      const f=new File([b],fname,{type:'image/png'});
+      if(p)markExported(p.shortCode);
+      if(navigator.canShare&&navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:'Stock '+meta.active}).catch(()=>dl(fname,b));
+      }else{
+        dl(fname,b);
+      }
+    },'image/png');
+  }).catch(()=>{
+    card.classList.remove('capturing');
+    toast('បង្កើត PNG មិនបាន','err');
+  });
+}
+function copyTelegram(){
+  const p=curP();if(!p)return;
+  let a=0,s=0,L=`${p.shortCode} - ${p.name} (${p.price}$)\n📅 ${fmtDate()}\n----------------------\n`;
+  p.variants.forEach(v=>{const n=cnt(p,v),sys=v.sysStock||0,d=n-sys;a+=n;s+=sys;
+    const diffTxt=!counted(p,v)?'⏳ មិនទាន់រាប់':d===0?'✅ ត្រូវ':d<0?`❌ ខ្វះ ${-d}`:`⚠ លើស ${d}`;
+    L+=`• ${v.color&&v.color!=='-'?v.color:'ស្តុកទូទៅ'}: = ${n} (ប្រព័ន្ធ ${sys}) ➔ ${diffTxt}\n`});
+  L+=`----------------------\nសរុបរាប់បាន: = ${a} (ប្រព័ន្ធ ${s}) ${a===s?'✅':'Diff '+(a-s)}`;
+  const ok=()=>{markExported(p.shortCode);toast('Copy '+p.shortCode+' រួចរាល់')};
+  const fb=()=>{const t=document.createElement('textarea');t.value=L;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(e){toast('Copy មិនបាន','err')}t.remove()};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(L).then(ok,fb);else fb();
+}
+
+(async function init(){
+  try{<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KHIM - រាប់ស្តុក</title>
+
+<!-- iOS Web App Fullscreen & Title -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KHIM Stock">
+<meta name="theme-color" content="#14532d">
+<link id="iosIcon" rel="apple-touch-icon" sizes="180x180">
+<link id="favIcon" rel="icon" type="image/png">
+<link id="manifestLink" rel="manifest">
+
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--tx:#111827;--g:#14532d;--gs:#dcfce7;--bd:#e5e7eb;--red:#dc2626;--org:#d97706;--orgs:#fef3c7;--mut:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Kantumruy Pro','Plus Jakarta Sans',-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.hdr{width:100%;max-width:520px;background:var(--card);padding:11px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:9px}
+.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:.3px;color:#14532d}
+.badge{font-size:11px;font-weight:600;color:var(--g);background:var(--gs);padding:3px 8px;border-radius:20px}
+.badge.bad{color:#991b1b;background:#fee2e2}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.app-logo{width:42px;height:42px;border-radius:12px;background:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(15,23,42,.08);border:1px solid #e2e8f0;flex-shrink:0;padding:3px}
+.app-logo svg{width:100%;height:100%}
+.burger{width:40px;height:40px;border:1px solid var(--bd);background:#f8fafc;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+.burger span{width:20px;height:2.3px;background:var(--tx);border-radius:2px}
+main{width:100%;max-width:520px;padding:14px 16px 40px}
+.progress{font-size:12px;font-weight:700;color:var(--mut);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.unsaved-pill{background:var(--orgs);color:#b45309;border:1px solid #f59e0b;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer;display:none}
+.unsaved-pill.show{display:inline-block}
+.sw{position:relative;margin-bottom:14px}
+#scanInput{width:100%;height:52px;padding:0 52px 0 16px;border:2px solid var(--tx);border-radius:15px;font-size:16px;font-weight:700;outline:none;background:#fff}
+#scanInput::placeholder{color:#9ca3af;font-weight:500;font-size:14px}
+.sbtn{position:absolute;right:6px;top:6px;width:40px;height:40px;border:none;background:var(--tx);color:#fff;border-radius:11px;cursor:pointer;font-size:18px}
+.drop{position:absolute;top:56px;left:0;right:0;background:#fff;border:1.5px solid var(--tx);border-radius:14px;box-shadow:0 12px 28px rgba(0,0,0,.15);z-index:80;max-height:260px;overflow-y:auto;display:none}
+.drop.show{display:block}
+.it{padding:11px 16px;border-bottom:1px solid #f3f4f6;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:8px}
+.it:hover{background:#f8fafc}
+.card{background:#fdfdfb;border:1.8px solid #d6d9d2;border-radius:26px;padding:22px 20px 18px;box-shadow:0 10px 30px rgba(17,24,39,.06);transition:border-color .2s}
+.card.need-export{border-color:#f59e0b}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;border-bottom:1.5px dashed #e2e5de;gap:10px}
+.code{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:var(--g);line-height:1.1;word-break:break-all}
+.pname{font-size:17px;font-weight:700;margin-top:4px}
+.tags-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;align-items:center}
+.tag{display:inline-block;font-size:11px;font-weight:700;color:#4b5563;background:#eef0eb;padding:3px 9px;border-radius:8px}
+.exp-tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px}
+.exp-tag.no{background:var(--orgs);color:#b45309}
+.exp-tag.yes{background:var(--gs);color:var(--g)}
+.pr{text-align:right}
+.price{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
+.date{font-size:12px;font-weight:600;color:var(--mut);margin-top:5px}
+.vl{display:flex;justify-content:space-between;align-items:center;padding:13px 6px;border-bottom:1px solid #eceee8;gap:8px;border-radius:8px}
+.vl:last-child{border-bottom:none}
+.vl.hl{background:#f0fdf4}
+.vn{font-size:19px;font-weight:700;color:#111827}
+.vb{font-size:11px;color:#9ca3af;word-break:break-all;margin-top:2px}
+.st{font-size:12px;font-weight:800;margin-top:3px}
+.st.ok{color:var(--g)}.st.short{color:var(--red)}.st.over{color:var(--org)}.st.pend{color:var(--mut)}
+.vr{display:flex;align-items:center;gap:10px}
+.qc{display:flex;align-items:center;gap:3px;background:#f3f4f6;padding:3px;border-radius:10px;border:1px solid var(--bd)}
+.qb{width:30px;height:30px;border:none;border-radius:8px;background:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.qb.p{background:var(--g);color:#fff}
+.qi{width:42px;border:none;background:transparent;text-align:center;font-size:18px;font-weight:800;outline:none}
+.sc{text-align:right;min-width:96px;white-space:nowrap}
+.big{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--g);line-height:1.1}
+.sm{font-size:12px;font-weight:600;color:var(--mut);margin-top:3px}
+.foot{margin-top:8px;padding-top:14px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:center}
+.sl{font-size:14px;font-weight:700;color:#4b5563}
+.sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#111827}
+
+/* Clean PNG capture mode */
+.capturing{width:390px!important;max-width:none!important;box-shadow:none!important;border-radius:22px!important;border-color:#d6d9d2!important;padding:22px 20px 28px!important}
+.capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
+.capturing .vl{padding:11px 2px!important}
+.capturing .vl.hl{background:transparent!important}
+.capturing .vn{font-size:18px!important}
+.capturing .sc{display:grid!important;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:12px;align-items:center;justify-content:end;min-width:auto}
+.capturing .big{grid-column:2;grid-row:1;font-size:26px!important;line-height:1.1;text-align:right}
+.capturing .sm{grid-column:2;grid-row:2;font-size:12px!important;margin-top:2px;text-align:right;color:#6b7280}
+.capturing .st{grid-column:1;grid-row:1 / span 2;font-size:11px!important;font-weight:700;margin-top:0;padding:2px 7px;border-radius:6px;text-align:right}
+.capturing .st.short{color:#dc2626;background:#fef2f2}
+.capturing .st.over{color:#d97706;background:#fffbeb}
+.capturing .st.ok{color:#15803d;background:#f0fdf4}
+.capturing .st.pend{color:#9ca3af;background:#f3f4f6}
+.capturing .foot{padding-right:55px;padding-top:14px}
+
+/* Professional Modern Action Bar */
+.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.ab{position:relative;background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;font-weight:700;color:#334155;box-shadow:0 2px 6px rgba(15,23,42,.04);transition:all .15s ease}
+.ab:active{transform:scale(.96)}
+.ab svg{width:20px;height:20px;stroke-width:2.2}
+.ab.btn-png{background:var(--g);border-color:var(--g);color:#ffffff;box-shadow:0 4px 12px rgba(20,83,45,.2)}
+.ab.btn-tg{background:#f0f9ff;border-color:#bae6fd;color:#0369a1}
+.ab.btn-undo,.ab.btn-edit{background:#ffffff;border-color:#e2e8f0;color:#334155}
+.ab .dot{position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:#f59e0b;border:2px solid #fff;border-radius:50%;display:none;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.ab.remind .dot{display:block}
+.ab.btn-tg.remind{background:#fffbeb;border-color:#f59e0b;color:#b45309}
+
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:18px}
+.pill{background:#fff;border:1px solid #d1d5db;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer}
+.pill.a{background:var(--g);color:#fff;border-color:var(--g)}
+.pill.unexp{border-color:#f59e0b;background:#fffbeb;color:#b45309}
+.mbg{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.mbg.open{display:flex}
+.sheet{width:100%;max-width:520px;background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 30px;max-height:90vh;overflow-y:auto}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bd)}
+.sh h3{font-size:17px;font-weight:800}
+.x{border:none;background:#f3f4f6;padding:6px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+.lbl{display:block;font-size:12px;font-weight:700;color:#4b5563;margin:10px 0 4px}
+.inp{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:12px;font-size:14px;font-weight:600;outline:none;background:#fff}
+.inp:focus{border-color:var(--g)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{width:100%;padding:12px;background:var(--g);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn.dk{background:var(--tx)}.btn.lt{background:#f3f4f6;color:var(--tx);border:1px dashed #9ca3af}.btn.rd{background:#fee2e2;color:var(--red)}
+.adm{background:#f8fafc;border:1px solid var(--bd);border-radius:16px;padding:13px;margin-bottom:12px}
+.adm h4{font-size:14px;font-weight:800;margin-bottom:5px}
+.adm p{font-size:12px;color:var(--mut);margin-bottom:8px}
+.erow{display:grid;grid-template-columns:1.3fr .8fr .8fr auto;gap:6px;align-items:center;margin-bottom:6px}
+.erow .inp{padding:8px}
+.del{border:none;background:#fee2e2;color:var(--red);width:32px;height:36px;border-radius:8px;font-weight:800;cursor:pointer}
+.ulist-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:12px;margin-bottom:8px;cursor:pointer;background:#fff}
+.ulist-item:hover{background:#fffbeb;border-color:#f59e0b}
+#toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);padding:10px 18px;border-radius:12px;font-weight:700;font-size:14px;color:#fff;z-index:300;display:none;max-width:90%;text-align:center}
+#toast.ok{background:var(--g)}#toast.err{background:var(--red)}#toast.warn{background:var(--org)}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="brand">
+    <div class="bname">KHIM</div>
+    <span class="badge" id="saveBadge">កំពុងផ្ទុក…</span>
+  </div>
+  <div class="hdr-right">
+    <!-- Google App Style KH Stock Logo with compact checkmark -->
+    <div class="app-logo" title="KHIM Stock">
+      <svg viewBox="0 0 100 100" fill="none">
+        <!-- Isometric Box (Top Lime, Right Emerald, Dark Green Outline) -->
+        <polygon points="55,14 82,29 55,44 28,29" fill="#84cc16" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <!-- Tape lines on top -->
+        <line x1="42" y1="21.5" x2="69" y2="36.5" stroke="#14532d" stroke-width="4"/>
+        <!-- Right face of box -->
+        <polygon points="55,44 82,29 82,62 55,77" fill="#16a34a" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <!-- Tape flap on right face -->
+        <polygon points="65,38.5 72,34.5 72,48 65,52" fill="#14532d"/>
+        <!-- Left face (Integrated 'H' negative/lime shape) -->
+        <polygon points="28,29 55,44 55,77 28,62" fill="#ffffff" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M46 40 V71 M32 53 H46 M32 45 L24 53 L32 61 Z" fill="#84cc16" stroke="#84cc16" stroke-width="3" stroke-linejoin="round"/>
+        <!-- Bold Rounded 'K' on Left -->
+        <path d="M13 33 V69" stroke="#15803d" stroke-width="8.5" stroke-linecap="round"/>
+        <path d="M27 36 L14 51 L27 67" stroke="#15803d" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Compact Circular Checkmark Badge (Bottom Right) -->
+        <circle cx="77" cy="69" r="15.5" fill="#16a34a" stroke="#ffffff" stroke-width="3.5"/>
+        <path d="M71 69 L75 73 L83 64.5" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <button class="burger" onclick="openM('adminModal')" aria-label="Admin"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div id="toast"></div>
+<main>
+  <div class="progress">
+    <span id="progA">រាប់ហើយ 0/0 កូដ</span>
+    <span class="unsaved-pill" id="unsavedPill" onclick="openUnsavedModal()">⚠ ភ្លេច Save រូប: 0 កូដ</span>
+    <span id="progB"></span>
+  </div>
+  <div class="sw">
+    <input type="text" id="scanInput" placeholder="បាញ់ Barcode ឬ វាយកូដ ហើយចុច Enter" autocomplete="off" autofocus>
+    <button class="sbtn" onclick="onEnter()">⏎</button>
+    <div class="drop" id="drop"></div>
+  </div>
+  <div class="card" id="card">
+    <div class="ch">
+      <div>
+        <div class="code" id="dCode"></div>
+        <div class="pname" id="dName"></div>
+        <div class="tags-row">
+          <span class="tag" id="dGroup"></span>
+          <span class="exp-tag" id="dExpStatus" style="display:none"></span>
+        </div>
+      </div>
+      <div class="pr"><div class="price" id="dPrice"></div><div class="date" id="dDate"></div></div>
+    </div>
+    <div id="dVars" style="padding:6px 0"></div>
+    <div class="foot"><span class="sl" id="dSys"></span><span class="sv" id="dAct"></span></div>
+  </div>
+
+  <div class="bar">
+    <button class="ab btn-undo" onclick="undo()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+      <span>Undo</span>
+    </button>
+    <button class="ab btn-png" id="btnPng" onclick="downloadPNG()">
+      <span class="dot"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Save PNG</span>
+    </button>
+    <button class="ab btn-tg" id="btnTg" onclick="copyTelegram()">
+      <span class="dot"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>Telegram</span>
+    </button>
+    <button class="ab btn-edit" onclick="openEdit()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span>កែប្រែ</span>
+    </button>
+  </div>
+
+  <div class="pills" id="pills"></div>
+</main>
+
+<!-- Unsaved Export List Modal -->
+<div class="mbg" id="unsavedModal" onclick="if(event.target===this)closeM('unsavedModal')">
+  <div class="sheet">
+    <div class="sh"><h3>⚠ កូដរាប់ហើយ តែមិនទាន់ Save រូប/ផ្ញើ</h3><button class="x" onclick="closeM('unsavedModal')">បិទ</button></div>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">ចុចលើកូដណាមួយខាងក្រោម ដើម្បីបើកកាត ហើយចុច <b>Save PNG</b> ឬ <b>Telegram</b> ផ្ញើឱ្យគេ៖</p>
+    <div id="unsavedList"></div>
+  </div>
+</div>
+
+<div class="mbg" id="editModal" onclick="if(event.target===this)closeM('editModal')">
+  <div class="sheet">
+    <div class="sh"><h3>កែប្រែព័ត៌មាន</h3><button class="x" onclick="closeM('editModal')">បិទ</button></div>
+    <div class="g2"><div><label class="lbl">កូដកាត់</label><input class="inp" id="edCode"></div><div><label class="lbl">តម្លៃ ($)</label><input class="inp" type="number" step="0.01" id="edPrice"></div></div>
+    <div class="g2"><div><label class="lbl">ឈ្មោះ</label><input class="inp" id="edName"></div><div><label class="lbl">ប្រភេទ</label><input class="inp" id="edGroup"></div></div>
+    <label class="lbl" style="margin-top:14px">ពណ៌ | រាប់ | ប្រព័ន្ធ</label>
+    <div id="edRows"></div>
+    <button class="btn lt" onclick="addEdRow()">+ បន្ថែមពណ៌ថ្មី</button>
+    <button class="btn" onclick="applyEdit()">រក្សាទុក</button>
+    <button class="btn rd" onclick="deleteProduct()">លុបកូដនេះ</button>
+  </div>
+</div>
+
+<div class="mbg" id="adminModal" onclick="if(event.target===this)closeM('adminModal')">
+  <div class="sheet">
+    <div class="sh"><h3>Admin</h3><button class="x" onclick="closeM('adminModal')">បិទ</button></div>
+    <div class="adm">
+      <h4>១. Upload Excel ស្តុកប្រព័ន្ធ</h4>
+      <p>ជំនួស catalog ថ្មី ប៉ុន្តែ <b>ចំនួនដែលបានរាប់មិនបាត់ទេ</b> (រក្សាដាច់ដោយឡែក)។</p>
+      <input type="file" class="inp" accept=".xlsx,.xls,.csv" onchange="importExcel(event)">
+      <div id="upStatus" style="font-size:12px;font-weight:700;color:var(--g);margin-top:8px"></div>
+    </div>
+    <div class="adm">
+      <h4>២. បង្កើតកូដថ្មីដោយដៃ</h4>
+      <div class="g2"><input class="inp" id="nCode" placeholder="កូដ ឧ. Y300"><input class="inp" type="number" step="0.01" id="nPrice" placeholder="តម្លៃ ($)"></div>
+      <div class="g2" style="margin-top:8px"><input class="inp" id="nName" placeholder="ឈ្មោះ"><input class="inp" id="nGroup" placeholder="ប្រភេទ"></div>
+      <input class="inp" id="nColors" placeholder="ពណ៌ (ក្បៀស ,)" style="margin-top:8px">
+      <button class="btn" onclick="createProduct()">បន្ថែមកូដថ្មី</button>
+    </div>
+    <div class="adm">
+      <h4>៣. លទ្ធផល និង Export</h4>
+      <p id="stats"></p>
+      <button class="btn dk" style="margin-top:0" onclick="exportExcel()">ទាញយក Excel លទ្ធផល (.xlsx)</button>
+    </div>
+    <div class="adm" style="margin-bottom:0">
+      <h4>៤. Backup / Restore / Reset</h4>
+      <p>Backup JSON រក្សាទាំងចំនួនរាប់ និង catalog។ គួរទាញរាល់ថ្ងៃ។</p>
+      <button class="btn dk" style="margin-top:0" onclick="backupJSON()">ទាញ Backup (.json)</button>
+      <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreJSON(event)">
+      <button class="btn lt" onclick="document.getElementById('restoreFile').click()">Restore ពី Backup</button>
+      <button class="btn rd" onclick="resetCounts()">លុបចំនួនរាប់ទាំងអស់ (ចាប់ផ្តើមរាប់ថ្មី)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* Auto-generate High-Res Google App Style Icon (KHIM STOCK + compact checkmark) for iOS Home Screen */
+(function setupAppIcon(){
+  try{
+    const c=document.createElement('canvas');c.width=512;c.height=512;
+    const x=c.getContext('2d');
+
+    // Clean pure white Google App Icon background
+    x.fillStyle='#ffffff';
+    x.fillRect(0,0,512,512);
+
+    x.save();
+    x.translate(46, 22);
+    x.scale(4.2, 4.2);
+
+    // 1. Isometric Box Top (Lime Green)
+    x.fillStyle='#84cc16';
+    x.strokeStyle='#14532d';
+    x.lineWidth=4.2;
+    x.lineJoin='round';
+    x.beginPath();
+    x.moveTo(55,14);x.lineTo(82,29);x.lineTo(55,44);x.lineTo(28,29);
+    x.closePath();
+    x.fill();x.stroke();
+
+    // Tape line on top
+    x.beginPath();
+    x.moveTo(42,21.5);x.lineTo(69,36.5);
+    x.stroke();
+
+    // 2. Right face of box (Emerald Green)
+    x.fillStyle='#16a34a';
+    x.beginPath();
+    x.moveTo(55,44);x.lineTo(82,29);x.lineTo(82,62);x.lineTo(55,77);
+    x.closePath();
+    x.fill();x.stroke();
+
+    // Tape flap on right face
+    x.fillStyle='#14532d';
+    x.beginPath();
+    x.moveTo(65,38.5);x.lineTo(72,34.5);x.lineTo(72,48);x.lineTo(65,52);
+    x.closePath();
+    x.fill();
+
+    // 3. Left face of box (White + Lime 'H' arrow cutout)
+    x.fillStyle='#ffffff';
+    x.beginPath();
+    x.moveTo(28,29);x.lineTo(55,44);x.lineTo(55,77);x.lineTo(28,62);
+    x.closePath();
+    x.fill();x.stroke();
+
+    x.fillStyle='#84cc16';
+    x.fillRect(43,40,6,31);
+    x.fillRect(31,50,15,6);
+    x.beginPath();
+    x.moveTo(32,45);x.lineTo(23,53);x.lineTo(32,61);
+    x.closePath();
+    x.fill();
+
+    // 4. Bold Rounded 'K' on Left
+    x.strokeStyle='#15803d';
+    x.lineWidth=8.5;
+    x.lineCap='round';
+    x.lineJoin='round';
+    x.beginPath();x.moveTo(13,33);x.lineTo(13,69);x.stroke();
+    x.beginPath();x.moveTo(27,36);x.lineTo(14,51);x.lineTo(27,67);x.stroke();
+
+    // 5. Compact Circular Checkmark Badge (Bottom Right)
+    x.fillStyle='#16a34a';
+    x.strokeStyle='#ffffff';
+    x.lineWidth=3.5;
+    x.beginPath();x.arc(77,69,14.5,0,Math.PI*2);x.fill();x.stroke();
+
+    x.strokeStyle='#ffffff';
+    x.lineWidth=3.4;
+    x.beginPath();x.moveTo(71.5,69);x.lineTo(75.2,72.8);x.lineTo(82.5,65);x.stroke();
+
+    x.restore();
+
+    // 6. Clean Dark Green Wordmark "KHIM" & "STOCK"
+    x.fillStyle='#14532d';
+    x.textAlign='center';
+    x.font='800 66px "Plus Jakarta Sans",sans-serif';
+    x.fillText('KHIM',256,422);
+    x.font='800 32px "Plus Jakarta Sans",sans-serif';
+    x.fillText('STOCK',256,464);
+
+    const pngUrl=c.toDataURL('image/png');
+    $('iosIcon').href=pngUrl;
+    $('favIcon').href=pngUrl;
+
+    const manifest={
+      name:'KHIM - រាប់ស្តុក',
+      short_name:'KHIM Stock',
+      start_url:location.href,
+      display:'standalone',
+      background_color:'#ffffff',
+      theme_color:'#14532d',
       icons:[{src:pngUrl,sizes:'512x512',type:'image/png'}]
     };
     const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
@@ -779,6 +1594,19 @@ function copyTelegram(){
 (async function init(){
   try{
     if(navigator.storage?.persist)navigator.storage.persist();
+    const [c,l,m]=await Promise.all([idbGet('catalog'),idbGet('ledger'),idbGet('meta')]);
+    catalog=c&&c.length?c:JSON.parse(JSON.stringify(SAMPLE));ledger=l||{};meta=m||{active:'',sync:'',exported:{}};
+    if(!meta.exported)meta.exported={};
+    setBadge('✓ Ready '+(meta.sync?'· '+meta.sync:''));
+  }catch(e){
+    catalog=JSON.parse(JSON.stringify(SAMPLE));setBadge('Storage មិនដំណើរការ!',true);
+    alert('Browser មិនអាចរក្សាទិន្នន័យបាន (private mode?). សូមទាញ Backup ញឹកញាប់។');
+  }
+  buildIndex();render();$('scanInput').focus();
+})();
+</script>
+</body>
+</html>    if(navigator.storage?.persist)navigator.storage.persist();
     const [c,l,m]=await Promise.all([idbGet('catalog'),idbGet('ledger'),idbGet('meta')]);
     catalog=c&&c.length?c:JSON.parse(JSON.stringify(SAMPLE));ledger=l||{};meta=m||{active:'',sync:'',exported:{}};
     if(!meta.exported)meta.exported={};
