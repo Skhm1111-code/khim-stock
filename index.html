@@ -8,8 +8,8 @@
 <!-- iOS Web App Fullscreen & Title -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="KHIM Stock">
-<meta name="theme-color" content="#14532d">
+<meta name="apple-mobile-web-app-title" content="KHIM">
+<meta name="theme-color" content="#052e16">
 <link id="iosIcon" rel="apple-touch-icon" sizes="180x180">
 <link id="favIcon" rel="icon" type="image/png">
 <link id="manifestLink" rel="manifest">
@@ -21,14 +21,14 @@
 :root{--bg:#f3f4f6;--card:#fff;--tx:#111827;--g:#14532d;--gs:#dcfce7;--bd:#e5e7eb;--red:#dc2626;--org:#d97706;--orgs:#fef3c7;--mut:#6b7280}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Kantumruy Pro','Plus Jakarta Sans',-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center}
-.hdr{width:100%;max-width:520px;background:var(--card);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:50}
+.hdr{width:100%;max-width:520px;background:var(--card);padding:11px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:50}
 .brand{display:flex;align-items:center;gap:9px}
-.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:-.3px;color:var(--g)}
+.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;letter-spacing:.5px;color:#052e16}
 .badge{font-size:11px;font-weight:600;color:var(--g);background:var(--gs);padding:3px 8px;border-radius:20px}
 .badge.bad{color:#991b1b;background:#fee2e2}
 .hdr-right{display:flex;align-items:center;gap:10px}
-.app-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#166534,#14532d);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(20,83,45,.22);flex-shrink:0}
-.app-logo svg{width:22px;height:22px;color:#fff}
+.app-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(145deg,#064e3b,#052e16);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(5,46,22,.28),inset 0 1px 0 rgba(255,255,255,.2);border:1px solid rgba(212,175,55,.45);flex-shrink:0}
+.app-logo svg{width:28px;height:28px}
 .burger{width:40px;height:40px;border:1px solid var(--bd);background:#f8fafc;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
 .burger span{width:20px;height:2.3px;background:var(--tx);border-radius:2px}
 main{width:100%;max-width:520px;padding:14px 16px 40px}
@@ -73,18 +73,23 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .sm{font-size:12px;font-weight:600;color:var(--mut);margin-top:3px}
 .foot{margin-top:8px;padding-top:14px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:center}
 .sl{font-size:14px;font-weight:700;color:#4b5563}
-.sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
+.sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#111827}
 
-/* Clean PNG capture mode: single-column compact horizontal rows */
-.capturing{width:460px!important;max-width:none!important;box-shadow:none!important;border-radius:20px!important;border-color:#d6d9d2!important;padding:20px 20px 30px!important}
+/* Clean PNG capture mode: balanced width like IMG_7889, stack '= N' over 'ប្រព័ន្ធ N', subtle diff on left */
+.capturing{width:390px!important;max-width:none!important;box-shadow:none!important;border-radius:22px!important;border-color:#d6d9d2!important;padding:22px 20px 28px!important}
 .capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
-.capturing .vl{padding:9px 4px!important}
+.capturing .vl{padding:11px 2px!important}
 .capturing .vl.hl{background:transparent!important}
-.capturing .sc{display:flex;align-items:baseline;justify-content:flex-end;gap:10px;min-width:auto}
-.capturing .big{font-size:24px!important;order:3;min-width:56px;text-align:right}
-.capturing .sm{font-size:13px!important;order:1;margin-top:0}
-.capturing .st{font-size:13px!important;order:2;margin-top:0;min-width:58px;text-align:right}
-.capturing .foot{padding-right:78px;padding-top:12px}
+.capturing .vn{font-size:18px!important}
+.capturing .sc{display:grid!important;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:12px;align-items:center;justify-content:end;min-width:auto}
+.capturing .big{grid-column:2;grid-row:1;font-size:26px!important;line-height:1.1;text-align:right}
+.capturing .sm{grid-column:2;grid-row:2;font-size:12px!important;margin-top:2px;text-align:right;color:#6b7280}
+.capturing .st{grid-column:1;grid-row:1 / span 2;font-size:11px!important;font-weight:700;margin-top:0;padding:2px 7px;border-radius:6px;text-align:right}
+.capturing .st.short{color:#dc2626;background:#fef2f2}
+.capturing .st.over{color:#d97706;background:#fffbeb}
+.capturing .st.ok{color:#15803d;background:#f0fdf4}
+.capturing .st.pend{color:#9ca3af;background:#f3f4f6}
+.capturing .foot{padding-right:55px;padding-top:14px}
 
 /* Professional Modern Action Bar */
 .bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
@@ -133,12 +138,22 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
     <span class="badge" id="saveBadge">កំពុងផ្ទុក…</span>
   </div>
   <div class="hdr-right">
-    <div class="app-logo" title="KHIM Stock App">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-        <path d="m3.3 7 8.7 5 8.7-5"/>
-        <path d="M12 22V12"/>
-        <path d="m9 15 2 2 4-4" stroke="#86efac" stroke-width="2.5"/>
+    <div class="app-logo" title="KHIM Luxury Monogram">
+      <svg viewBox="0 0 40 40" fill="none">
+        <defs>
+          <linearGradient id="goldGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fde68a"/>
+            <stop offset="50%" stop-color="#d4af37"/>
+            <stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+        </defs>
+        <!-- Outer precision hexagon frame -->
+        <polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" stroke="url(#goldGrad)" stroke-width="1.6" fill="none"/>
+        <!-- Sharp geometric K monogram -->
+        <path d="M13 11.5V28.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M26.5 11.5L16.5 20L27 28.5" stroke="url(#goldGrad)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Accent emerald dot -->
+        <circle cx="27.5" cy="20" r="2" fill="#4ade80"/>
       </svg>
     </div>
     <button class="burger" onclick="openM('adminModal')" aria-label="Admin"><span></span><span></span><span></span></button>
@@ -254,36 +269,77 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* Auto-generate High-Res iOS Home Screen Icon & Web App Manifest */
+/* Auto-generate High-Res Luxury Monogram App Icon for iOS Home Screen */
 (function setupAppIcon(){
   try{
     const c=document.createElement('canvas');c.width=512;c.height=512;
     const x=c.getContext('2d');
-    const grd=x.createLinearGradient(0,0,512,512);
-    grd.addColorStop(0,'#166534');grd.addColorStop(1,'#14532d');
-    x.fillStyle=grd;x.fillRect(0,0,512,512);
 
-    // Subtle decorative ring
-    x.strokeStyle='rgba(255,255,255,0.12)';x.lineWidth=14;
-    x.beginPath();x.arc(256,256,210,0,Math.PI*2);x.stroke();
+    // Deep luxury emerald background
+    const bg=x.createLinearGradient(0,0,512,512);
+    bg.addColorStop(0,'#064e3b');
+    bg.addColorStop(0.5,'#052e16');
+    bg.addColorStop(1,'#022c22');
+    x.fillStyle=bg;x.fillRect(0,0,512,512);
 
-    // Box icon
-    x.strokeStyle='#ffffff';x.lineWidth=22;x.lineCap='round';x.lineJoin='round';
+    // Subtle radial highlight
+    const rad=x.createRadialGradient(256,210,30,256,256,280);
+    rad.addColorStop(0,'rgba(74,222,128,0.16)');
+    rad.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=rad;x.fillRect(0,0,512,512);
+
+    // Metallic Gold Gradient
+    const gold=x.createLinearGradient(90,90,420,420);
+    gold.addColorStop(0,'#fef08a');
+    gold.addColorStop(0.45,'#d4af37');
+    gold.addColorStop(1,'#92400e');
+
+    // Precision Outer Hexagon Frame
+    x.strokeStyle=gold;x.lineWidth=14;x.lineJoin='round';
     x.beginPath();
-    x.moveTo(256,115);x.lineTo(380,185);x.lineTo(380,315);x.lineTo(256,385);x.lineTo(132,315);x.lineTo(132,185);x.closePath();
-    x.moveTo(132,185);x.lineTo(256,255);x.lineTo(380,185);
-    x.moveTo(256,255);x.lineTo(256,385);
+    x.moveTo(256,56);
+    x.lineTo(426,154);
+    x.lineTo(426,350);
+    x.lineTo(256,448);
+    x.lineTo(86,350);
+    x.lineTo(86,154);
+    x.closePath();
     x.stroke();
 
-    // Checkmark badge
-    x.fillStyle='#86efac';
-    x.beginPath();x.arc(365,355,68,0,Math.PI*2);x.fill();
-    x.strokeStyle='#14532d';x.lineWidth=18;
-    x.beginPath();x.moveTo(335,355);x.lineTo(356,376);x.lineTo(398,334);x.stroke();
+    // Inner thin hairline border
+    x.strokeStyle='rgba(255,255,255,0.14)';x.lineWidth=3;
+    x.beginPath();
+    x.moveTo(256,76);
+    x.lineTo(408,164);
+    x.lineTo(408,340);
+    x.lineTo(256,428);
+    x.lineTo(104,340);
+    x.lineTo(104,164);
+    x.closePath();
+    x.stroke();
 
-    // Brand text
-    x.fillStyle='#ffffff';x.font='800 54px "Plus Jakarta Sans",sans-serif';x.textAlign='center';
-    x.fillText('KHIM',256,462);
+    // Sharp Geometric 'K' Monogram
+    // Vertical stem (crisp white)
+    x.strokeStyle='#ffffff';x.lineWidth=34;x.lineCap='round';
+    x.beginPath();x.moveTo(186,145);x.lineTo(186,345);x.stroke();
+
+    // Diagonal arms (metallic gold)
+    x.strokeStyle=gold;x.lineWidth=34;x.lineCap='round';x.lineJoin='round';
+    x.beginPath();
+    x.moveTo(328,145);
+    x.lineTo(215,245);
+    x.lineTo(334,345);
+    x.stroke();
+
+    // Emerald Accent Jewel Dot
+    x.fillStyle='#4ade80';
+    x.beginPath();x.arc(338,245,16,0,Math.PI*2);x.fill();
+
+    // Brand Wordmark
+    x.fillStyle='rgba(255,255,255,0.9)';
+    x.font='800 34px "Plus Jakarta Sans",sans-serif';
+    x.textAlign='center';
+    x.fillText('KHIM',256,404);
 
     const pngUrl=c.toDataURL('image/png');
     $('iosIcon').href=pngUrl;
@@ -291,11 +347,11 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 
     const manifest={
       name:'KHIM - រាប់ស្តុក',
-      short_name:'KHIM Stock',
+      short_name:'KHIM',
       start_url:location.href,
       display:'standalone',
       background_color:'#f3f4f6',
-      theme_color:'#14532d',
+      theme_color:'#052e16',
       icons:[{src:pngUrl,sizes:'512x512',type:'image/png'}]
     };
     const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
@@ -491,9 +547,8 @@ function render(){
       </div>
     </div>`;
   }).join('');
-  const diff=sA-sS;
   $('dSys').textContent='ស្តុកប្រព័ន្ធសរុប: '+sS;
-  $('dAct').innerHTML='= '+sA+` <span style="font-size:15px;color:${diff===0?'var(--g)':diff<0?'var(--red)':'var(--org)'}">(${diff>0?'+':''}${diff})</span>`;
+  $('dAct').textContent='= '+sA;
   $('pills').innerHTML=catalog.slice(0,6).map(x=>{
     const u=isProductUnsavedExport(x);
     return `<button class="pill ${x.shortCode===p.shortCode?'a':''} ${u?'unexp':''}" data-code="${esc(x.shortCode)}">${esc(x.shortCode)}${u?' •':''}</button>`;
