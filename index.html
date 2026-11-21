@@ -117,27 +117,38 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .vl.hl{background:#f0fdf4}
 .vn{font-size:19px;font-weight:700;color:#111827}
 .vb{font-size:11px;color:#9ca3af;word-break:break-all;margin-top:2px}
-.vr{display:flex;align-items:center;gap:12px}
+.vr{display:flex;align-items:center;gap:10px}
 .qc{display:flex;align-items:center;gap:3px;background:#f3f4f6;padding:3px;border-radius:11px;border:1px solid var(--bd);box-shadow:0 2px 0 #d1d5db}
 .qb{width:32px;height:32px;border:none;border-radius:8px;background:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 1px 0 #cbd5e1}
 .qb:active{transform:translateY(1px)}
 .qb.p{background:var(--g);color:#fff;box-shadow:0 1px 0 #052e16}
 .qi{width:44px;border:none;background:transparent;text-align:center;font-size:18px;font-weight:800;outline:none}
-.sc{text-align:right;min-width:96px;white-space:nowrap}
+
+/* Aligned system stock + status row */
+.sc{text-align:right;min-width:118px;white-space:nowrap}
 .big{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--g);line-height:1.1}
-.sm{font-size:13px;font-weight:700;color:#4b5563;margin-top:4px}
+.sub-row{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:4px}
+.sm{font-size:12px;font-weight:700;color:#4b5563}
+.st{font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;line-height:1.4}
+.st.ok{color:#15803d;background:#f0fdf4}
+.st.short{color:#dc2626;background:#fef2f2}
+.st.over{color:#d97706;background:#fffbeb}
+.st.pend{color:#9ca3af;background:#f3f4f6}
+
 .foot{margin-top:8px;padding-top:14px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:center}
 .sl{font-size:14px;font-weight:700;color:#4b5563}
 .sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#111827}
 
-/* Offscreen clone capture styling: clean aligned numbers & single product name */
+/* Offscreen clone capture styling: aligned with system stock & status */
 .capture-clone{position:fixed!important;left:-9999px!important;top:0!important;width:410px!important;max-width:none!important;box-shadow:none!important;border-radius:22px!important;border-color:#d6d9d2!important;padding:22px 20px 26px!important;background:#fdfdfb!important;z-index:-1!important;pointer-events:none!important}
 .capture-clone .qc,.capture-clone .exp-tag,.capture-clone .vb,.capture-clone .tags-row{display:none!important}
 .capture-clone .vl{padding:12px 2px!important;background:transparent!important}
 .capture-clone .vn{font-size:19px!important}
-.capture-clone .sc{text-align:right!important;min-width:105px!important}
+.capture-clone .sc{text-align:right!important;min-width:120px!important}
 .capture-clone .big{font-size:28px!important;line-height:1.1!important;color:#14532d!important}
-.capture-clone .sm{font-size:13px!important;margin-top:4px!important;color:#6b7280!important;font-weight:600!important}
+.capture-clone .sub-row{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;margin-top:4px!important}
+.capture-clone .sm{font-size:12px!important;color:#6b7280!important;font-weight:600!important}
+.capture-clone .st{font-size:11px!important;font-weight:700!important;padding:1px 6px!important;border-radius:6px!important}
 .capture-clone .foot{padding-right:10px;padding-top:14px}
 
 /* 3D Tactile Bottom Action Bar */
@@ -571,6 +582,13 @@ function selectProduct(code){
   save('meta');render();
 }
 
+function statusOf(n,sys,has){
+  if(!has)return['pend','មិនទាន់រាប់'];
+  const d=n-sys;
+  if(d===0)return['ok','✓ ត្រូវ'];
+  return d<0?['short','ខ្វះ '+(-d)]:['over','លើស '+d];
+}
+
 function render(){
   const p=curP();
   if(!p){$('dCode').textContent='—';$('dVars').innerHTML='<div class="vn" style="padding:14px 0;color:var(--mut)">សូម Upload Excel ក្នុង Admin</div>';updateProgress();return}
@@ -607,6 +625,7 @@ function render(){
   let sS=0,sA=0;
   $('dVars').innerHTML=p.variants.map((v,i)=>{
     const n=cnt(p,v),sys=v.sysStock||0;sS+=sys;sA+=n;
+    const [cls,txt]=statusOf(n,sys,counted(p,v));
     return `<div class="vl ${hlKey===vKey(p,v)?'hl':''}">
       <div>
         <div class="vn">${esc(v.color&&v.color!=='-'?v.color:'ស្តុកទូទៅ')}</div>
@@ -616,7 +635,10 @@ function render(){
         <div class="qc"><button class="qb" data-a="m" data-i="${i}">−</button><input type="number" class="qi" data-i="${i}" value="${n}" inputmode="numeric"><button class="qb p" data-a="p" data-i="${i}">+</button></div>
         <div class="sc">
           <div class="big">= ${n}</div>
-          <div class="sm">ប្រព័ន្ធ ${sys}</div>
+          <div class="sub-row">
+            <span class="sm">ប្រព័ន្ធ ${sys}</span>
+            <span class="st ${cls}">${txt}</span>
+          </div>
         </div>
       </div>
     </div>`;
