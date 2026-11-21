@@ -44,10 +44,10 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .pr{text-align:right}
 .price{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
 .date{font-size:12px;font-weight:600;color:var(--mut);margin-top:5px}
-.vl{display:flex;justify-content:space-between;align-items:center;padding:12px 6px;border-bottom:1px solid #eceee8;gap:8px;border-radius:8px}
+.vl{display:flex;justify-content:space-between;align-items:center;padding:13px 6px;border-bottom:1px solid #eceee8;gap:8px;border-radius:8px}
 .vl:last-child{border-bottom:none}
 .vl.hl{background:#f0fdf4}
-.vn{font-size:18px;font-weight:700;color:#111827}
+.vn{font-size:19px;font-weight:700;color:#111827}
 .vb{font-size:11px;color:#9ca3af;word-break:break-all;margin-top:2px}
 .st{font-size:12px;font-weight:800;margin-top:3px}
 .st.ok{color:var(--g)}.st.short{color:var(--red)}.st.over{color:var(--org)}.st.pend{color:var(--mut)}
@@ -56,21 +56,30 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 .qb{width:30px;height:30px;border:none;border-radius:8px;background:#fff;font-size:17px;font-weight:800;cursor:pointer}
 .qb.p{background:var(--g);color:#fff}
 .qi{width:42px;border:none;background:transparent;text-align:center;font-size:18px;font-weight:800;outline:none}
-.sc{text-align:right;min-width:95px;white-space:nowrap}
-.big{font-size:22px;font-weight:800;color:var(--g);line-height:1.15}
-.sm{font-size:11px;font-weight:600;color:var(--mut);margin-top:2px}
-.foot{margin-top:8px;padding-top:12px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:center}
-.sl{font-size:13px;font-weight:700;color:#4b5563}
-.sv{font-size:24px;font-weight:800}
-.capturing{box-shadow:none!important;border-radius:16px!important;border-color:#d6d9d2!important}
-.capturing .qc,.capturing .exp-tag{display:none!important}
-.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
-.ab{position:relative;background:#fff;border:1.8px solid var(--tx);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-size:11px;font-weight:700;box-shadow:0 3px 0 var(--tx)}
-.ab:active{transform:translateY(2px);box-shadow:0 1px 0 var(--tx)}
-.ab i{font-style:normal;font-size:18px}
-.ab .dot{position:absolute;top:-5px;right:-5px;width:13px;height:13px;background:#f59e0b;border:2px solid #fff;border-radius:50%;display:none}
+.sc{text-align:right;min-width:96px;white-space:nowrap}
+.big{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--g);line-height:1.1}
+.sm{font-size:12px;font-weight:600;color:var(--mut);margin-top:3px}
+.foot{margin-top:8px;padding-top:14px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:center}
+.sl{font-size:14px;font-weight:700;color:#4b5563}
+.sv{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800}
+
+/* Clean PNG capture mode: hide controls, P-codes, export tags, and row highlight */
+.capturing{box-shadow:none!important;border-radius:18px!important;border-color:#d6d9d2!important}
+.capturing .qc,.capturing .exp-tag,.capturing .vb{display:none!important}
+.capturing .vl.hl{background:transparent!important}
+
+/* Professional Modern Action Bar */
+.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.ab{position:relative;background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;font-weight:700;color:#334155;box-shadow:0 2px 6px rgba(15,23,42,.04);transition:all .15s ease}
+.ab:active{transform:scale(.96)}
+.ab svg{width:20px;height:20px;stroke-width:2.2}
+.ab.btn-png{background:var(--g);border-color:var(--g);color:#ffffff;box-shadow:0 4px 12px rgba(20,83,45,.2)}
+.ab.btn-tg{background:#f0f9ff;border-color:#bae6fd;color:#0369a1}
+.ab.btn-undo,.ab.btn-edit{background:#ffffff;border-color:#e2e8f0;color:#334155}
+.ab .dot{position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:#f59e0b;border:2px solid #fff;border-radius:50%;display:none;box-shadow:0 2px 4px rgba(0,0,0,.15)}
 .ab.remind .dot{display:block}
-.ab.remind{border-color:#d97706;background:#fffbeb}
+.ab.btn-tg.remind{background:#fffbeb;border-color:#f59e0b;color:#b45309}
+
 .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:18px}
 .pill{background:#fff;border:1px solid #d1d5db;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer}
 .pill.a{background:var(--g);color:#fff;border-color:var(--g)}
@@ -131,12 +140,28 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
     <div id="dVars" style="padding:6px 0"></div>
     <div class="foot"><span class="sl" id="dSys"></span><span class="sv" id="dAct"></span></div>
   </div>
+
   <div class="bar">
-    <button class="ab" onclick="undo()"><i>↩</i>Undo</button>
-    <button class="ab" id="btnPng" onclick="downloadPNG()"><span class="dot"></span><i>⬇</i>PNG</button>
-    <button class="ab" id="btnTg" onclick="copyTelegram()"><span class="dot"></span><i>⧉</i>Telegram</button>
-    <button class="ab" onclick="openEdit()"><i>✎</i>កែប្រែ</button>
+    <button class="ab btn-undo" onclick="undo()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+      <span>Undo</span>
+    </button>
+    <button class="ab btn-png" id="btnPng" onclick="downloadPNG()">
+      <span class="dot"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Save PNG</span>
+    </button>
+    <button class="ab btn-tg" id="btnTg" onclick="copyTelegram()">
+      <span class="dot"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>Telegram</span>
+    </button>
+    <button class="ab btn-edit" onclick="openEdit()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span>កែប្រែ</span>
+    </button>
   </div>
+
   <div class="pills" id="pills"></div>
 </main>
 
@@ -144,7 +169,7 @@ main{width:100%;max-width:520px;padding:14px 16px 40px}
 <div class="mbg" id="unsavedModal" onclick="if(event.target===this)closeM('unsavedModal')">
   <div class="sheet">
     <div class="sh"><h3>⚠ កូដរាប់ហើយ តែមិនទាន់ Save រូប/ផ្ញើ</h3><button class="x" onclick="closeM('unsavedModal')">បិទ</button></div>
-    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">ចុចលើកូដណាមួយខាងក្រោម ដើម្បីបើកកាត ហើយចុច <b>PNG</b> ឬ <b>Telegram</b> ផ្ញើឱ្យគេ៖</p>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">ចុចលើកូដណាមួយខាងក្រោម ដើម្បីបើកកាត ហើយចុច <b>Save PNG</b> ឬ <b>Telegram</b> ផ្ញើឱ្យគេ៖</p>
     <div id="unsavedList"></div>
   </div>
 </div>
@@ -343,7 +368,6 @@ function render(){
   const last=productLastCountTime(p);
   $('dDate').textContent=last?'រាប់: '+fmtDate(last):'មិនទាន់រាប់';
 
-  // Export status indicator on card & buttons
   const unsaved=isProductUnsavedExport(p);
   const expEl=$('dExpStatus');
   if(!last){
@@ -388,7 +412,7 @@ function render(){
   }).join('');
   const diff=sA-sS;
   $('dSys').textContent='ស្តុកប្រព័ន្ធសរុប: '+sS;
-  $('dAct').innerHTML='= '+sA+` <span style="font-size:14px;color:${diff===0?'var(--g)':diff<0?'var(--red)':'var(--org)'}">(${diff>0?'+':''}${diff})</span>`;
+  $('dAct').innerHTML='= '+sA+` <span style="font-size:15px;color:${diff===0?'var(--g)':diff<0?'var(--red)':'var(--org)'}">(${diff>0?'+':''}${diff})</span>`;
   $('pills').innerHTML=catalog.slice(0,6).map(x=>{
     const u=isProductUnsavedExport(x);
     return `<button class="pill ${x.shortCode===p.shortCode?'a':''} ${u?'unexp':''}" data-code="${esc(x.shortCode)}">${esc(x.shortCode)}${u?' •':''}</button>`;
