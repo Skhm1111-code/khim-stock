@@ -1,1 +1,2384 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KHIM - រាប់ស្តុក</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KHIM Stock">
+<meta name="theme-color" content="#14532d">
+<link id="iosIcon" rel="apple-touch-icon" sizes="180x180">
+<link id="favIcon" rel="icon" type="image/png">
+<link id="manifestLink" rel="manifest">
+
+<link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Kantumruy+Pro:wght@400;600;700&family=Noto+Sans+Khmer:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Siemreap&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --bg:#eef2f6;
+  --card:#fff;
+  --tx:#111827;
+  --g:#14532d;
+  --g2:#166534;
+  --gs:#dcfce7;
+  --g-rgb:20,83,45;
+  --bd:#e5e7eb;
+  --red:#dc2626;
+  --org:#d97706;
+  --orgs:#fef3c7;
+  --mut:#6b7280;
+  --ios-blue:#007aff;
+  --table-font:'Kantumruy Pro','Plus Jakarta Sans',-apple-system,sans-serif;
+}
+
+@font-face{font-family:'LimonF5';src:url('./fonts/Limon F5.ttf') format('truetype')}
+@font-face{font-family:'LimonR1';src:url('./fonts/Limon R1.ttf') format('truetype')}
+@font-face{font-family:'LimonR3';src:url('./fonts/Limon R3.ttf') format('truetype')}
+@font-face{font-family:'LimonF2';src:url('./fonts/Limon F2.ttf') format('truetype')}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Kantumruy Pro','Plus Jakarta Sans',-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{
+  width:100%;
+  min-height:100vh;
+  background:radial-gradient(circle at 15% 10%, rgba(var(--g-rgb),0.10) 0%, transparent 45%),
+             radial-gradient(circle at 85% 85%, rgba(var(--g-rgb),0.08) 0%, transparent 50%),
+             var(--bg);
+  color:var(--tx);
+  overflow-x:hidden;
+}
+body{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* ការពារកុំឱ្យមាន main ឬ header ស្ទួនលើសពី 1 */
+main ~ main, header ~ header { display:none !important; }
+
+.pull-cord-wrap{position:absolute;top:0;left:134px;z-index:130;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;touch-action:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.22))}
+.pull-cord-line{width:4.5px;height:28px;border-radius:0 0 3px 3px;background:repeating-linear-gradient(-35deg,#b45309 0px,#d97706 3px,#f59e0b 6px,#92400e 9px);border-left:1px solid rgba(255,255,255,.35);border-right:1px solid rgba(0,0,0,.25);transition:height .42s cubic-bezier(.22,1.35,.36,1)}
+.pull-cord-wrap.pulled .pull-cord-line{height:46px}
+.pull-cord-pendant{display:flex;flex-direction:column;align-items:center;margin-top:-2px;transition:transform .42s cubic-bezier(.22,1.35,.36,1)}
+.pull-cord-wrap.pulled .pull-cord-pendant{transform:translateY(4px) rotate(3deg)}
+.pull-cord-cap{width:12px;height:7px;border-radius:4px 4px 2px 2px;background:linear-gradient(180deg,#fbbf24 0%,#b45309 100%);border:1px solid rgba(120,53,15,.45)}
+.pull-cord-bead{width:16px;height:16px;border-radius:999px;margin-top:-1px;background:radial-gradient(circle at 32% 28%,#fde68a 0%,#d97706 55%,#78350f 100%);border:1.5px solid rgba(255,255,255,.5);box-shadow:inset 0 -2px 3px rgba(0,0,0,.35)}
+.pull-cord-tassel{width:10px;height:13px;margin-top:-1px;border-radius:2px 2px 6px 6px;background:repeating-linear-gradient(90deg,#b45309 0px,#d97706 2px,#92400e 4px);box-shadow:0 2px 4px rgba(0,0,0,.25)}
+
+button, input, select, label, .pill, .ab, .qb, .it, .ios-row, .ck, .calc-sub-btn {touch-action: manipulation;}
+
+.star-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star-spark{position:absolute;width:7px;height:7px;border-radius:999px;background:radial-gradient(circle,#fffbeb 0%,#fde047 60%,transparent 100%);box-shadow:0 0 10px rgba(250,204,21,.65);animation:smoothStarTwinkle 3.4s ease-in-out infinite;will-change:transform,opacity}
+@keyframes smoothStarTwinkle{0%,100%{opacity:.18;transform:scale(.82)}50%{opacity:.92;transform:scale(1.12)}}
+
+.hdr{width:100%;max-width:520px;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:8px 14px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.75);box-shadow:0 4px 16px rgba(15,23,42,.04);position:sticky;top:0;z-index:50;isolation:isolate}
+.hdr.flipped .brand{order:3;justify-content:flex-end}
+.hdr.flipped .center-stage{order:2}
+.hdr.flipped .hdr-right{order:1;justify-content:flex-start;flex-direction:row-reverse}
+
+.brand{display:flex;align-items:center;gap:7px;justify-self:start;min-width:0}
+.bname{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;letter-spacing:.2px;color:var(--g)}
+.badge{font-size:11px;font-weight:600;color:var(--g);background:var(--gs);padding:3px 8px;border-radius:20px;white-space:nowrap}
+.badge.bad{color:#991b1b;background:#fee2e2}
+
+.center-stage{position:relative;display:flex;align-items:center;justify-content:center;justify-self:center;cursor:pointer;flex-shrink:0;width:60px;height:52px;background:transparent;border:none;box-shadow:none;overflow:visible;transition:transform .24s cubic-bezier(.22,1,.36,1)}
+.center-stage:active{transform:scale(.93)}
+.center-stage.party{animation:stageDance .45s ease-in-out infinite}
+.center-stage img{width:56px;height:50px;object-fit:contain;display:block;filter:drop-shadow(0 3px 6px rgba(17,24,39,.12));opacity:1;transform:scale(1) translateY(0);transition:opacity .36s ease, transform .42s cubic-bezier(.22,1,.36,1)}
+.center-stage img.fading{opacity:0;transform:scale(.8) translateY(6px)}
+.dancer-fig{width:46px;height:46px;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .35s ease, transform .35s ease;animation:idleDance 1.8s ease-in-out infinite;transform-origin:bottom center}
+.dancer-fig.fading{opacity:0;transform:scale(.84)}
+.center-stage.party .dancer-fig{animation:partyDance .4s ease-in-out infinite}
+.dancer-fig svg{width:44px;height:44px;overflow:visible}
+.dancer-arm-l{transform-origin:11px 21px;animation:waveLeft 1.8s ease-in-out infinite}
+.dancer-arm-r{transform-origin:25px 21px;animation:waveRight 1.8s ease-in-out infinite}
+.center-stage.party .dancer-arm-l{animation:waveLeftFast .4s ease-in-out infinite}
+.center-stage.party .dancer-arm-r{animation:waveRightFast .4s ease-in-out infinite}
+
+@keyframes stageDance{0%,100%{transform:translateY(0) rotate(-3.5deg) scale(1.06)}50%{transform:translateY(-3.5px) rotate(3.5deg) scale(1.1)}}
+@keyframes idleDance{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-2px) rotate(2.5deg)}}
+@keyframes partyDance{0%,100%{transform:translateY(0) rotate(-7deg) scale(1.08)}50%{transform:translateY(-4px) rotate(7deg) scale(1.12)}}
+@keyframes waveLeft{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-20deg)}}
+@keyframes waveRight{0%,100%{transform:rotate(0deg)}50%{transform:rotate(20deg)}}
+@keyframes waveLeftFast{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-42deg)}}
+@keyframes waveRightFast{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(42deg)}}
+
+.blessing-bubble{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-6px);background:var(--g);color:#fef08a;font-size:12.5px;font-weight:800;padding:6px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(var(--g-rgb),.28);z-index:280;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .28s ease, transform .32s cubic-bezier(.22,1,.36,1)}
+.blessing-bubble.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.hdr-right{display:flex;align-items:center;gap:10px;justify-self:end;flex-shrink:0}
+.logo-wrap{position:relative;cursor:grab;flex-shrink:0;padding:2px 2px 0 2px;touch-action:none;user-select:none}
+.logo-wrap:active{cursor:grabbing}
+.app-logo{position:relative;z-index:3;height:36px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;box-shadow:none;padding:0;transition:transform .2s cubic-bezier(.22,1,.36,1)}
+.logo-wrap.dragging .app-logo{transform:scale(1.12)}
+.app-logo svg{height:35px;width:35px;display:block}
+.logo-badge{position:absolute;top:-4px;right:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#ef4444;color:#ffffff;font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;font-weight:800;line-height:18px;text-align:center;border:2px solid #ffffff;box-shadow:0 2px 5px rgba(220,38,38,.4);display:none;z-index:6}
+.logo-badge.show{display:inline-block}
+
+.burst-layer{position:fixed;inset:0;pointer-events:none;z-index:260;overflow:hidden}
+.burst-piece{position:fixed;font-size:20px;line-height:1;pointer-events:none;will-change:transform,opacity;animation:burstFly 1.3s cubic-bezier(.22,.8,.36,1) forwards}
+@keyframes burstFly{0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(.5)}25%{opacity:1;transform:translate(calc(var(--dx)*.45),calc(var(--dy)*.45 - 24px)) rotate(calc(var(--rot)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) + 95px)) rotate(var(--rot)) scale(.85)}}
+
+.burger{width:40px;height:40px;border:1.5px solid rgba(255,255,255,.9);background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(241,245,249,.65));backdrop-filter:blur(10px);border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px;cursor:pointer;box-shadow:0 4px 12px rgba(15,23,42,.08),inset 0 1px 1px #fff}
+.burger:active{transform:scale(.95)}
+.burger span{width:19px;height:2.2px;background:var(--g);border-radius:2px}
+
+main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40px}
+
+.progress{font-size:12px;font-weight:700;color:var(--mut);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+
+/* 3D LIQUID GLASS SEARCH BAR */
+.sw{position:relative;margin-bottom:10px}
+.glass-search-bar{
+  position:relative;
+  display:flex;
+  align-items:center;
+  height:54px;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.48) 55%, rgba(255,255,255,0.72) 100%);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1.5px solid rgba(255,255,255,0.92);
+  box-shadow:
+    0 10px 24px rgba(var(--g-rgb), 0.11),
+    0 3px 8px rgba(15,23,42,0.05),
+    inset 0 2px 3px rgba(255,255,255,0.95);
+  padding:0 8px 0 20px;
+}
+#scanInput{
+  flex:1;
+  min-width:0;
+  height:100%;
+  border:none;
+  background:transparent;
+  font-size:15.5px;
+  font-weight:800;
+  color:var(--tx);
+  outline:none;
+  padding-right:8px;
+}
+#scanInput::placeholder{color:#64748b;font-weight:600;font-size:13.5px}
+
+.glass-search-btn{
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  border:1.5px solid rgba(255,255,255,0.95);
+  background:linear-gradient(145deg, rgba(255,255,255,0.92) 0%, rgba(var(--g-rgb),0.14) 100%);
+  color:var(--g);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.glass-search-btn:active{transform:scale(.92)}
+.glass-search-btn svg{width:19px;height:19px;stroke-width:2.5}
+
+/* ជួរ Channel ស្អាតតែមួយ (គ្មាន < > និង X ទៀតទេ) */
+.glass-channel-only-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:8px;
+}
+.glass-code-hint{
+  width:100%;
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+  color:var(--g);
+  background:linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 100%);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1.5px solid rgba(255,255,255,0.94);
+  box-shadow:0 5px 14px rgba(15,23,42,0.05), inset 0 1.5px 2px #ffffff;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:0 16px;
+  border-radius:999px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  cursor:pointer;
+}
+.glass-code-hint:active{transform:scale(.98)}
+
+.drop{
+  position:absolute;
+  top:60px;
+  left:0;
+  right:0;
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(18px);
+  border:1.5px solid rgba(255,255,255,0.95);
+  border-radius:20px;
+  box-shadow:0 16px 36px rgba(15,23,42,.18);
+  z-index:85;
+  max-height:320px;
+  overflow-y:auto;
+  display:none;
+}
+.drop.show{display:block}
+.it{padding:11px 16px;border-bottom:1px solid rgba(0,0,0,.05);display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:8px}
+.it:hover{background:rgba(var(--g-rgb),0.06)}
+
+.search-shelf-banner{
+  display:none;
+  margin-bottom:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,.92) 0%,var(--gs) 100%);
+  border:1.8px solid var(--g2);
+  border-radius:16px;
+  padding:9px 14px;
+  box-shadow:0 4px 14px rgba(var(--g-rgb),.14);
+  cursor:pointer;
+}
+.search-shelf-banner.show{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ssb-badge{background:var(--g);color:#fef08a;font-size:13px;font-weight:800;padding:4px 11px;border-radius:9px;white-space:nowrap}
+.ssb-code{font-size:12.5px;font-weight:800;color:var(--g);white-space:nowrap}
+
+.card, .card .code, .card .pname, .card .vn, .card .vb, .card .price, .card .date, .card .big, .card .sm, .card .st, .card .sl, .card .sv, .card .qi {
+  font-family: var(--table-font) !important;
+}
+
+.card{background:#fdfdfb;border:1.8px solid #d6d9d2;border-radius:26px;padding:22px 20px 18px;box-shadow:0 10px 30px rgba(17,24,39,.06)}
+.card.need-export{border-color:#f59e0b}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1.5px dashed #e2e5de;gap:8px}
+.code{font-size:30px;font-weight:800;color:var(--g);line-height:1.1;word-break:break-all;cursor:pointer}
+.pname{font-size:17px;font-weight:700;margin-top:6px;color:#111827}
+.tags-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.exp-tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px}
+.exp-tag.no{background:var(--orgs);color:#b45309}
+.exp-tag.yes{background:var(--gs);color:var(--g)}
+.pr{text-align:right;flex-shrink:0}
+.price{font-size:26px;font-weight:800}
+.date{font-size:12px;font-weight:700;color:#374151;margin-top:5px;background:#f3f4f6;padding:2px 8px;border-radius:6px;display:inline-block}
+.vl{display:flex;justify-content:space-between;align-items:center;padding:13px 6px;border-bottom:1px solid #eceee8;gap:8px;border-radius:8px}
+.vl:last-child{border-bottom:none}
+.vl.hl{background:var(--gs)}
+.vn{font-size:19px;font-weight:700;color:#111827}
+.vb{font-size:11px;color:#9ca3af;word-break:break-all;margin-top:2px}
+.vr{display:flex;align-items:center;gap:10px}
+.qc{display:flex;align-items:center;gap:3px;background:#f3f4f6;padding:3px;border-radius:11px;border:1px solid var(--bd);box-shadow:0 2px 0 #d1d5db}
+.qb{width:32px;height:32px;border:none;border-radius:8px;background:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 1px 0 #cbd5e1}
+.qb:active{transform:translateY(1px)}
+.qb.p{background:var(--g);color:#fff;box-shadow:0 1px 0 #052e16}
+.qi{width:44px;border:none;background:transparent;text-align:center;font-size:18px;font-weight:800;outline:none}
+
+.sc{text-align:right;min-width:118px;white-space:nowrap}
+.big{font-size:28px;font-weight:800;color:var(--g);line-height:1.1}
+.sub-row{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:4px}
+.sm{font-size:12px;font-weight:700;color:#4b5563}
+.st{font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;line-height:1.4}
+.st.ok{color:#15803d;background:#f0fdf4}
+.st.short{color:#dc2626;background:#fef2f2}
+.st.over{color:#d97706;background:#fffbeb}
+.st.pend{color:#9ca3af;background:#f3f4f6}
+
+.foot{margin-top:8px;padding-top:14px;border-top:1.5px solid var(--tx);display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.foot-left{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.sl{font-size:14px;font-weight:700;color:#4b5563}
+.foot-channel-tag{display:inline-flex;align-items:center;gap:4px;background:var(--gs);color:var(--g);border:1px solid #86efac;font-size:12px;font-weight:800;padding:3px 10px;border-radius:8px}
+.sv{font-size:28px;font-weight:800;color:#111827;line-height:1}
+
+.capture-clone{position:fixed!important;left:-9999px!important;top:0!important;width:410px!important;max-width:none!important;box-shadow:none!important;border-radius:22px!important;border-color:#d6d9d2!important;padding:22px 20px 26px!important;background:#fdfdfb!important;z-index:-1!important;pointer-events:none!important}
+.capture-clone .qc,.capture-clone .exp-tag,.capture-clone .vb,.capture-clone .tags-row{display:none!important}
+.capture-clone .vl{padding:12px 2px!important;background:transparent!important}
+.capture-clone .vn{font-size:19px!important}
+.capture-clone .date{font-size:13px!important;font-weight:700!important;color:#111827!important;background:#eef2f6!important;padding:3px 9px!important;border-radius:7px!important}
+.capture-clone .sc{text-align:right!important;min-width:120px!important}
+.capture-clone .big{font-size:28px!important;line-height:1.1!important;color:var(--g)!important}
+.capture-clone .sub-row{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;margin-top:4px!important}
+.capture-clone .sm{font-size:12px!important;color:#6b7280!important;font-weight:600!important}
+.capture-clone .st{font-size:11px!important;font-weight:700!important;padding:1px 6px!important;border-radius:6px!important}
+.capture-clone .foot{padding-right:10px;padding-top:14px}
+.capture-clone .foot-channel-tag{display:inline-flex!important}
+
+.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.ab{position:relative;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);border:1px solid #cbd5e1;border-radius:16px;padding:13px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;font-weight:800;color:#1e293b;box-shadow:0 4px 0 #cbd5e1,0 8px 14px rgba(15,23,42,.08);transition:transform .1s ease,box-shadow .1s ease}
+.ab:active{transform:translateY(3px);box-shadow:0 1px 0 #cbd5e1,0 2px 6px rgba(15,23,42,.06)}
+.ab svg{width:22px;height:22px}
+.ab.btn-png{background:linear-gradient(180deg,var(--g2) 0%,var(--g) 100%);border-color:var(--g);color:#ffffff;box-shadow:0 4px 0 rgba(var(--g-rgb),.85),0 8px 16px rgba(var(--g-rgb),.28)}
+.ab.btn-png:active{box-shadow:0 1px 0 var(--g),0 3px 8px rgba(var(--g-rgb),.2)}
+.ab.btn-tg{background:linear-gradient(180deg,#f0f9ff 0%,#e0f2fe 100%);border-color:#7dd3fc;color:#0369a1;box-shadow:0 4px 0 #7dd3fc,0 8px 14px rgba(3,105,161,.14)}
+.ab.btn-tg:active{box-shadow:0 1px 0 #7dd3fc,0 2px 6px rgba(3,105,161,.1)}
+.ab .dot{position:absolute;top:-5px;right:-5px;width:12px;height:12px;background:#ef4444;border:2px solid #fff;border-radius:50%;display:none;box-shadow:0 2px 4px rgba(220,38,38,.35)}
+.ab.remind .dot{display:block}
+.ab.btn-tg.remind{background:linear-gradient(180deg,#fffbeb 0%,#fef3c7 100%);border-color:#f59e0b;color:#b45309;box-shadow:0 4px 0 #d97706,0 8px 14px rgba(217,119,6,.16)}
+
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:14px}
+.pill{background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:1px solid #d1d5db;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 0 #d1d5db}
+.pill:active{transform:translateY(2px)}
+.pill.a{background:var(--g);color:#fff;border-color:var(--g);box-shadow:0 2px 0 rgba(var(--g-rgb),.7)}
+.pill.unexp{border-color:#f59e0b;background:#fffbeb;color:#b45309}
+
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.42);backdrop-filter:blur(4px);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.mbg.open{display:flex}
+.sheet{width:100%;max-width:520px;background:#f2f2f7;border-radius:20px 20px 0 0;padding:0 16px 36px;max-height:92vh;overflow-y:auto;position:relative}
+.sh{position:sticky;top:0;z-index:10;background:rgba(242,242,247,.94);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:14px 4px 12px;margin:0 -4px 8px}
+.sh h3{font-size:19px;font-weight:800;color:#000000;letter-spacing:-.2px}
+.sh-done{border:none;background:transparent;color:#007aff;font-size:16px;font-weight:700;cursor:pointer;padding:4px 6px}
+.sh-done:active{opacity:.6}
+
+.ios-sec-hdr{font-size:12px;font-weight:600;color:#6e6e73;text-transform:uppercase;margin:18px 0 6px 14px;letter-spacing:.3px}
+.ios-card{background:#ffffff;border-radius:12px;overflow:hidden;margin-bottom:4px}
+.ios-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;min-height:48px;position:relative;background:#ffffff;transition:background .12s ease}
+.ios-row.tap{cursor:pointer}
+.ios-row.tap:active{background:#e5e5ea}
+.ios-row:not(:last-child)::after{content:'';position:absolute;left:58px;right:0;bottom:0;height:0.5px;background:#c6c6c8}
+.ios-row.no-icon:not(:last-child)::after{left:16px}
+.ios-row-left{display:flex;align-items:center;gap:13px;min-width:0;flex:1}
+.ios-ico{width:29px;height:29px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;color:#ffffff;font-weight:700}
+.ios-lbl{font-size:15.5px;font-weight:600;color:#000000;line-height:1.25}
+.ios-sub{font-size:12px;color:#8e8e93;margin-top:2px;line-height:1.3}
+.ios-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.ios-val{font-size:14.5px;font-weight:500;color:#8e8e93;max-width:135px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ios-chev{color:#c7c7cc;font-size:18px;font-weight:700;line-height:1}
+
+.ios-switch{position:relative;display:inline-block;width:51px;height:31px;flex-shrink:0}
+.ios-switch input{opacity:0;width:0;height:0}
+.ios-slider{position:absolute;cursor:pointer;inset:0;background:#e9e9eb;border-radius:31px;transition:.25s cubic-bezier(.22,1,.36,1)}
+.ios-slider::before{position:absolute;content:"";height:27px;width:27px;left:2px;bottom:2px;background:#ffffff;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.22);transition:.25s cubic-bezier(.22,1,.36,1)}
+.ios-switch input:checked + .ios-slider{background:#34c759}
+.ios-switch input:checked + .ios-slider::before{transform:translateX(20px)}
+
+.ios-select{border:none;background:transparent;color:#8e8e93;font-size:14.5px;font-weight:600;text-align:right;outline:none;cursor:pointer;padding:4px 0;max-width:165px}
+.ios-drawer{display:none;background:#f9f9fb;padding:12px 16px;border-top:0.5px solid #e5e5ea}
+.ios-drawer.open{display:block}
+.ios-file-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#eef2ff;color:#007aff;border:none;border-radius:9px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.ios-file-btn.green{background:var(--gs);color:var(--g)}
+
+.theme-swatches{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.swatch-btn{width:28px;height:28px;border-radius:999px;border:2.5px solid #ffffff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer;transition:transform .15s ease}
+.swatch-btn.active{transform:scale(1.18);box-shadow:0 0 0 2.5px #111827}
+
+.icon-pack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.icon-pack-card{border:1.5px solid #d1d5db;background:#ffffff;border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s ease}
+.icon-pack-card.active{border-color:var(--g);background:var(--gs);box-shadow:0 4px 10px rgba(var(--g-rgb),.15)}
+.icon-pack-preview{display:flex;justify-content:center;gap:6px;margin-bottom:6px;color:var(--g)}
+.icon-pack-name{font-size:11.5px;font-weight:800;color:#111827}
+
+.lbl{display:block;font-size:12px;font-weight:700;color:#6e6e73;margin:8px 0 4px}
+.inp{width:100%;padding:10px 12px;border:1px solid #d1d1d6;border-radius:10px;font-size:14px;font-weight:600;outline:none;background:#ffffff;min-height:40px}
+.inp:focus{border-color:#007aff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{width:100%;padding:11px;min-height:42px;background:var(--g);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
+.btn:active{opacity:.85}
+.btn.blue{background:#007aff}
+.btn.dk{background:#1c1c1e}
+.btn.lt{background:#e5e5ea;color:#000000}
+.btn.rd{background:#ffebee;color:#ff3b30}
+.erow{display:grid;grid-template-columns:1.3fr .8fr .8fr auto;gap:6px;align-items:center;margin-bottom:6px}
+.erow .inp{padding:8px}
+.del{border:none;background:#fee2e2;color:var(--red);width:32px;height:36px;border-radius:8px;font-weight:800;cursor:pointer}
+.ulist-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:12px;margin-bottom:8px;cursor:pointer;background:#fff}
+.ulist-item:hover{background:#fffbeb;border-color:#f59e0b}
+
+.gif-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.gif-slot{position:relative;aspect-ratio:1/1;border:1px solid #e5e5ea;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.gif-slot img{width:100%;height:100%;object-fit:contain}
+.gif-rm{position:absolute;top:2px;right:2px;width:18px;height:18px;border:none;border-radius:50%;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;cursor:pointer;line-height:1}
+
+#toast{position:fixed;left:50%;top:102px;transform:translateX(-50%);padding:10px 18px;border-radius:12px;font-weight:700;font-size:13.5px;color:#fff;z-index:350;display:none;max-width:92%;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.15)}
+#toast.ok{background:var(--g)}#toast.err{background:var(--red)}#toast.warn{background:var(--org)}
+
+/* FULL-SCREEN LIQUID GLASS CASH OUT / CASIO CALCULATOR */
+.calc-screen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:240;
+  width:100%;
+  height:100dvh;
+  overflow-y:auto;
+  padding:14px 16px 26px;
+  background:
+    radial-gradient(circle at 18% 15%, rgba(var(--g-rgb), 0.24) 0%, transparent 50%),
+    radial-gradient(circle at 82% 85%, rgba(56, 189, 248, 0.20) 0%, transparent 52%),
+    rgba(241, 245, 249, 0.72);
+  backdrop-filter:blur(26px) saturate(180%);
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+}
+.calc-screen.active{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.calc-inner-wrap{width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px}
+.calc-mini-nav{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:0 2px}
+.calc-arrow-back{width:42px;height:42px;border-radius:999px;border:1.5px solid rgba(255,255,255,.92);background:linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.45));backdrop-filter:blur(12px);color:var(--g);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.calc-brand-tag{text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.4px;color:var(--g);text-transform:uppercase}
+.casio-body{background:linear-gradient(145deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.38) 100%);backdrop-filter:blur(22px) saturate(165%);border:1.8px solid rgba(255,255,255,0.92);border-radius:30px;padding:18px 16px 20px;box-shadow:0 22px 48px rgba(15,23,42,0.14);display:flex;flex-direction:column;gap:14px}
+.casio-lcd-bezel{background:linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(var(--g-rgb),0.08) 100%);border-radius:20px;padding:6px;border:1.5px solid rgba(255,255,255,0.88)}
+.casio-lcd{background:linear-gradient(180deg, rgba(236,253,245,0.82) 0%, rgba(209,250,229,0.74) 100%);border-radius:15px;padding:12px 15px;display:flex;flex-direction:column;gap:4px}
+.casio-lcd-top{display:flex;align-items:center;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:800;letter-spacing:1px;color:var(--g);opacity:.9}
+.casio-solar{width:48px;height:13px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--g) 0px,var(--g) 10px,#4ade80 10px,#4ade80 11px);border:1px solid rgba(255,255,255,.7);opacity:.8}
+.calc-expr{min-height:20px;font-size:14px;font-weight:700;color:var(--g2);text-align:right;word-break:break-all;font-family:var(--table-font)}
+.calc-val{font-size:40px;font-weight:800;color:#0f172a;text-align:right;line-height:1.1;word-break:break-all;font-family:'Plus Jakarta Sans',var(--table-font);letter-spacing:-.5px}
+.calc-actions-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:6px;padding-top:8px;border-top:1px dashed rgba(var(--g-rgb),.22)}
+.calc-sub-btn{border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.78);color:var(--g);border-radius:12px;padding:8px 10px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.calc-sub-btn.apply{background:linear-gradient(180deg,var(--g2) 0%,var(--g) 100%);border-color:var(--g);color:#ffffff}
+.calc-keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ck{height:56px;border:1.5px solid rgba(255,255,255,0.92);border-radius:16px;background:linear-gradient(145deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.48) 100%);color:#0f172a;font-size:22px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',var(--table-font);display:flex;align-items:center;justify-content:center;user-select:none}
+.ck:active,.ck.is-pressed{transform:scale(.94)}
+.ck.op{background:linear-gradient(145deg, rgba(255,255,255,0.88) 0%, var(--gs) 100%);color:var(--g)}
+.ck.clr{background:linear-gradient(145deg, rgba(254,242,242,0.92) 0%, rgba(254,202,202,0.75) 100%);color:#dc2626}
+.ck.eq{background:linear-gradient(180deg,var(--g2) 0%,var(--g) 100%);color:#ffffff}
+.ck.span2{grid-column:span 2}
+
+/* Mini Shelf Diagram in Center of Card Header (3 ដល់ 5 ប្រឡោះពីឆ្វេងទៅស្តាំ) */
+.shelf-mini-box{flex:1.1;min-width:140px;max-width:205px;background:#ffffff;border:1.5px solid #bbf7d0;border-radius:14px;padding:6px 7px;cursor:pointer;box-shadow:0 3px 10px rgba(var(--g-rgb),.08);display:flex;flex-direction:column;gap:4px}
+.shelf-mini-box.empty{border-style:dashed;border-color:#d1d5db;background:#f9fafb;box-shadow:none}
+.shelf-mini-hdr{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.shelf-trophy-badge{background:linear-gradient(180deg,var(--g2) 0%,var(--g) 100%);color:#fef08a;font-size:11px;font-weight:800;padding:2px 7px;border-radius:7px;white-space:nowrap}
+.shelf-mini-box.empty .shelf-trophy-badge{background:#f3f4f6;color:#6b7280}
+.shelf-multi-tabs{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.shelf-mtab{border:1px solid #bbf7d0;background:var(--gs);color:var(--g);border-radius:5px;padding:1px 5px;font-size:9px;font-weight:800;cursor:pointer}
+.shelf-mtab.on{background:var(--g);color:#ffffff;border-color:var(--g)}
+.shelf-mini-grid{display:grid;grid-template-rows:repeat(4,12px);gap:2px}
+.shelf-mini-row{display:grid;gap:2px;align-items:center}
+.shelf-mini-cell{height:12px;border-radius:3px;background:#f1f5f9;border:1px solid #e2e8f0;font-size:7.5px;font-weight:800;color:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap}
+.shelf-mini-cell.hit{background:linear-gradient(180deg,#22c55e 0%,#16a34a 100%);border-color:var(--g);color:#ffffff;box-shadow:0 0 0 1.5px #fef08a;font-size:8px}
+.shelf-mini-loc{font-size:10px;font-weight:800;color:var(--g);text-align:center;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shelf-mini-box.empty .shelf-mini-loc{color:#6b7280;font-weight:700}
+
+.shelf-top-bar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.shelf-select{flex:1;min-width:130px;padding:9px 12px;border-radius:10px;border:1.5px solid var(--g);background:#fff;font-size:14px;font-weight:800;color:var(--g)}
+.shelf-rack-card{background:#ffffff;border:1.5px solid #d6d9d2;border-radius:16px;padding:12px;box-shadow:0 4px 14px rgba(0,0,0,.04);overflow-x:auto}
+.shelf-rack-title{text-align:center;font-size:15px;font-weight:800;color:var(--g);background:var(--gs);border:1px solid #86efac;border-radius:10px;padding:6px 10px;margin-bottom:10px}
+.shelf-tier-grid{display:flex;flex-direction:column;gap:7px;min-width:300px}
+.shelf-tier-row{display:grid;gap:5px;align-items:stretch}
+.shelf-tier-lbl{background:var(--gs);border:1px solid #bbf7d0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--g);text-align:center;padding:2px}
+.shelf-slot-cell{min-height:54px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fafafa;padding:4px 5px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:2px}
+.shelf-slot-cell:hover{border-color:#16a34a;background:#f0fdf4}
+.shelf-slot-cell.has-codes{background:#ffffff;border-color:#86efac}
+.shelf-slot-cell.is-hit{background:var(--gs);border-color:var(--g);box-shadow:0 0 0 2px rgba(var(--g-rgb),.25)}
+.shelf-slot-pos{font-size:8.5px;font-weight:700;color:#6b7280}
+.shelf-slot-codes{font-size:10.5px;font-weight:800;color:#111827;word-break:break-word;line-height:1.25}
+.capture-clone .shelf-mini-box{display:none!important}
+</style>
+</head>
+<body>
+<div class="star-layer" id="starLayer" aria-hidden="true"></div>
+<div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+<div class="blessing-bubble" id="blessingBubble" aria-live="polite"></div>
+
+<header class="hdr" id="mainHeader">
+  <div class="pull-cord-wrap" id="pullCordBtn" title="ទាញ ឬចុចខ្សែ ដើម្បីបើក/បិទ ម៉ាស៊ីនគិតលេខពេញអេក្រង់">
+    <div class="pull-cord-line"></div>
+    <div class="pull-cord-pendant">
+      <div class="pull-cord-cap"></div>
+      <div class="pull-cord-bead"></div>
+      <div class="pull-cord-tassel"></div>
+    </div>
+  </div>
+  <div class="brand" style="flex-direction:column;align-items:flex-start;gap:2px">
+    <div class="bname">KHIM</div>
+    <span class="badge" id="saveBadge">កំពុងផ្ទុក…</span>
+  </div>
+
+  <div class="center-stage" id="centerStage" onclick="handleStageClick()" title="រូបភាពវិលជុំ (GIF) — ចុចដូរ/ជូនពរ">
+    <div class="dancer-fig" id="defaultDancer">
+      <svg viewBox="0 0 36 36" fill="none">
+        <path class="dancer-arm-l" d="M11 21 L4 15" stroke="currentColor" style="color:var(--g)" stroke-width="3.2" stroke-linecap="round"/>
+        <path class="dancer-arm-r" d="M25 21 L32 15" stroke="currentColor" style="color:var(--g)" stroke-width="3.2" stroke-linecap="round"/>
+        <rect x="12" y="19" width="12" height="10" rx="5" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
+        <circle cx="18" cy="11.5" r="7.5" fill="#fef08a" stroke="#14532d" stroke-width="2"/>
+        <circle cx="15.3" cy="11" r="1.3" fill="#111827"/>
+        <circle cx="20.7" cy="11" r="1.3" fill="#111827"/>
+        <path d="M15.5 14 Q18 16.5 20.5 14" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M14 29 L12 34 M22 29 L24 34" stroke="#14532d" stroke-width="2.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <img id="stageImg" style="display:none" alt="GIF">
+  </div>
+
+  <div class="hdr-right">
+    <div class="logo-wrap" id="logoWrap" title="អូសទៅឆ្វេង/ស្តាំ ឬចុចមើលកូដមិនទាន់ Save">
+      <span class="logo-badge" id="logoBadge">0</span>
+      <div class="app-logo">
+        <svg viewBox="0 0 100 100" fill="none">
+          <polygon points="55,14 82,29 55,44 28,29" fill="#84cc16" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+          <line x1="42" y1="21.5" x2="69" y2="36.5" stroke="#14532d" stroke-width="4"/>
+          <polygon points="55,44 82,29 82,62 55,77" fill="#16a34a" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+          <polygon points="65,38.5 72,34.5 72,48 65,52" fill="#14532d"/>
+          <polygon points="28,29 55,44 55,77 28,62" fill="#ffffff" stroke="#14532d" stroke-width="4.5" stroke-linejoin="round"/>
+          <path d="M46 40 V71 M32 53 H46 M32 45 L24 53 L32 61 Z" fill="#84cc16" stroke="#84cc16" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M13 33 V69" stroke="#15803d" stroke-width="8.5" stroke-linecap="round"/>
+          <path d="M27 36 L14 51 L27 67" stroke="#15803d" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="77" cy="69" r="15.5" fill="#16a34a" stroke="#ffffff" stroke-width="3.5"/>
+          <path d="M71 69 L75 73 L83 64.5" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <button class="burger" onclick="openM('adminModal')" aria-label="Settings"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div id="toast"></div>
+
+<main id="mainAppContainer">
+  <div class="progress">
+    <span id="progA">រាប់ហើយ 0/0 កូដ</span>
+    <span id="progB"></span>
+  </div>
+
+  <!-- 3D Liquid Glass Search Bar -->
+  <div class="sw">
+    <div class="glass-search-bar">
+      <input type="text" id="scanInput" placeholder="Search... (កូដ Y158, A-1 ឬ ឆាន K-1 ឬ Barcode)" autocomplete="off" autofocus>
+      <button type="button" class="glass-search-btn" onclick="onEnter()" title="ស្វែងរក / Enter" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="20" y1="20" x2="16.2" y2="16.2"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- បង្ហាញតែផ្លាកលេខ Channel ស្អាតតែមួយ (គ្មាន < > និង X ទៀតទេ) -->
+    <div class="glass-channel-only-row">
+      <div class="glass-code-hint" id="glassNavPos" onclick="openShelfModalForCurrent()" title="ចុចមើលតារាងឆាន">🏆 ឆាន —</div>
+    </div>
+
+    <div class="drop" id="drop"></div>
+  </div>
+
+  <!-- Instant Search/Scan Shelf Location Banner -->
+  <div class="search-shelf-banner" id="searchShelfBanner" onclick="openShelfModalForCurrent()">
+    <span class="ssb-badge" id="ssbBadge">🏆 ឆាន —</span>
+    <span class="ssb-code" id="ssbCode">កូដ: —</span>
+  </div>
+
+  <div class="card" id="card">
+    <div class="ch">
+      <div style="min-width:0;flex:1.1">
+        <div class="code" id="dCode" onclick="copyCodeOnly()" title="ចុចដើម្បី Copy កូដ"></div>
+        <div class="pname" id="dName"></div>
+        <div class="tags-row">
+          <span class="exp-tag" id="dExpStatus" style="display:none"></span>
+        </div>
+      </div>
+      <div class="shelf-mini-box" id="dShelfMini" onclick="openShelfModalForCurrent()" title="ចុចដើម្បីមើល ឬ កំណត់ឆាន">
+        <div class="shelf-mini-hdr">
+          <span class="shelf-trophy-badge" id="dShelfBadge">🏆 ឆាន —</span>
+          <div class="shelf-multi-tabs" id="dShelfTabs" onclick="event.stopPropagation()"></div>
+        </div>
+        <div class="shelf-mini-grid" id="dShelfGrid"></div>
+        <div class="shelf-mini-loc" id="dShelfLoc">ឆាន —</div>
+      </div>
+      <div class="pr"><div class="price" id="dPrice"></div><div class="date" id="dDate"></div></div>
+    </div>
+    <div id="dVars" style="padding:6px 0"></div>
+    <div class="foot">
+      <div class="foot-left">
+        <span class="sl" id="dSys"></span>
+        <span class="foot-channel-tag" id="dFootChannel">🏆 ឆាន —</span>
+      </div>
+      <span class="sv" id="dAct"></span>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button class="ab btn-undo" onclick="undo()">
+      <span id="icoUndo"></span>
+      <span>Undo</span>
+    </button>
+    <button class="ab btn-png" id="btnPng" onclick="downloadPNG()">
+      <span class="dot"></span>
+      <span id="icoPng"></span>
+      <span>Save PNG</span>
+    </button>
+    <button class="ab btn-tg" id="btnTg" onclick="copyTelegram()">
+      <span class="dot"></span>
+      <span id="icoTg"></span>
+      <span>Telegram</span>
+    </button>
+    <button class="ab btn-edit" onclick="openEdit()">
+      <span id="icoEdit"></span>
+      <span>កែប្រែ</span>
+    </button>
+  </div>
+
+  <div class="pills" id="pills"></div>
+</main>
+
+<!-- FULL-SCREEN LIQUID GLASS CASH OUT / CASIO CALCULATOR -->
+<section class="calc-screen" id="calcScreen" aria-label="Cash Out / ម៉ាស៊ីនគិតលេខពេញអេក្រង់">
+  <div class="calc-inner-wrap">
+    <div class="calc-mini-nav">
+      <button class="calc-arrow-back" onclick="setCalcMode(false)" title="ត្រឡប់ទៅរាប់ស្តុក" aria-label="ត្រឡប់ទៅរាប់ស្តុក">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      </button>
+      <span class="calc-brand-tag">KHIM • CASH OUT CALC</span>
+      <button class="calc-arrow-back" onclick="setCalcMode(false)" title="បិទ" aria-label="បិទ">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="casio-body">
+      <div class="casio-lcd-bezel">
+        <div class="casio-lcd">
+          <div class="casio-lcd-top">
+            <span>CASH OUT • LIQUID GLASS</span>
+            <span class="casio-solar" aria-hidden="true"></span>
+          </div>
+          <div class="calc-expr" id="calcExpr"></div>
+          <div class="calc-val" id="calcVal">0</div>
+          <div class="calc-actions-row">
+            <button class="calc-sub-btn" onclick="flashBtn(this);copyCalcResult()">📋 Copy</button>
+            <button class="calc-sub-btn apply" onclick="flashBtn(this);applyCalcToStock()">+ ដាក់ចូលស្តុក</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-keypad" id="calcKeypad">
+        <button class="ck clr" data-k="AC">AC</button>
+        <button class="ck clr" data-k="DEL">⌫</button>
+        <button class="ck op" data-k="%">%</button>
+        <button class="ck op" data-k="/">÷</button>
+
+        <button class="ck" data-k="7">7</button>
+        <button class="ck" data-k="8">8</button>
+        <button class="ck" data-k="9">9</button>
+        <button class="ck op" data-k="*">×</button>
+
+        <button class="ck" data-k="4">4</button>
+        <button class="ck" data-k="5">5</button>
+        <button class="ck" data-k="6">6</button>
+        <button class="ck op" data-k="-">−</button>
+
+        <button class="ck" data-k="1">1</button>
+        <button class="ck" data-k="2">2</button>
+        <button class="ck" data-k="3">3</button>
+        <button class="ck op" data-k="+">+</button>
+
+        <button class="ck span2" data-k="0">0</button>
+        <button class="ck" data-k=".">.</button>
+        <button class="ck eq" data-k="=">=</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Shelf Rack Map Modal -->
+<div class="mbg" id="shelfModal" onclick="if(event.target===this)closeM('shelfModal')">
+  <div class="sheet" style="background:#f2f2f7">
+    <div class="sh">
+      <div style="width:48px"></div>
+      <h3>តារាងឆាន</h3>
+      <button class="sh-done" onclick="closeM('shelfModal')">រួចរាល់</button>
+    </div>
+
+    <div class="shelf-top-bar">
+      <select class="shelf-select" id="shelfRackSelect" onchange="renderShelfModalGrid()"></select>
+      <button class="ios-file-btn" onclick="syncShelfFromGoogleSheet(true)">🔄 Sync 2 Link</button>
+      <button class="ios-file-btn green" onclick="quickAssignCurrentCodeToSelectedSlot()">+ ដាក់កូដនេះ</button>
+    </div>
+
+    <div id="shelfDebugInfo" style="font-size:11.5px;font-weight:700;color:var(--g);background:var(--gs);padding:7px 11px;border-radius:9px;margin-bottom:8px;line-height:1.4"></div>
+
+    <div class="shelf-rack-card">
+      <div class="shelf-rack-title" id="shelfRackTitle">🏆 ឆាន K-1</div>
+      <div class="shelf-tier-grid" id="shelfTierGrid"></div>
+    </div>
+
+    <div id="shelfSlotEditor" style="display:none;margin-top:12px;background:#fff;border-radius:14px;padding:12px;border:1px solid #d1d5db">
+      <div style="font-size:13px;font-weight:800;color:var(--g);margin-bottom:6px" id="shelfEditorTitle">កែប្រែកូដក្នុងប្រឡោះ</div>
+      <div style="font-size:11.5px;color:#6b7280;margin-bottom:6px">វាយកូដច្រើនបាន (ខណ្ឌដោយក្បៀស , ឬ Space ឧ. Y158, Z289)</div>
+      <textarea class="inp" id="shelfSlotInput" rows="3" placeholder="ឧ. Y158, Z289, U936"></textarea>
+      <div class="g2">
+        <button class="btn" onclick="saveShelfSlotCodes()">រក្សាទុកប្រឡោះ</button>
+        <button class="btn lt" onclick="$('shelfSlotEditor').style.display='none'">បិទ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Unsaved Export List Modal -->
+<div class="mbg" id="unsavedModal" onclick="if(event.target===this)closeM('unsavedModal')">
+  <div class="sheet" style="background:#fff">
+    <div class="sh"><h3>⚠ កូដរាប់ហើយ តែមិនទាន់ Save រូប/ផ្ញើ</h3><button class="sh-done" onclick="closeM('unsavedModal')">បិទ</button></div>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">ចុចលើកូដណាមួយខាងក្រោម ដើម្បីបើកកាត ហើយចុច <b>Save PNG</b> ឬ <b>Telegram</b> ផ្ញើឱ្យគេ៖</p>
+    <div id="unsavedList"></div>
+  </div>
+</div>
+
+<div class="mbg" id="editModal" onclick="if(event.target===this)closeM('editModal')">
+  <div class="sheet" style="background:#fff">
+    <div class="sh"><h3>កែប្រែព័ត៌មាន</h3><button class="sh-done" onclick="closeM('editModal')">បិទ</button></div>
+    <div class="g2"><div><label class="lbl">កូដកាត់</label><input class="inp" id="edCode"></div><div><label class="lbl">តម្លៃ ($)</label><input class="inp" type="number" step="0.01" id="edPrice"></div></div>
+    <div class="g2"><div><label class="lbl">ឈ្មោះអីវ៉ាន់</label><input class="inp" id="edName"></div><div><label class="lbl">ប្រភេទ (ផ្ទៃក្នុង)</label><input class="inp" id="edGroup"></div></div>
+    <label class="lbl" style="margin-top:14px">ពណ៌ | រាប់ | ប្រព័ន្ធ</label>
+    <div id="edRows"></div>
+    <button class="btn lt" onclick="addEdRow()">+ បន្ថែមពណ៌ថ្មី</button>
+    <button class="btn" onclick="applyEdit()">រក្សាទុក</button>
+    <button class="btn rd" onclick="deleteProduct()">លុបកូដនេះ</button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="mbg" id="adminModal" onclick="if(event.target===this)closeM('adminModal')">
+  <div class="sheet">
+    <div class="sh">
+      <div style="width:48px"></div>
+      <h3>Settings</h3>
+      <button class="sh-done" onclick="closeM('adminModal')">រួចរាល់</button>
+    </div>
+
+    <div class="ios-sec-hdr">រចនាប័ទ្ម UI, ពណ៌ & ម៉ូដ ICON</div>
+    <div class="ios-card">
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:var(--g)">🎨</div>
+          <div>
+            <div class="ios-lbl">ពណ៌ Theme កម្មវិធី</div>
+            <div class="ios-sub">ប្តូរពណ៌ប៊ូតុង, Search Glass & Calc</div>
+          </div>
+        </div>
+        <div class="theme-swatches" id="themeSwatches">
+          <button type="button" class="swatch-btn" data-theme="green" style="background:#14532d" title="បៃតង KHIM" onclick="setUiTheme('green')"></button>
+          <button type="button" class="swatch-btn" data-theme="blue" style="background:#0f3d7a" title="ខៀវ E-Commerce" onclick="setUiTheme('blue')"></button>
+          <button type="button" class="swatch-btn" data-theme="purple" style="background:#581c87" title="ស្វាយទំនើប" onclick="setUiTheme('purple')"></button>
+          <button type="button" class="swatch-btn" data-theme="orange" style="background:#c2410c" title="ទឹកក្រូច" onclick="setUiTheme('orange')"></button>
+          <button type="button" class="swatch-btn" data-theme="slate" style="background:#1e293b" title="ខ្មៅប្រផេះ" onclick="setUiTheme('slate')"></button>
+        </div>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('iconPackDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#0ea5e9">✨</div>
+          <div>
+            <div class="ios-lbl">ម៉ូដ Icon UI (Outline / Commerce)</div>
+            <div class="ios-sub" id="iconPackSub">ប្តូរម៉ូដ Icon លើប៊ូតុង & Settings</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val" id="iconPackVal">Outline</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer open" id="iconPackDrawer">
+        <div class="icon-pack-grid">
+          <div class="icon-pack-card" data-pack="outline" onclick="setIconPack('outline')">
+            <div class="icon-pack-preview">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.2" y2="16.2"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+            </div>
+            <div class="icon-pack-name">Outline ស្អាត</div>
+          </div>
+          <div class="icon-pack-card" data-pack="commerce" onclick="setIconPack('commerce')">
+            <div class="icon-pack-preview">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 4h4v3h-4V4z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h2v16H4zm4 0h1v16H8zm3 0h2v16h-2zm4 0h1v16h-1zm3 0h2v16h-2z"/></svg>
+            </div>
+            <div class="icon-pack-name">Commerce តាន់</div>
+          </div>
+          <div class="icon-pack-card" data-pack="classic" onclick="setIconPack('classic')">
+            <div class="icon-pack-preview">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="icon-pack-name">Classic ដើម</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ios-sec-hdr">រូបភាព & ចលនា</div>
+    <div class="ios-card">
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#ff2d55">🎭</div>
+          <div>
+            <div class="ios-lbl">រូបភាព / Emoji មានចលនា</div>
+            <div class="ios-sub" id="gifStatusSub">បើកបង្ហាញរូបវិលជុំលើក្បាលកម្មវិធី</div>
+          </div>
+        </div>
+        <label class="ios-switch">
+          <input type="checkbox" id="toggleStageSwitch" checked onchange="toggleStageEnabled(this.checked)">
+          <span class="ios-slider"></span>
+        </label>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('gifDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#ff9500">🖼️</div>
+          <div>
+            <div class="ios-lbl">រូបភាពវិលជុំ (GIF / Sticker)</div>
+            <div class="ios-sub" id="gifCountText">កំពុងប្រើ 0 / 20 រូប</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val" id="gifCountBadge">0 រូប</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer" id="gifDrawer">
+        <label class="ios-file-btn" style="width:100%">
+          + បញ្ចូលរូបភាព / GIF (រហូតដល់ ២០ រូប)
+          <input type="file" id="gifFileInput" accept="image/gif,image/png,image/webp,image/jpeg" multiple style="display:none" onchange="addGifFiles(event)">
+        </label>
+        <div class="gif-grid" id="gifGrid"></div>
+        <button class="btn rd" style="margin-top:10px" onclick="clearAllGifs()">លុបរូបវិលជុំទាំងអស់</button>
+      </div>
+    </div>
+
+    <div class="ios-sec-hdr">តារាងឆាន (ភ្ជាប់ Link បាន 2 តាមត្រកូលកូដ)</div>
+    <div class="ios-card">
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#34c759">🏆</div>
+          <div>
+            <div class="ios-lbl">បង្ហាញតារាងឆានលើក្រដាស</div>
+            <div class="ios-sub" id="shelfToggleSub">បើកបង្ហាញលេខក្បាលឆាន</div>
+          </div>
+        </div>
+        <label class="ios-switch">
+          <input type="checkbox" id="toggleShelfSwitch" checked onchange="toggleShelfEnabled(this.checked)">
+          <span class="ios-slider"></span>
+        </label>
+      </div>
+
+      <div class="ios-row tap" onclick="syncShelfFromGoogleSheet(true)">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#16a34a">🔄</div>
+          <div>
+            <div class="ios-lbl">ទាញប្លង់ឆានពី Google Sheet ទាំង 2 Link</div>
+            <div class="ios-sub" id="shelfSyncStatus">ចុចដើម្បីទាញ Code ពី Link ទី 1 និង Link ទី 2</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">Sync</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#007aff">📥</div>
+          <div>
+            <div class="ios-lbl">Convert File ឆាន (.xlsx / .csv)</div>
+            <div class="ios-sub">ទម្លាក់ File ចេញពី Google Sheet</div>
+          </div>
+        </div>
+        <label class="ios-file-btn green">
+          Import
+          <input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="importShelfFile(event)">
+        </label>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('shelfSheetDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#5856d6">🔗</div>
+          <div>
+            <div class="ios-lbl">កំណត់ Link ឆានទាំង 2 (ត្រកូល K vs A)</div>
+            <div class="ios-sub">បំបែកការចាប់កូដតាមត្រកូលមិនឱ្យច្រឡំគ្នា</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val" id="shelfPrefixBadge">2 Link</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer open" id="shelfSheetDrawer">
+        <div style="background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:10px 12px;margin-bottom:10px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--g);margin-bottom:4px">🟢 Link ទី 1 (ឆានរបស់បង — ឧ. ត្រកូល K / Y)</div>
+          <label class="lbl" style="margin-top:4px">Link Google Sheet ទី 1</label>
+          <input class="inp" id="shelfSheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/..." onchange="saveShelfSheetUrl(this.value)">
+          <label class="lbl">ត្រកូលកូដ ឬ ត្រកូលឆាន Link ទី 1 (ខណ្ឌដោយក្បៀស ឧ. K, Y ឬទុកទទេ)</label>
+          <input class="inp" id="shelfPrefixInput" placeholder="ឧ. K, Y (ទុកទទេ = ចាប់ទាំងអស់ក្នុង Link 1)" onchange="saveShelfPrefix(this.value)">
+        </div>
+
+        <div style="background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:10px 12px;margin-bottom:8px">
+          <div style="font-size:12.5px;font-weight:800;color:#0369a1;margin-bottom:4px">🔵 Link ទី 2 (ឆានក្រុមផ្សេង — ឧ. ត្រកូល A, A-1..A-100)</div>
+          <label class="lbl" style="margin-top:4px">Link Google Sheet ទី 2 (ស្រេចចិត្ត)</label>
+          <input class="inp" id="shelfSheetUrl2Input" placeholder="ដាក់ Link Google Sheet ទី 2 នៅទីនេះ..." onchange="saveShelfSheetUrl2(this.value)">
+          <label class="lbl">ត្រកូលកូដ ឬ ត្រកូលឆាន Link ទី 2 (ឧ. A)</label>
+          <input class="inp" id="shelfPrefix2Input" placeholder="ឧ. A (សម្រាប់ A-1 ដល់ A-100+)" onchange="saveShelfPrefix2(this.value)">
+        </div>
+
+        <button class="btn" onclick="syncShelfFromGoogleSheet(true)">🔄 ទាញទិន្នន័យពី Link ទាំង 2 ឥឡូវនេះ</button>
+
+        <label class="lbl" style="margin-top:12px">ឬ Copy ពី Sheet មក Paste ត្រង់ៗ (គាំទ្រដល់ 5 ប្រឡោះ):</label>
+        <textarea class="inp" id="shelfPasteArea" rows="5" placeholder="ឧ.&#10;K-1&#10;Y158&#9;Y669&#9;Y542&#9;Y101&#9;Y102"></textarea>
+        <button class="btn blue" onclick="importShelfFromPaste()">📥 បញ្ចូលទិន្នន័យឆានពី Paste</button>
+      </div>
+
+      <div class="ios-row tap" onclick="openShelfModalForCurrent()">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#ff9500">🗂️</div>
+          <div>
+            <div class="ios-lbl">មើល & កែតារាងឆាន</div>
+            <div class="ios-sub">ចុចលើប្រឡោះណាមួយ ដើម្បីដាក់/កែ code</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val" id="shelfTotalRacksBadge">2 ឆាន</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ios-sec-hdr">CLOUD & ទិន្នន័យស្តុក</div>
+    <div class="ios-card">
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#34c759">📂</div>
+          <div>
+            <div class="ios-lbl" id="cloudStatusLabel">ទម្លាក់ File មេ (.xlsx / .json)</div>
+            <div class="ios-sub" id="cloudSubLabel">ទម្លាក់ម្ដង ប្រើបានទាំងអស់គ្នា</div>
+          </div>
+        </div>
+        <label class="ios-file-btn green">
+          ជ្រើស File
+          <input type="file" accept=".xlsx,.xls,.csv,.json" style="display:none" onchange="handleQuickMasterDrop(event)">
+        </label>
+      </div>
+      <div id="upStatus" style="font-size:12px;font-weight:700;color:var(--g);padding:0 16px 8px;display:none"></div>
+
+      <div class="ios-row tap" onclick="syncSharedToCloud(true)">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#007aff">☁️</div>
+          <div>
+            <div class="ios-lbl">Save ទៅ Cloud (Firebase)</div>
+            <div class="ios-sub">ផ្ញើទិន្នន័យមេទៅក្រុមការងារទាំងអស់</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">Save</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row tap" onclick="pullSharedFromCloud(true)">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#5ac8fa">⬇️</div>
+          <div>
+            <div class="ios-lbl">ទាញទិន្នន័យពី Cloud</div>
+            <div class="ios-sub">ទាញ Catalog & រូបថ្មីពីក្រុមការងារ</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">Sync</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('linksDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#8e8e93">🔗</div>
+          <div>
+            <div class="ios-lbl">Server & Link កម្មវិធី</div>
+            <div class="ios-sub">កំណត់ Link Firebase និង Link APK</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">បានភ្ជាប់</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer" id="linksDrawer">
+        <label class="lbl" style="margin-top:0">Firebase Database URL</label>
+        <input class="inp" id="firebaseUrlInput" placeholder="https://..." onchange="saveFirebaseUrl(this.value)">
+        <label class="lbl">Link ទាញយក Android APK</label>
+        <input class="inp" id="apkLinkInput" placeholder="https://.../KHIM-Stock.apk" onchange="saveApkUrl(this.value)">
+      </div>
+    </div>
+
+    <div class="ios-sec-hdr">ពុម្ពអក្សរតារាង (ក្រដាស • ពណ៌ • ឈ្មោះ)</div>
+    <div class="ios-card">
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#5856d6">Aa</div>
+          <div>
+            <div class="ios-lbl">Font តារាងទាំងអស់</div>
+            <div class="ios-sub">ប្តូរព្រមគ្នាទាំង ៣ តារាង</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <select class="ios-select" id="tableFontSelect" onchange="setTableFont(this.value)">
+            <option value="'Kantumruy Pro','Plus Jakarta Sans',sans-serif">Kantumruy Pro</option>
+            <option value="'Noto Sans Khmer',sans-serif">Noto Sans Khmer</option>
+            <option value="'Battambang',sans-serif">Battambang</option>
+            <option value="'Siemreap',sans-serif">Siemreap</option>
+            <option value="'LimonF5',sans-serif">Limon F5</option>
+            <option value="'LimonR1',sans-serif">Limon R1</option>
+            <option value="'LimonR3',sans-serif">Limon R3</option>
+            <option value="'LimonF2',sans-serif">Limon F2</option>
+          </select>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#007aff">🔤</div>
+          <div>
+            <div class="ios-lbl">បញ្ចូល File Font</div>
+            <div class="ios-sub" id="customFontName">.ttf / .otf / .woff2</div>
+          </div>
+        </div>
+        <label class="ios-file-btn">
+          Upload
+          <input type="file" accept=".ttf,.otf,.woff,.woff2" style="display:none" onchange="uploadCustomFont(event)">
+        </label>
+      </div>
+    </div>
+
+    <div class="ios-sec-hdr">ទាញយក & ឧបករណ៍បន្ថែម</div>
+    <div class="ios-card">
+      <div class="ios-row tap" onclick="exportExcel()">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#34c759">📊</div>
+          <div>
+            <div class="ios-lbl">ទាញយក Excel លទ្ធផល</div>
+            <div class="ios-sub" id="stats">រាប់ហើយ 0 កូដ</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">.xlsx</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row tap" onclick="downloadAndroidApk()">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#30b0c7">🤖</div>
+          <div>
+            <div class="ios-lbl">ទាញយក App Android</div>
+            <div class="ios-sub">ដំឡើងលើទូរសព្ទ Android</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-val">APK</span>
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('newCodeDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#ff9500">➕</div>
+          <div>
+            <div class="ios-lbl">បង្កើតកូដថ្មីដោយដៃ</div>
+            <div class="ios-sub">បន្ថែមមុខទំនិញថ្មីចូលតារាង</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer" id="newCodeDrawer">
+        <div class="g2"><input class="inp" id="nCode" placeholder="កូដ ឧ. Y300"><input class="inp" type="number" step="0.01" id="nPrice" placeholder="តម្លៃ ($)"></div>
+        <div class="g2" style="margin-top:6px"><input class="inp" id="nName" placeholder="ឈ្មោះអីវ៉ាន់"><input class="inp" id="nGroup" placeholder="ប្រភេទ"></div>
+        <input class="inp" id="nColors" placeholder="ពណ៌ (ក្បៀស ,)" style="margin-top:6px">
+        <button class="btn" onclick="createProduct()">+ បន្ថែមកូដថ្មី</button>
+      </div>
+
+      <div class="ios-row tap" onclick="toggleDrawer('backupDrawer')">
+        <div class="ios-row-left">
+          <div class="ios-ico" style="background:#636366">💾</div>
+          <div>
+            <div class="ios-lbl">Backup, Cache & លុបចំនួនរាប់</div>
+            <div class="ios-sub">រក្សាទុក, សម្អាត Cache ឬ សម្អាតទិន្នន័យ</div>
+          </div>
+        </div>
+        <div class="ios-right">
+          <span class="ios-chev">›</span>
+        </div>
+      </div>
+      <div class="ios-drawer" id="backupDrawer">
+        <button class="btn dk" style="margin-top:0" onclick="backupJSON()">ទាញ Backup (.json)</button>
+        <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreJSON(event)">
+        <button class="btn lt" onclick="document.getElementById('restoreFile').click()">Restore ពី Backup</button>
+        <button class="btn blue" onclick="refreshAppCacheKeepData()">🔄 សម្អាត Cache កម្មវិធី (រក្សាទុកទិន្នន័យដើម)</button>
+        <button class="btn rd" onclick="resetCounts()">លុបចំនួនរាប់របស់ម៉ាស៊ីននេះ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MAX_GIFS=20;
+const DEFAULT_FIREBASE_DB_URL='https://stok-8afca-default-rtdb.asia-southeast1.firebasedatabase.app';
+const CLOUD_SHARED_NODE='khim_stock_shared_catalog';
+const ANDROID_APK_URL='https://github.com/skhm1111-code/skhm1111-code.github.io/releases/latest/download/KHIM-Stock.apk';
+const DEFAULT_SHELF_SHEET_URL='https://docs.google.com/spreadsheets/d/1Vbaa5NgbN5iL7vLe1skF2TB3YSgHOgN9mTGS1VPunFA/edit?usp=sharing';
+
+const KH_DIGITS={'០':'0','១':'1','២':'2','៣':'3','៤':'4','៥':'5','៦':'6','៧':'7','៨':'8','៩':'9'};
+const normDigits=s=>String(s||'').replace(/[០-៩]/g,d=>KH_DIGITS[d]||d);
+const normCode=s=>normDigits(s).trim().toUpperCase().replace(/\s+/g,'');
+
+const UI_THEMES={
+  green :{g:'#14532d',g2:'#166534',gs:'#dcfce7',rgb:'20,83,45'},
+  blue  :{g:'#0f3d7a',g2:'#1d4ed8',gs:'#dbeafe',rgb:'15,61,122'},
+  purple:{g:'#581c87',g2:'#7e22ce',gs:'#f3e8ff',rgb:'88,28,135'},
+  orange:{g:'#c2410c',g2:'#ea580c',gs:'#ffedd5',rgb:'194,65,12'},
+  slate :{g:'#1e293b',g2:'#334155',gs:'#e2e8f0',rgb:'30,41,59'}
+};
+
+const ICON_PACKS={
+  outline:{
+    label:'Outline ស្អាត',
+    undo:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>`,
+    png :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>`,
+    tg  :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>`,
+    edit:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>`
+  },
+  commerce:{
+    label:'Commerce តាន់',
+    undo:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>`,
+    png :`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 13-5-5h3V7h4v4h3l-5 5z"/></svg>`,
+    tg  :`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>`,
+    edit:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`
+  },
+  classic:{
+    label:'Classic ដើម',
+    undo:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>`,
+    png :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+    tg  :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+    edit:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`
+  }
+};
+
+function applyUiThemeAndIcons(){
+  const tKey=meta.uiTheme && UI_THEMES[meta.uiTheme] ? meta.uiTheme : 'green';
+  const t=UI_THEMES[tKey];
+  document.documentElement.style.setProperty('--g',t.g);
+  document.documentElement.style.setProperty('--g2',t.g2);
+  document.documentElement.style.setProperty('--gs',t.gs);
+  document.documentElement.style.setProperty('--g-rgb',t.rgb);
+  document.querySelectorAll('#themeSwatches .swatch-btn').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.theme===tKey);
+  });
+
+  const pKey=meta.iconPack && ICON_PACKS[meta.iconPack] ? meta.iconPack : 'outline';
+  const pack=ICON_PACKS[pKey];
+  if($('icoUndo'))$('icoUndo').innerHTML=pack.undo;
+  if($('icoPng'))$('icoPng').innerHTML=pack.png;
+  if($('icoTg'))$('icoTg').innerHTML=pack.tg;
+  if($('icoEdit'))$('icoEdit').innerHTML=pack.edit;
+  if($('iconPackVal'))$('iconPackVal').textContent=pack.label;
+  document.querySelectorAll('.icon-pack-card').forEach(card=>{
+    card.classList.toggle('active',card.dataset.pack===pKey);
+  });
+}
+
+function setUiTheme(themeName){meta.uiTheme=themeName;applyUiThemeAndIcons();save('meta');toast('✓ បានប្តូរពណ៌ Theme រួចរាល់');}
+function setIconPack(packName){meta.iconPack=packName;applyUiThemeAndIcons();save('meta');toast('✓ បានប្តូរម៉ូដ Icon: '+ICON_PACKS[packName].label);}
+
+(function initSmoothStars(){
+  const layer=$('starLayer');if(!layer)return;
+  layer.innerHTML='';
+  const spots=[[7,11,0.2],[22,26,1.1],[78,14,0.6],[90,38,1.9],[12,64,2.4],[68,75,1.4],[92,84,0.4],[44,9,1.7]];
+  spots.forEach(([x,y,delay])=>{
+    const s=document.createElement('div');s.className='star-spark';
+    s.style.left=x+'%';s.style.top=y+'%';s.style.animationDelay=delay+'s';layer.appendChild(s);
+  });
+})();
+
+(function setupAppIcon(){
+  try{
+    const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');
+    x.fillStyle='#ffffff';x.fillRect(0,0,512,512);
+    x.save();x.translate(46,22);x.scale(4.2,4.2);
+    x.fillStyle='#84cc16';x.strokeStyle='#14532d';x.lineWidth=4.2;x.lineJoin='round';
+    x.beginPath();x.moveTo(55,14);x.lineTo(82,29);x.lineTo(55,44);x.lineTo(28,29);x.closePath();x.fill();x.stroke();
+    x.beginPath();x.moveTo(42,21.5);x.lineTo(69,36.5);x.stroke();
+    x.fillStyle='#16a34a';
+    x.beginPath();x.moveTo(55,44);x.lineTo(82,29);x.lineTo(82,62);x.lineTo(55,77);x.closePath();x.fill();x.stroke();
+    x.fillStyle='#14532d';
+    x.beginPath();x.moveTo(65,38.5);x.lineTo(72,34.5);x.lineTo(72,48);x.lineTo(65,52);x.closePath();x.fill();
+    x.fillStyle='#ffffff';
+    x.beginPath();x.moveTo(28,29);x.lineTo(55,44);x.lineTo(55,77);x.lineTo(28,62);x.closePath();x.fill();x.stroke();
+    x.fillStyle='#84cc16';x.fillRect(43,40,6,31);x.fillRect(31,50,15,6);
+    x.beginPath();x.moveTo(32,45);x.lineTo(23,53);x.lineTo(32,61);x.closePath();x.fill();
+    x.strokeStyle='#15803d';x.lineWidth=8.5;x.lineCap='round';x.lineJoin='round';
+    x.beginPath();x.moveTo(13,33);x.lineTo(13,69);x.stroke();
+    x.beginPath();x.moveTo(27,36);x.lineTo(14,51);x.lineTo(27,67);x.stroke();
+    x.fillStyle='#16a34a';x.strokeStyle='#ffffff';x.lineWidth=3.5;
+    x.beginPath();x.arc(77,69,14.5,0,Math.PI*2);x.fill();x.stroke();
+    x.strokeStyle='#ffffff';x.lineWidth=3.4;
+    x.beginPath();x.moveTo(71.5,69);x.lineTo(75.2,72.8);x.lineTo(82.5,65);x.stroke();
+    x.restore();
+    x.fillStyle='#14532d';x.textAlign='center';
+    x.font='800 66px "Plus Jakarta Sans",sans-serif';x.fillText('KHIM',256,422);
+    x.font='800 32px "Plus Jakarta Sans",sans-serif';x.fillText('STOCK',256,464);
+    const pngUrl=c.toDataURL('image/png');
+    $('iosIcon').href=pngUrl;$('favIcon').href=pngUrl;
+    const manifest={name:'KHIM - រាប់ស្តុក',short_name:'KHIM Stock',start_url:location.href,display:'standalone',background_color:'#ffffff',theme_color:'#14532d',icons:[{src:pngUrl,sizes:'512x512',type:'image/png'}]};
+    $('manifestLink').href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
+  }catch(e){}
+})();
+
+const SAMPLE=[{shortCode:'Y158',name:'ច្រាស់ដុសធ្មេញ',group:'ទូទៅ',price:0.45,variants:[
+  {pCode:'P0080972',barcode:'6930114380306',color:'ចំនួនរាប់',sysStock:564}]}];
+
+let catalog=[];
+let ledger={};
+let meta={
+  active:'',sync:'',exported:{},logoFlipped:false,stageEnabled:true,darkMode:false,updatedAt:0,
+  uiTheme:'green',iconPack:'outline',
+  apkUrl:'',firebaseUrl:DEFAULT_FIREBASE_DB_URL,
+  tableFont:"'Kantumruy Pro','Plus Jakarta Sans',sans-serif",
+  customFontData:'',customFontLabel:''
+};
+let gifs=[], gifIdx=0;
+let index=new Map(), dups=new Set();
+let shelfCodeIndex=new Map();
+let undoStack=[], hlKey=null;
+let isSyncingCloud=false;
+
+const vKey=(p,v)=>v.pCode?'p:'+v.pCode:'c:'+p.shortCode+'__'+v.color;
+const cnt=(p,v)=>ledger[vKey(p,v)]?.n||0;
+const counted=(p,v)=>!!ledger[vKey(p,v)];
+const curP=()=>catalog.find(p=>p.shortCode===meta.active)||catalog[0];
+const fmtDate=t=>{const d=t?new Date(t):new Date();return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getFullYear()).slice(-2)};
+
+function getFirebaseUrl(){return (meta.firebaseUrl && meta.firebaseUrl.trim().replace(/\/+$/,'')) || DEFAULT_FIREBASE_DB_URL;}
+function saveFirebaseUrl(val){meta.firebaseUrl=(val||'').trim().replace(/\/+$/,'') || DEFAULT_FIREBASE_DB_URL;save('meta');toast('បានរក្សាទុក Firebase URL');pullSharedFromCloud(true);}
+
+function applyTableFontStyle(fontCss, customDataUrl, customName){
+  if(customDataUrl){
+    let stEl=$('dynamicCustomFontStyle');
+    if(!stEl){stEl=document.createElement('style');stEl.id='dynamicCustomFontStyle';document.head.appendChild(stEl);}
+    stEl.textContent=`@font-face{font-family:'UserUploadedKhmerFont';src:url('${customDataUrl}');}`;
+  }
+  const chosen=fontCss || "'Kantumruy Pro','Plus Jakarta Sans',sans-serif";
+  document.documentElement.style.setProperty('--table-font',chosen);
+  const sel=$('tableFontSelect');
+  if(sel){
+    if(chosen.includes('UserUploadedKhmerFont') && !sel.querySelector("option[value*='UserUploadedKhmerFont']")){
+      const opt=document.createElement('option');
+      opt.value="'UserUploadedKhmerFont',sans-serif";
+      opt.textContent=(customName||'Custom Font')+' (Uploaded)';
+      sel.appendChild(opt);
+    }
+    sel.value=chosen;
+  }
+  if($('customFontName') && customName)$('customFontName').textContent='កំពុងប្រើ Font៖ '+customName;
+}
+
+function setTableFont(val){meta.tableFont=val;applyTableFontStyle(val,meta.customFontData,meta.customFontLabel);save('meta');scheduleSharedPush();toast('បានប្តូរ Font គ្រប់តារាងរួចរាល់');}
+function uploadCustomFont(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    if(typeof rd.result==='string'){
+      meta.customFontData=rd.result;meta.customFontLabel=f.name;meta.tableFont="'UserUploadedKhmerFont',sans-serif";
+      applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);save('meta');
+      toast('✓ បញ្ចូល Font '+f.name+' រួចរាល់!');
+    }
+  };
+  rd.readAsDataURL(f);ev.target.value='';
+}
+
+function getApkUrl(){return (meta.apkUrl && meta.apkUrl.trim()) || ANDROID_APK_URL;}
+function saveApkUrl(val){meta.apkUrl=(val||'').trim();save('meta');toast('បានរក្សាទុក Link APK');}
+function downloadAndroidApk(){const url=getApkUrl();if(!url){toast('សូមដាក់ Link File .apk ក្នុង Settings ជាមុនសិន','warn');openM('adminModal');return;}window.open(url,'_blank','noopener');}
+function applyHeaderFlip(){const hdr=$('mainHeader');if(hdr)hdr.classList.toggle('flipped',!!meta.logoFlipped);}
+
+let stageSwapTimer;
+function toggleDrawer(id){const el=$(id);if(el)el.classList.toggle('open');}
+function toggleStageEnabled(on){meta.stageEnabled=!!on;applyStageVisibility();save('meta');toast(meta.stageEnabled?'បានបើករូបភាពមានចលនា':'បានបិទរូបភាពមានចលនា');}
+function applyStageVisibility(){
+  const enabled=meta.stageEnabled!==false;
+  const st=$('centerStage');if(st)st.style.visibility=enabled?'visible':'hidden';
+  if($('toggleStageSwitch'))$('toggleStageSwitch').checked=enabled;
+  if($('gifStatusSub'))$('gifStatusSub').textContent=enabled?'កំពុងបើកបង្ហាញលើក្បាលកម្មវិធី':'បានបិទបង្ហាញ (ចុចបើកវិញបាន)';
+}
+
+function renderStage(instant=false){
+  const img=$('stageImg'), def=$('defaultDancer');
+  clearTimeout(stageSwapTimer);applyStageVisibility();
+  if(!gifs.length){img.style.display='none';def.style.display='flex';def.classList.remove('fading');return;}
+  if(gifIdx>=gifs.length)gifIdx=0;
+  const nextSrc=gifs[gifIdx];def.style.display='none';
+  if(instant || img.style.display==='none' || !img.src){img.src=nextSrc;img.style.display='block';img.classList.remove('fading');return;}
+  img.classList.add('fading');
+  stageSwapTimer=setTimeout(()=>{img.src=nextSrc;img.classList.remove('fading');},220);
+}
+
+function renderGifGrid(){
+  const grid=$('gifGrid');if(!grid)return;
+  $('gifCountText').textContent=`កំពុងប្រើ ${gifs.length} / ${MAX_GIFS} រូប`;
+  if($('gifCountBadge'))$('gifCountBadge').textContent=`${gifs.length} រូប`;
+  if(!gifs.length){grid.innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--mut);padding:6px 0">មិនទាន់មានរូប GIF/Sticker ទេ</div>';return;}
+  grid.innerHTML=gifs.map((src,i)=>`<div class="gif-slot" title="រូបទី ${i+1}"><img src="${src}" alt="GIF ${i+1}"><button class="gif-rm" onclick="removeGif(${i})" title="លុប">×</button></div>`).join('');
+}
+
+function addGifFiles(ev){
+  const files=[...(ev.target.files||[])];ev.target.value='';if(!files.length)return;
+  const slotsLeft=MAX_GIFS-gifs.length;if(slotsLeft<=0){toast(`ពេញ ${MAX_GIFS} រូបហើយ!`,'warn');return;}
+  const picked=files.slice(0,slotsLeft);
+  let done=0, addedCount=0;
+  picked.forEach(file=>{
+    const rd=new FileReader();
+    rd.onload=()=>{if(typeof rd.result==='string'&&gifs.length<MAX_GIFS){gifs.push(rd.result);addedCount++;}done++;if(done===picked.length){meta.updatedAt=Date.now();save('gifs','meta');if(gifs.length===addedCount)gifIdx=0;renderStage(true);renderGifGrid();syncSharedToCloud(false);toast(`✓ Add រូបវិលជុំបាន +${addedCount} រូប (${gifs.length}/${MAX_GIFS})`);}};
+    rd.onerror=()=>{done++;if(done===picked.length){save('gifs');renderStage(true);renderGifGrid();}};
+    rd.readAsDataURL(file);
+  });
+}
+
+function removeGif(i){gifs.splice(i,1);if(gifIdx>=gifs.length)gifIdx=0;meta.updatedAt=Date.now();save('gifs','meta');renderStage(true);renderGifGrid();syncSharedToCloud(false);}
+function clearAllGifs(){if(!gifs.length)return toast('មិនមានរូបត្រូវលុបទេ','warn');if(!confirm('លុបរូបវិលជុំទាំងអស់ចេញ?'))return;gifs=[];gifIdx=0;meta.updatedAt=Date.now();save('gifs','meta');renderStage(true);renderGifGrid();syncSharedToCloud(false);toast('បានលុបរូបវិលជុំទាំងអស់');}
+
+let sharedPushTimer;
+function scheduleSharedPush(){if(!getFirebaseUrl())return;clearTimeout(sharedPushTimer);sharedPushTimer=setTimeout(()=>syncSharedToCloud(false),700);}
+function updateCloudStrip(title,sub){if($('cloudStatusLabel'))$('cloudStatusLabel').textContent=title;if($('cloudSubLabel'))$('cloudSubLabel').textContent=sub;}
+
+async function syncSharedToCloud(notify){
+  const fbUrl=getFirebaseUrl();if(!fbUrl || isSyncingCloud)return;
+  isSyncingCloud=true;
+  updateCloudStrip('⏳ កំពុង Save ទៅ Firebase...','សូមរង់ចាំបន្តិច');
+  try{
+    meta.updatedAt=Date.now();
+    const res=await fetch(`${fbUrl}/${CLOUD_SHARED_NODE}.json`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({updatedAt:meta.updatedAt,gifs,catalog,tableFont:meta.tableFont,shelfRacks:shelfData.racks})
+    });
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    setBadge('☁️ Shared Synced');updateCloudStrip('☁️ បាន Save ទៅ Firebase រួចរាល់',`${catalog.length} កូដ • ក្រុមការងារប្រើរួមគ្នាបានភ្លាម`);
+    if(notify)toast('✓ Save & ផ្ញើទៅ Firebase រួចរាល់!');
+  }catch(e){
+    setBadge('Local · Offline');updateCloudStrip('⚠️ Save ក្នុងម៉ាស៊ីន','ចុច Settings ដើម្បីពិនិត្យ Firebase');
+    if(notify)toast('Sync មិនបាន','err');
+  }finally{
+    isSyncingCloud=false;
+  }
+}
+
+async function pullSharedFromCloud(notify){
+  const fbUrl=getFirebaseUrl();if(!fbUrl || isSyncingCloud)return;
+  isSyncingCloud=true;
+  try{
+    const res=await fetch(`${fbUrl}/${CLOUD_SHARED_NODE}.json?_t=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();if(!data){if(notify)toast('មិនទាន់មាន Catalog លើ Cloud ទេ','warn');return;}
+    if(Array.isArray(data.gifs) && data.gifs.length){gifs=data.gifs.slice(0,MAX_GIFS);gifIdx=0;renderStage(true);renderGifGrid();save('gifs');}
+    if(Array.isArray(data.catalog) && data.catalog.length){
+      const isSampleOnly=(catalog.length<=1 && catalog[0]?.shortCode==='Y158' && catalog[0]?.variants?.[0]?.pCode==='P0080972');
+      if(isSampleOnly || notify || (data.updatedAt && data.updatedAt > (meta.updatedAt||0))){
+        catalog=data.catalog;buildIndex();save('catalog');
+      }
+    }
+    if(data.shelfRacks && typeof data.shelfRacks==='object' && Object.keys(data.shelfRacks).length){
+      const cloudCodes=countTotalShelfCodes(data.shelfRacks);
+      const localCodes=countTotalShelfCodes(shelfData.racks);
+      if(cloudCodes>=localCodes || localCodes===0){
+        shelfData.racks={...shelfData.racks,...data.shelfRacks};
+        rebuildShelfIndex();saveShelfData();updateShelfToggleText();
+      }
+    }
+    if(data.tableFont && !meta.customFontData){meta.tableFont=data.tableFont;applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);save('meta');}
+    render();setBadge('☁️ Shared Synced');updateCloudStrip('☁️ ទិន្នន័យរួមសកម្ម',`${catalog.length} កូដ`);
+    if(notify)toast('✓ ទាញ Catalog ថ្មីពី Firebase រួចរាល់!');
+  }catch(e){if(notify)toast('ទាញពី Firebase មិនបាន','err');}
+  finally{isSyncingCloud=false;}
+}
+
+function handleQuickMasterDrop(ev){
+  const file=ev.target.files[0];if(!file)return;
+  if(file.name.toLowerCase().endsWith('.json')){
+    const r=new FileReader();
+    r.onload=async()=>{
+      try{
+        const d=JSON.parse(r.result);const list=Array.isArray(d)?d:(Array.isArray(d.catalog)?d.catalog:null);
+        if(!list||!list.length)throw new Error('Invalid JSON');
+        catalog=list;if(d.ledger&&typeof d.ledger==='object')ledger=d.ledger;if(Array.isArray(d.gifs))gifs=d.gifs.slice(0,MAX_GIFS);
+        meta.sync=fmtDate();meta.active=catalog[0].shortCode;buildIndex();renderStage(true);save('catalog','ledger','meta','gifs');render();
+        await syncSharedToCloud(true);
+      }catch(err){toast('File JSON មិនត្រឹមត្រូវ!','err');}
+      ev.target.value='';
+    };
+    r.readAsText(file);
+  }else{importExcel(ev,true);}
+}
+
+function nextGifSmooth(){if(gifs.length>1){gifIdx=(gifIdx+1)%gifs.length;renderStage(false);}}
+function handleStageClick(){nextGifSmooth();triggerBlessingDance();}
+
+let gifIntervalId=null;
+function startGifTimer(){
+  if(gifIntervalId)clearInterval(gifIntervalId);
+  gifIntervalId=setInterval(()=>nextGifSmooth(),3500);
+}
+
+(function initLogoDrag(){
+  const lw=$('logoWrap');if(!lw)return;
+  let startX=0, moved=false, dragging=false;
+  lw.addEventListener('pointerdown',e=>{dragging=true;moved=false;startX=e.clientX;lw.classList.add('dragging');try{lw.setPointerCapture(e.pointerId)}catch(_){}});
+  lw.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-startX;if(Math.abs(dx)>18){moved=true;const shouldFlip=dx<0;if(meta.logoFlipped!==shouldFlip){meta.logoFlipped=shouldFlip;applyHeaderFlip();save('meta');}startX=e.clientX;}});
+  const endDrag=()=>{if(!dragging)return;dragging=false;lw.classList.remove('dragging');if(!moved)handleLogoClick();};
+  lw.addEventListener('pointerup',endDrag);lw.addEventListener('pointercancel',endDrag);
+})();
+
+const BLESSINGS=['សាធុ! រាប់ស្តុកត្រូវ ១០០%! 🎉','សាធុ! ស្រស់ស្រាយ អត់ Stress! ✨','សាធុ! ជោគជ័យ លក់ដាច់ខ្លាំង! 💃','សាធុ! រាប់រួចលឿនរហ័ស! 🎊'];
+let blessIdx=0, partyTimer, bubbleTimer;
+function triggerBlessingDance(customMsg){
+  const stage=$('centerStage'), bubble=$('blessingBubble'), msg=customMsg||BLESSINGS[blessIdx++ % BLESSINGS.length];
+  if(stage){stage.classList.remove('party');void stage.offsetWidth;stage.classList.add('party');clearTimeout(partyTimer);partyTimer=setTimeout(()=>stage.classList.remove('party'),1900);}
+  if(bubble){bubble.textContent=msg;bubble.classList.add('show');clearTimeout(bubbleTimer);bubbleTimer=setTimeout(()=>bubble.classList.remove('show'),2100);}
+  const rect=stage?stage.getBoundingClientRect():{left:window.innerWidth*0.5,top:30,width:44,height:42};
+  const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+  const emojis=['🎉','✨','🎊','💃','🕺','🙏','💚'], layer=$('burstLayer');
+  if(layer){
+    for(let i=0;i<14;i++){
+      const el=document.createElement('span');el.className='burst-piece';el.textContent=emojis[i%emojis.length];
+      const angle=(Math.PI*2/14)*i + (Math.random()*0.35 - 0.175), dist=55 + Math.random()*95;
+      el.style.left=cx+'px';el.style.top=cy+'px';
+      el.style.setProperty('--dx',(Math.cos(angle)*dist).toFixed(1)+'px');
+      el.style.setProperty('--dy',(Math.sin(angle)*dist - 25).toFixed(1)+'px');
+      el.style.setProperty('--rot',(Math.random()*360 - 180)+'deg');
+      el.style.fontSize=(16 + Math.floor(Math.random()*9))+'px';
+      layer.appendChild(el);setTimeout(()=>el.remove(),1350);
+    }
+  }
+}
+
+function productLastCountTime(p){return Math.max(0,...p.variants.map(v=>ledger[vKey(p,v)]?.t||0));}
+function isProductUnsavedExport(p){if(!p)return false;const lastCnt=productLastCountTime(p);if(!lastCnt)return false;return ((meta.exported&&meta.exported[p.shortCode])||0) < lastCnt;}
+function markExported(code){if(!meta.exported)meta.exported={};meta.exported[code]=Date.now();save('meta');render();}
+function handleLogoClick(){const unsavedCount=catalog.filter(p=>isProductUnsavedExport(p)).length;if(unsavedCount>0)openUnsavedModal();else triggerBlessingDance('សាធុ! រាប់រួច និង Save រួចរាល់! 🎉');}
+
+/* FULL-SCREEN LIQUID GLASS CASH OUT / CASIO CALCULATOR */
+const CALC_STORAGE_KEY='khim_calc_state_v1';
+let calcState={expr:'',display:'0',justEval:false,isOpen:false};
+function loadCalcState(){try{const raw=localStorage.getItem(CALC_STORAGE_KEY);if(raw){const p=JSON.parse(raw);calcState={expr:p.expr||'',display:p.display||'0',justEval:!!p.justEval,isOpen:false};}}catch(_){}renderCalc();}
+function saveCalcState(){try{localStorage.setItem(CALC_STORAGE_KEY,JSON.stringify({expr:calcState.expr,display:calcState.display,justEval:calcState.justEval}));}catch(_){}}
+function renderCalc(){if($('calcExpr'))$('calcExpr').textContent=calcState.expr.replace(/\*/g,'×').replace(/\//g,'÷');if($('calcVal'))$('calcVal').textContent=calcState.display||'0';}
+function setCalcMode(open){
+  calcState.isOpen=!!open;
+  const m=$('mainAppContainer'), hdr=$('mainHeader'), c=$('calcScreen');
+  if(m)m.style.display=calcState.isOpen?'none':'block';
+  if(hdr)hdr.style.display=calcState.isOpen?'none':'grid';
+  if(c)c.classList.toggle('active',calcState.isOpen);
+  if(calcState.isOpen){$('scanInput')?.blur();$('drop')?.classList.remove('show');renderCalc();}
+  else{$('scanInput')?.focus();}
+}
+function playCordClickSound(openingCalc){
+  try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const now=ac.currentTime,bufLen=Math.floor(ac.sampleRate*0.035),buf=ac.createBuffer(1,bufLen,ac.sampleRate),ch=buf.getChannelData(0);for(let i=0;i<bufLen;i++)ch[i]=(Math.random()*2-1)*Math.exp(-i/(bufLen*0.22));const n=ac.createBufferSource();n.buffer=buf;const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.setValueAtTime(openingCalc?2100:1650,now);bp.Q.setValueAtTime(2.6,now);const ng=ac.createGain();ng.gain.setValueAtTime(0.45,now);ng.gain.exponentialRampToValueAtTime(0.001,now+0.035);n.connect(bp);bp.connect(ng);ng.connect(ac.destination);n.start(now);const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(openingCalc?340:250,now);o.frequency.exponentialRampToValueAtTime(openingCalc?125:85,now+0.055);g.gain.setValueAtTime(0.32,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.06);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+0.065);}catch(_){}
+  if(navigator.vibrate)navigator.vibrate(20);
+}
+function togglePullCalculator(){const nextOpen=!calcState.isOpen,cord=$('pullCordBtn');if(cord){cord.classList.add('pulled');setTimeout(()=>cord.classList.remove('pulled'),440);}playCordClickSound(nextOpen);setCalcMode(nextOpen);}
+(function initPullCord(){
+  const btn=$('pullCordBtn');if(!btn)return;
+  let startY=0,pulling=false,triggered=false;
+  btn.addEventListener('pointerdown',e=>{pulling=true;triggered=false;startY=e.clientY;btn.classList.add('pulled');try{btn.setPointerCapture(e.pointerId)}catch(_){}});
+  btn.addEventListener('pointermove',e=>{if(!pulling||triggered)return;if(e.clientY-startY>14){triggered=true;togglePullCalculator();}});
+  const finish=()=>{if(!pulling)return;pulling=false;setTimeout(()=>btn.classList.remove('pulled'),420);if(!triggered){triggered=true;togglePullCalculator();}};
+  btn.addEventListener('pointerup',finish);btn.addEventListener('pointercancel',finish);
+})();
+function evalSafeExpr(rawExpr){const cleaned=rawExpr.replace(/[^0-9+\-*/.%().\s]/g,'').trim();if(!cleaned)return 0;const pct=cleaned.replace(/(\d+(?:\.\d+)?)%/g,'($1/100)');const val=Function('"use strict";return ('+pct+')')();if(typeof val!=='number'||!isFinite(val))return 'Error';return Number(val.toFixed(8)).toString();}
+function pressCalcKey(k){
+  if(k==='AC'){calcState.expr='';calcState.display='0';calcState.justEval=false;saveCalcState();renderCalc();return;}
+  if(k==='DEL'){if(calcState.justEval){calcState.expr='';calcState.display='0';calcState.justEval=false;}else if(calcState.expr.length>0){calcState.expr=calcState.expr.slice(0,-1);calcState.display=calcState.expr||'0';}else calcState.display='0';saveCalcState();renderCalc();return;}
+  if(k==='='){if(!calcState.expr)return;calcState.display=String(evalSafeExpr(calcState.expr));calcState.justEval=true;saveCalcState();renderCalc();return;}
+  const isOp=['+','-','*','/','%'].includes(k);
+  if(calcState.justEval){calcState.expr=isOp?((calcState.display==='Error'?'0':calcState.display)+k):(k==='.'?'0.':k);calcState.justEval=false;}
+  else{
+    if(k==='.'){const parts=calcState.expr.split(/[+\-*/%]/),lastPart=parts[parts.length-1]||'';if(lastPart.includes('.'))return;calcState.expr=calcState.expr?(isOp?calcState.expr+'0.':calcState.expr+'.'):'0.';}
+    else if(isOp){if(!calcState.expr)calcState.expr=(calcState.display||'0')+k;else if(/[+\-*/%]$/.test(calcState.expr))calcState.expr=calcState.expr.slice(0,-1)+k;else calcState.expr+=k;}
+    else calcState.expr+=k;
+  }
+  calcState.display=calcState.expr||'0';saveCalcState();renderCalc();
+}
+function flashBtn(el){if(!el)return;el.classList.add('is-pressed');clearTimeout(el._pt);el._pt=setTimeout(()=>el.classList.remove('is-pressed'),120);}
+$('calcKeypad')?.addEventListener('pointerdown',e=>{const btn=e.target.closest('[data-k]');if(!btn)return;e.preventDefault();flashBtn(btn);pressCalcKey(btn.dataset.k);});
+function copyCalcResult(){copyTextFallback(calcState.display||'0','Copy លេខ '+(calcState.display||'0')+' រួចរាល់');}
+function applyCalcToStock(){const rawNum=parseFloat(calcState.display);if(isNaN(rawNum))return toast('លេខមិនត្រឹមត្រូវ','err');const qty=Math.max(0,Math.round(rawNum)),p=curP();if(!p)return;const tv=p.variants.find(v=>vKey(p,v)===hlKey)||p.variants[0];if(!tv)return;setCount(p,tv,qty);setCalcMode(false);render();toast('✓ បានដាក់លេខ '+qty+' ចូល '+p.shortCode);}
+loadCalcState();
+
+/* STORAGE & SAFE CACHE */
+const DB_NAME='khim_stock_v2', LS_KEY='khim_stock_backup_v2';
+let _db;
+function idb(){return _db||(_db=new Promise((res,rej)=>{try{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onblocked=()=>rej(new Error('blocked'));}catch(e){rej(e)}}));}
+async function idbGet(k){try{const db=await idb();return await new Promise((res,rej)=>{const q=db.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}catch(e){try{const raw=localStorage.getItem(LS_KEY);return raw?JSON.parse(raw)[k]:undefined;}catch(_){return undefined}}}
+async function idbPutMany(o){
+  try{
+    const safe={...o};
+    if(Array.isArray(safe.gifs)&&JSON.stringify(safe.gifs).length>1500000)delete safe.gifs;
+    const prev=JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+    const merged={...prev,...safe};
+    if(JSON.stringify(merged).length<4200000)localStorage.setItem(LS_KEY,JSON.stringify(merged));
+    else{delete merged.gifs;localStorage.setItem(LS_KEY,JSON.stringify(merged));}
+  }catch(_){}
+  const db=await idb();return new Promise((res,rej)=>{const t=db.transaction('kv','readwrite'),s=t.objectStore('kv');for(const k in o)s.put(o[k],k);t.oncomplete=res;t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error);});
+}
+const dirty=new Set();let saveTimer;
+function save(...keys){keys.forEach(k=>dirty.add(k));setBadge('កំពុងរក្សា…');clearTimeout(saveTimer);saveTimer=setTimeout(flush,80);}
+async function flush(){
+  clearTimeout(saveTimer);if(!dirty.size)return;
+  const src={catalog,ledger,meta,gifs},out={};dirty.forEach(k=>out[k]=src[k]);dirty.clear();
+  try{await idbPutMany(out);setBadge('✓ Saved '+(meta.sync?'· '+meta.sync:''));}catch(e){setBadge('✓ Local '+(meta.sync?'· '+meta.sync:''));}
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
+window.addEventListener('pagehide',flush);
+function setBadge(t,bad){const b=$('saveBadge');b.textContent=t;b.classList.toggle('bad',!!bad)}
+
+async function refreshAppCacheKeepData(){
+  await flush();saveShelfData();
+  try{
+    if('caches' in window){const names=await caches.keys();await Promise.all(names.map(n=>caches.delete(n)));}
+    if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}
+  }catch(_){}
+  toast('✓ សម្អាត Cache រួចរាល់ (ទិន្នន័យដើមនៅដដែល)! កំពុងផ្ទុកឡើងវិញ...');
+  setTimeout(()=>location.reload(),700);
+}
+
+let ac;
+function beep(ok){
+  try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type=ok?'sine':'square';o.frequency.value=ok?1200:220;g.gain.value=.15;o.start();o.stop(ac.currentTime+(ok?.08:.35));}catch(e){}
+  if(navigator.vibrate)navigator.vibrate(ok?30:[120,60,120]);
+}
+let toastT;
+function toast(msg,type='ok'){const t=$('toast');t.textContent=msg;t.className=type;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',type==='err'?3200:2600)}
+
+function buildIndex(){
+  index=new Map();dups=new Set();
+  catalog.forEach(p=>p.variants.forEach(v=>{
+    [v.barcode,v.pCode].forEach(k=>{
+      if(!k)return;const kl=normCode(k),ex=index.get(kl);
+      if(ex&&ex.v!==v)dups.add(kl);else index.set(kl,{p,v});
+    });
+  }));
+}
+
+function bump(p,v,d){const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null,cur=prev||0,n=Math.max(0,cur+d);undoStack.push({key,prev});if(undoStack.length>50)undoStack.shift();ledger[key]={n,t:Date.now()};save('ledger','meta');}
+function setCount(p,v,n){const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null;undoStack.push({key,prev});ledger[key]={n:Math.max(0,n|0),t:Date.now()};save('ledger');}
+function undo(){const u=undoStack.pop();if(!u)return toast('គ្មានអ្វីត្រូវ Undo','warn');if(u.prev===null)delete ledger[u.key];else ledger[u.key]={n:u.prev,t:Date.now()};save('ledger');render();toast('Undo រួចរាល់');}
+
+/* តារាងឆាន — 3 ដល់ 5 ប្រឡោះ (ឆ្វេងទៅស្តាំ) និង ភ្ជាប់ Link បាន 2 */
+const SHELF_KEY='khim_shelf_map_v4';
+const TIER_NAMES={1:'ជួរ ១',2:'ជួរ ២',3:'ជួរ ៣',4:'ជួរ ៤'};
+const SLOT_NAMES={0:'ប្រឡោះ ១',1:'ប្រឡោះ ២',2:'ប្រឡោះ ៣',3:'ប្រឡោះ ៤',4:'ប្រឡោះ ៥'};
+
+let shelfData={
+  enabled:true,
+  selectedRack:'K-1',
+  sheetUrl:DEFAULT_SHELF_SHEET_URL,
+  prefix:'',
+  sheetUrl2:'',
+  prefix2:'A',
+  lastSynced:'',
+  editingSlot:null,
+  activeLocIdx:0,
+  rackCols:{'K-1':3,'K-2':3},
+  rackSource:{'K-1':1,'K-2':1},
+  racks:{
+    'K-1':{'1_0':['Z293'],'1_1':['Y336'],'1_2':['R044'],'2_0':['Y370'],'2_1':['Y337'],'3_0':['Y542'],'3_1':['Y669'],'3_2':['Y158'],'4_1':['Y337']},
+    'K-2':{'1_1':['U249'],'2_0':['Z289','U936'],'3_0':['Y865'],'3_2':['Y517'],'4_1':['U310'],'4_2':['Y629']}
+  }
+};
+
+function getRackColCount(rackId){
+  if(shelfData.rackCols && shelfData.rackCols[rackId])return Math.max(3,Math.min(5,shelfData.rackCols[rackId]));
+  const slots=shelfData.racks[rackId]||{};
+  let maxIdx=2;
+  Object.keys(slots).forEach(k=>{const sIdx=parseInt(k.split('_')[1],10)||0;if(sIdx>maxIdx)maxIdx=sIdx;});
+  return Math.max(3,Math.min(5,maxIdx+1));
+}
+function getSlotIndicesLTR(colCount){
+  const n=Math.max(3,Math.min(5,colCount||3));
+  const arr=[];for(let i=0;i<n;i++)arr.push(i);return arr;
+}
+function parsePrefixList(str){return String(str||'').split(/[\s,;/]+/).map(x=>normDigits(x).trim().toUpperCase()).filter(Boolean);}
+function matchesPrefixRules(codeOrRack, prefixList){
+  if(!prefixList || !prefixList.length)return true;
+  const target=normCode(codeOrRack);
+  const lead=(target.match(/^[A-Z]+/)||[''])[0];
+  return prefixList.some(p=>target.startsWith(p) || lead===p);
+}
+
+function rebuildShelfIndex(){
+  shelfCodeIndex=new Map();
+  const racks=shelfData.racks||{};
+  for(const rackId of Object.keys(racks)){
+    const slots=racks[rackId]||{};
+    const srcNum=(shelfData.rackSource && shelfData.rackSource[rackId])||1;
+    for(const slotKey of Object.keys(slots)){
+      const parts=String(slotKey).split('_');
+      const tier=parseInt(parts[0],10)||1;
+      const slot=parseInt(parts[1],10)||0;
+      for(const rawCode of (slots[slotKey]||[])){
+        const c=normCode(rawCode);if(!c)continue;
+        if(!shelfCodeIndex.has(c))shelfCodeIndex.set(c,[]);
+        const list=shelfCodeIndex.get(c);
+        if(!list.some(x=>x.rackId===rackId && x.tier===tier && x.slot===slot))list.push({rackId,tier,slot,source:srcNum});
+      }
+    }
+  }
+}
+
+function findCodeLocations(shortCode){
+  const target=normCode(shortCode);if(!target)return[];
+  if(shelfCodeIndex.has(target)){
+    const all=[...shelfCodeIndex.get(target)];
+    const p1=parsePrefixList(shelfData.prefix), p2=parsePrefixList(shelfData.prefix2);
+    all.sort((a,b)=>{
+      const aM2=p2.length && matchesPrefixRules(target,p2) && a.source===2;
+      const bM2=p2.length && matchesPrefixRules(target,p2) && b.source===2;
+      if(aM2!==bM2)return aM2?-1:1;
+      const aM1=p1.length && matchesPrefixRules(target,p1) && a.source===1;
+      const bM1=p1.length && matchesPrefixRules(target,p1) && b.source===1;
+      if(aM1!==bM1)return aM1?-1:1;
+      return 0;
+    });
+    return all;
+  }
+  const hits=[], racks=shelfData.racks||{};
+  for(const rackId of Object.keys(racks)){
+    const slots=racks[rackId]||{}, cols=getRackColCount(rackId);
+    for(let t=4;t>=1;t--){
+      for(let s=0;s<cols;s++){
+        if((slots[`${t}_${s}`]||[]).some(c=>normCode(c)===target)){
+          hits.push({rackId,tier:t,slot:s,source:(shelfData.rackSource&&shelfData.rackSource[rackId])||1});
+        }
+      }
+    }
+  }
+  return hits;
+}
+
+function findShelfCodesByQuery(rawQuery){
+  const q=normCode(rawQuery);if(!q)return[];
+  const matchedCodes=[];
+  for(const [code,locs] of shelfCodeIndex.entries()){
+    if(code===q || code.startsWith(q) || code.includes(q)){
+      matchedCodes.push({code,locs,exact:code===q,prefix:code.startsWith(q)});
+    }
+  }
+  matchedCodes.sort((a,b)=>{
+    if(a.exact!==b.exact)return a.exact?-1:1;
+    if(a.prefix!==b.prefix)return a.prefix?-1:1;
+    return a.code.localeCompare(b.code,undefined,{numeric:true});
+  });
+  return matchedCodes;
+}
+
+function scan(raw){
+  const q=normCode(raw);if(!q)return false;
+  const hit=index.get(q);
+  if(hit){
+    meta.active=hit.p.shortCode;hlKey=vKey(hit.p,hit.v);shelfData.activeLocIdx=0;
+    bump(hit.p,hit.v,1);render();beep(true);
+    const sHits=findCodeLocations(hit.p.shortCode);
+    updateSearchShelfBanner(hit.p.shortCode,sHits);
+    announceShelfLocation(hit.p.shortCode);
+    if(dups.has(q))toast('⚠ Barcode ស្ទួន!','warn');
+    return true;
+  }
+  const p=catalog.find(x=>normCode(x.shortCode)===q);
+  if(p){selectProduct(p.shortCode);return true}
+  const sHits=findCodeLocations(q);
+  if(sHits.length){
+    shelfData.selectedRack=sHits[0].rackId;shelfData.activeLocIdx=0;saveShelfData();
+    updateSearchShelfBanner(q,sHits);announceShelfLocation(q);beep(true);
+    return true;
+  }
+  return false;
+}
+
+function onEnter(){
+  const inp=$('scanInput'),rawVal=inp.value.trim();if(!rawVal)return;
+  const qNorm=normCode(rawVal);inp.value='';$('drop').classList.remove('show');
+  if(scan(rawVal))return;
+  const ql=qNorm.toLowerCase();
+  const f=catalog.find(p=>
+    normCode(p.shortCode).toLowerCase().startsWith(ql) ||
+    p.name.toLowerCase().includes(ql) ||
+    p.variants.some(v=>normCode(v.pCode||'').toLowerCase().includes(ql)||normCode(v.barcode||'').toLowerCase().includes(ql)||(v.color||'').toLowerCase().includes(ql))
+  );
+  if(f){selectProduct(f.shortCode);return;}
+  const shelfMatches=findShelfCodesByQuery(qNorm);
+  if(shelfMatches.length){
+    const best=shelfMatches[0];shelfData.selectedRack=best.locs[0].rackId;shelfData.activeLocIdx=0;saveShelfData();
+    updateSearchShelfBanner(best.code,best.locs);beep(true);
+    const racksList=[...new Set(best.locs.map(x=>x.rackId))];
+    toast(`🏆 ${best.code} ➔ ឆាន ${racksList.join(', ')}`);
+    return;
+  }
+  beep(false);toast('រកមិនឃើញ "'+rawVal+'"','err');
+}
+
+function liveSearch(){
+  const rawQ=$('scanInput').value.trim(), qNorm=normCode(rawQ), q=qNorm.toLowerCase(), d=$('drop');
+  if(!q){d.classList.remove('show');updateSearchShelfBanner('',[]);return;}
+  const shelfMatches=findShelfCodesByQuery(qNorm);
+  const exactShelfMatch=shelfMatches.find(m=>m.code===qNorm) || shelfMatches[0];
+  if(exactShelfMatch && exactShelfMatch.locs.length)updateSearchShelfBanner(exactShelfMatch.code,exactShelfMatch.locs);
+  else updateSearchShelfBanner('',[]);
+
+  const rackMatchCodes=new Set();
+  const normRack=qNorm.replace(/^(?:ឆាន|ធ្នើរ|ថ្នើរ)/,'').replace(/^([A-Z]+)[-–—_/]?(\d+)$/,'$1-$2');
+  if(shelfData.racks[normRack])Object.values(shelfData.racks[normRack]).forEach(arr=>arr.forEach(c=>rackMatchCodes.add(normCode(c))));
+
+  const m=catalog.filter(p=>{
+    const sc=normCode(p.shortCode).toLowerCase();
+    return sc.includes(q) || p.name.toLowerCase().includes(q) || (p.group||'').toLowerCase().includes(q) ||
+      p.variants.some(v=>normCode(v.pCode||'').toLowerCase().includes(q)||normCode(v.barcode||'').toLowerCase().includes(q)||(v.color||'').toLowerCase().includes(q)) ||
+      rackMatchCodes.has(normCode(p.shortCode));
+  }).slice(0,50);
+
+  const catalogCodeSet=new Set(m.map(p=>normCode(p.shortCode)));
+  let html=m.map(p=>{
+    const loc=findCodeLocations(p.shortCode)[0];
+    const locBadge=loc?`<span style="background:var(--gs);color:var(--g);padding:2px 7px;border-radius:6px;font-weight:800;font-size:11px;margin-left:5px">🏆 ឆាន ${esc(loc.rackId)}</span>`:'';
+    return `<div class="it" data-code="${esc(p.shortCode)}"><div><strong style="color:var(--g);font-size:15px">${esc(p.shortCode)}</strong>${locBadge} <span style="font-weight:600">${esc(p.name)}</span></div><span style="font-size:12px;color:var(--mut)">${p.variants.length} ពណ៌ • ${esc(p.price)}$</span></div>`;
+  }).join('');
+
+  html += shelfMatches.filter(sm=>!catalogCodeSet.has(sm.code)).slice(0,50).map(sm=>{
+    const rNames=[...new Set(sm.locs.map(x=>x.rackId))];
+    return `<div class="it" onclick="openShelfForCode('${esc(sm.code)}','${esc(rNames[0])}')"><div><strong style="color:var(--g);font-size:15px">🏆 ${esc(sm.code)}</strong> <span style="background:var(--gs);color:var(--g);padding:2px 7px;border-radius:6px;font-weight:800;font-size:11px;margin-left:4px">ឆាន ${esc(rNames.join(', '))}</span></div><span style="font-size:11px;color:var(--g2);font-weight:800">មើលឆាន ›</span></div>`;
+  }).join('');
+
+  d.innerHTML=html || `<div class="it" style="color:var(--mut)">រកមិនឃើញ</div>`;
+  d.classList.add('show');
+}
+
+function openShelfForCode(code,rackId){
+  if(rackId)shelfData.selectedRack=rackId;
+  shelfData.activeLocIdx=0;saveShelfData();$('drop')?.classList.remove('show');
+  if($('scanInput'))$('scanInput').value=code;
+  updateSearchShelfBanner(code,findCodeLocations(code));openShelfModalForCurrent();
+}
+
+function updateSearchShelfBanner(codeLabel,hits){
+  const banner=$('searchShelfBanner');if(!banner)return;
+  if(shelfData.enabled===false || !codeLabel || !hits || !hits.length){banner.classList.remove('show');return;}
+  const uniqueRacks=[...new Set(hits.map(h=>h.rackId))];
+  $('ssbBadge').textContent='🏆 ឆាន '+uniqueRacks.join(', ');
+  $('ssbCode').textContent='កូដ '+codeLabel;
+  banner.classList.add('show');
+}
+
+function selectProduct(code){
+  meta.active=code;hlKey=null;shelfData.activeLocIdx=0;$('scanInput').value='';$('drop').classList.remove('show');
+  save('meta');render();
+  const hits=findCodeLocations(code);
+  updateSearchShelfBanner(code,hits);announceShelfLocation(code);
+}
+
+function statusOf(n,sys,has){if(!has)return['pend','មិនទាន់រាប់'];const d=n-sys;if(d===0)return['ok','✓ ត្រូវ'];return d<0?['short','ខ្វះ '+(-d)]:['over','លើស '+d];}
+
+function render(){
+  const p=curP();
+  if(!p){$('dCode').textContent='—';$('dVars').innerHTML='<div class="vn" style="padding:14px 0;color:var(--mut)">សូមទម្លាក់ File ឬ Upload Excel ក្នុង Settings</div>';updateProgress();return}
+  meta.active=p.shortCode;
+
+  const hits=findCodeLocations(p.shortCode);
+  const uniqueRacks=[...new Set(hits.map(h=>h.rackId))];
+  const channelLabel=uniqueRacks.length ? ('🏆 ឆាន '+uniqueRacks.join(', ')) : '🏆 ឆាន —';
+
+  if($('glassNavPos'))$('glassNavPos').textContent=channelLabel;
+  if($('dFootChannel'))$('dFootChannel').textContent=channelLabel;
+
+  $('dCode').textContent=p.shortCode;$('dName').textContent=p.name;$('dPrice').textContent=p.price+'$';
+  const last=productLastCountTime(p);$('dDate').textContent='📅 '+(last?fmtDate(last):fmtDate());
+
+  const unsaved=isProductUnsavedExport(p), expEl=$('dExpStatus');
+  if(!last){expEl.style.display='none';$('card').classList.remove('need-export');$('btnPng').classList.remove('remind');$('btnTg').classList.remove('remind');}
+  else if(unsaved){expEl.style.display='inline-block';expEl.className='exp-tag no';expEl.textContent='⚠ មិនទាន់ Save រូប/ផ្ញើ';$('card').classList.add('need-export');$('btnPng').classList.add('remind');$('btnTg').classList.add('remind');}
+  else{expEl.style.display='inline-block';expEl.className='exp-tag yes';expEl.textContent='✓ Save រូប/ផ្ញើរួច';$('card').classList.remove('need-export');$('btnPng').classList.remove('remind');$('btnTg').classList.remove('remind');}
+
+  let sS=0,sA=0;
+  $('dVars').innerHTML=p.variants.map((v,i)=>{
+    const n=cnt(p,v),sys=v.sysStock||0;sS+=sys;sA+=n;
+    const [cls,txt]=statusOf(n,sys,counted(p,v));
+    return `<div class="vl ${hlKey===vKey(p,v)?'hl':''}"><div><div class="vn">${esc(v.color&&v.color!=='-'?v.color:'ចំនួនរាប់')}</div>${v.pCode?`<div class="vb">${esc(v.pCode)}${v.barcode?' • '+esc(v.barcode):''}</div>`:''}</div><div class="vr"><div class="qc"><button class="qb" data-a="m" data-i="${i}">−</button><input type="number" class="qi" data-i="${i}" value="${n}" inputmode="numeric"><button class="qb p" data-a="p" data-i="${i}">+</button></div><div class="sc"><div class="big">= ${n}</div><div class="sub-row"><span class="sm">ពពក ${sys}</span><span class="st ${cls}">${txt}</span></div></div></div></div>`;
+  }).join('');
+  $('dSys').textContent='ចំនួនសរុប: '+sS;$('dAct').textContent='= '+sA;
+  $('pills').innerHTML=catalog.slice(0,6).map(x=>{const u=isProductUnsavedExport(x);return `<button class="pill ${x.shortCode===p.shortCode?'a':''} ${u?'unexp':''}" data-code="${esc(x.shortCode)}">${esc(x.shortCode)}${u?' •':''}</button>`;}).join('');
+  renderMiniShelfForProduct(p);
+  updateProgress();
+}
+
+function updateProgress(){
+  let done=0,bad=0,unsavedList=[];
+  catalog.forEach(p=>{if(p.variants.some(v=>counted(p,v))){done++;if(p.variants.some(v=>counted(p,v)&&cnt(p,v)!==(v.sysStock||0)))bad++;if(isProductUnsavedExport(p))unsavedList.push(p);}});
+  $('progA').textContent=`រាប់ហើយ ${done.toLocaleString()}/${catalog.length.toLocaleString()} កូដ`;
+  $('progB').textContent=bad?`មិនត្រូវ ${bad} កូដ`:'';
+  const lb=$('logoBadge');if(unsavedList.length>0){lb.classList.add('show');lb.textContent=String(unsavedList.length);}else{lb.classList.remove('show');lb.textContent='0';}
+  $('stats').textContent=`catalog ${catalog.length.toLocaleString()} កូដ • រាប់ហើយ ${done.toLocaleString()} • មិនត្រូវគ្នា ${bad}`;
+}
+
+function openUnsavedModal(){
+  const list=catalog.filter(p=>isProductUnsavedExport(p)), box=$('unsavedList');
+  if(!list.length)box.innerHTML='<p style="color:var(--g);font-weight:700;padding:12px 0">✓ កូដដែលបានរាប់ទាំងអស់ សុទ្ធតែបាន Save រូប/ផ្ញើរួចរាល់ហើយ!</p>';
+  else box.innerHTML=list.map(p=>{const tot=p.variants.reduce((acc,v)=>acc+cnt(p,v),0);return `<div class="ulist-item" onclick="selectProduct('${esc(p.shortCode)}');closeM('unsavedModal')"><div><strong style="color:var(--g);font-size:16px">${esc(p.shortCode)}</strong><span style="font-weight:700;margin-left:6px">${esc(p.name)}</span><div style="font-size:11px;color:var(--mut);margin-top:2px">រាប់សរុបបាន: = ${tot}</div></div><span style="font-size:12px;font-weight:800;color:#b45309;background:var(--orgs);padding:4px 9px;border-radius:8px">បើក Save ➔</span></div>`;}).join('');
+  openM('unsavedModal');
+}
+
+$('dVars').addEventListener('pointerdown',e=>{const b=e.target.closest('[data-a]');if(!b)return;e.preventDefault();const p=curP(),v=p.variants[+b.dataset.i];hlKey=vKey(p,v);bump(p,v,b.dataset.a==='p'?1:-1);render();});
+$('dVars').addEventListener('change',e=>{if(!e.target.classList.contains('qi'))return;const p=curP(),v=p.variants[+e.target.dataset.i];setCount(p,v,parseInt(e.target.value)||0);render();});
+function codeClick(e){const t=e.target.closest('[data-code]');if(t)selectProduct(t.dataset.code)}
+$('drop').addEventListener('click',codeClick);$('pills').addEventListener('click',codeClick);
+$('scanInput').addEventListener('input',liveSearch);
+$('scanInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();onEnter()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.sw'))$('drop').classList.remove('show')});
+
+function openM(id){
+  if(id==='adminModal'){
+    updateProgress();renderGifGrid();applyUiThemeAndIcons();
+    if($('apkLinkInput'))$('apkLinkInput').value=getApkUrl();
+    if($('firebaseUrlInput'))$('firebaseUrlInput').value=getFirebaseUrl();
+    if($('shelfSheetUrlInput'))$('shelfSheetUrlInput').value=shelfData.sheetUrl||DEFAULT_SHELF_SHEET_URL;
+    if($('shelfPrefixInput'))$('shelfPrefixInput').value=shelfData.prefix||'';
+    if($('shelfSheetUrl2Input'))$('shelfSheetUrl2Input').value=shelfData.sheetUrl2||'';
+    if($('shelfPrefix2Input'))$('shelfPrefix2Input').value=shelfData.prefix2||'';
+    if($('shelfPrefixBadge'))$('shelfPrefixBadge').textContent=shelfData.sheetUrl2?'2 Link':'1 Link';
+    updateShelfToggleText();
+    applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);
+  }
+  $(id).classList.add('open');
+}
+function closeM(id){$(id).classList.remove('open');if(id==='adminModal')$('scanInput').focus()}
+
+function edRow(v,i){return `<div class="erow" data-i="${i}"><input class="inp c" value="${esc(v.color||'')}" placeholder="ពណ៌"><input class="inp n" type="number" value="${v.n||0}"><input class="inp s" type="number" value="${v.sys||0}"><button class="del" onclick="this.parentElement.remove()">×</button></div>`;}
+function openEdit(){const p=curP();if(!p)return;$('edCode').value=p.shortCode;$('edPrice').value=p.price;$('edName').value=p.name;$('edGroup').value=p.group||'';$('edRows').innerHTML=p.variants.map((v,i)=>edRow({color:v.color,n:cnt(p,v),sys:v.sysStock},i)).join('');openM('editModal');}
+function addEdRow(){$('edRows').insertAdjacentHTML('beforeend',edRow({},-1))}
+function applyEdit(){
+  const p=curP(),newCode=$('edCode').value.trim().toUpperCase();if(!newCode)return alert('សូមបញ្ចូលកូដ!');
+  if(newCode!==p.shortCode&&catalog.some(x=>x.shortCode===newCode))return alert('កូដ '+newCode+' មានរួចហើយ!');
+  const rows=[...document.querySelectorAll('#edRows .erow')];if(!rows.length)return alert('ត្រូវមានយ៉ាងតិច ១ ពណ៌!');
+  const old=p.variants.map(v=>({key:vKey(p,v),e:ledger[vKey(p,v)]}));
+  const nv=rows.map(r=>{const i=+r.dataset.i,b=i>=0?p.variants[i]:{pCode:'',barcode:''};return {v:{pCode:b.pCode,barcode:b.barcode,color:r.querySelector('.c').value.trim()||'-',sysStock:parseInt(r.querySelector('.s').value)||0},n:parseInt(r.querySelector('.n').value)||0,prev:i>=0?old[i].e:null};});
+  old.forEach(o=>delete ledger[o.key]);p.shortCode=newCode;p.price=parseFloat($('edPrice').value)||0;p.name=$('edName').value.trim()||newCode;p.group=$('edGroup').value.trim()||'ទូទៅ';p.variants=nv.map(x=>x.v);
+  nv.forEach(x=>{if(x.n>0||x.prev)ledger[vKey(p,x.v)]={n:x.n,t:x.prev?.t||Date.now()}});
+  meta.active=newCode;buildIndex();save('catalog','ledger','meta');scheduleSharedPush();render();closeM('editModal');
+}
+function deleteProduct(){const p=curP();if(!p||!confirm('លុបកូដ '+p.shortCode+' ពី catalog?'))return;p.variants.forEach(v=>delete ledger[vKey(p,v)]);if(meta.exported)delete meta.exported[p.shortCode];catalog=catalog.filter(x=>x!==p);meta.active=catalog[0]?.shortCode||'';buildIndex();save('catalog','ledger','meta');scheduleSharedPush();render();closeM('editModal');}
+function createProduct(){const code=$('nCode').value.trim().toUpperCase();if(!code)return alert('សូមវាយកូដអីវ៉ាន់!');if(catalog.some(p=>p.shortCode===code)&&!confirm('កូដ '+code+' មានរួចហើយ។ ជំនួសវា?'))return;const cols=$('nColors').value.split(',').map(s=>s.trim()).filter(Boolean);const variants=(cols.length?cols:['-']).map(c=>({pCode:'',barcode:'',color:c,sysStock:0}));const np={shortCode:code,name:$('nName').value.trim()||code,group:$('nGroup').value.trim()||'ទូទៅ',price:parseFloat($('nPrice').value)||0,variants};const i=catalog.findIndex(p=>p.shortCode===code);if(i>=0)catalog[i]=np;else catalog.unshift(np);meta.active=code;buildIndex();save('catalog','meta');scheduleSharedPush();render();closeM('adminModal');toast('បានបន្ថែម '+code);}
+
+function importExcel(ev,autoSync=false){
+  const file=ev.target.files[0];if(!file)return;
+  const st=$('upStatus');if(st){st.style.display='block';st.textContent='កំពុងអាន File…';}
+  const rd=new FileReader();
+  rd.onload=e=>setTimeout(async()=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:'',raw:false});
+      let h=3;for(let i=0;i<Math.min(15,rows.length);i++){const s=rows[i].join('|').toLowerCase();if(s.includes('code')&&s.includes('name')){h=i;break}}
+      const hd=rows[h].map(x=>String(x).trim().toLowerCase());
+      const col=(n,d)=>{const i=hd.indexOf(n);return i>=0?i:d};const fi=(s,d)=>{const i=hd.findIndex(x=>x.includes(s));return i>=0?i:d};
+      const iC=col('code',1),iB=col('barcode',2),iN=col('name',3),iA=col('attributes',6),iP=col('price',7),iS=fi('stock qty',8),iG=fi('product group',12);
+      const map=new Map(),seen=new Set();
+      for(let r=h+1;r<rows.length;r++){
+        const row=rows[r];if(!row||!row.length)continue;
+        const pc=String(row[iC]||'').trim(),bc=String(row[iB]||'').trim(),full=String(row[iN]||'').trim();
+        if(!full&&!pc)continue;if(pc&&seen.has(pc))continue;if(pc)seen.add(pc);
+        let sc,nm=full;const sp=full.indexOf(' ');if(sp>0){sc=full.slice(0,sp).trim().toUpperCase();nm=full.slice(sp+1).trim()}else sc=(full||pc).toUpperCase();
+        let color=String(row[iA]||'').trim();if(color.startsWith('-'))color=color.slice(1).trim();if(!color)color='-';
+        const price=parseFloat(String(row[iP]).replace(/[^0-9.]/g,''))||0,sys=Math.round(parseFloat(String(iS>=0?row[iS]:0).replace(/,/g,''))||0),grp=String(row[iG]||'').trim()||'ទូទៅ';
+        if(!map.has(sc))map.set(sc,{shortCode:sc,name:nm||sc,group:grp,price,variants:[]});
+        const en=map.get(sc);if(price>0&&!en.price)en.price=price;en.variants.push({pCode:pc,barcode:bc,color,sysStock:sys});
+      }
+      const list=[...map.values()];if(!list.length){if(st)st.textContent='រកមិនឃើញទិន្នន័យ!';toast('រកមិនឃើញទិន្នន័យ!','err');return}
+      if(!autoSync && !confirm(`ជំនួស catalog ដោយ ${list.length.toLocaleString()} កូដ?`))return;
+      catalog=list;meta.sync=fmtDate();if(!curP()||meta.active!==curP().shortCode)meta.active=catalog[0].shortCode;
+      buildIndex();save('catalog','meta');render();
+      if(st)st.textContent=`✓ ជោគជ័យ ${list.length.toLocaleString()} កូដ`;
+      await syncSharedToCloud(true);
+    }catch(err){if(st)st.textContent='មានបញ្ហាក្នុងការអាន File!';toast('មានបញ្ហាក្នុងការអាន File!','err');}
+    ev.target.value='';
+  },30);
+  rd.readAsArrayBuffer(file);
+}
+
+function exportExcel(){
+  const head=['Short Code','P-Code','Barcode','Product Name','Group','Color','Price ($)','System Stock','Counted','Diff','Status','Shelf','Counted At'];
+  const all=[head],bad=[head];
+  catalog.forEach(p=>{const loc=findCodeLocations(p.shortCode)[0];p.variants.forEach(v=>{const e=ledger[vKey(p,v)],n=e?.n||0,d=n-(v.sysStock||0);const s=!e?'មិនទាន់រាប់':d===0?'ត្រូវ':d<0?'ខ្វះ':'លើស';const r=[p.shortCode,v.pCode,v.barcode,p.name,p.group,v.color,p.price,v.sysStock||0,n,d,s,loc?loc.rackId:'',e?new Date(e.t).toLocaleString():''];all.push(r);if(e&&d!==0)bad.push(r);});});
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(all),'Stock_Audit');XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(bad),'Mismatch');XLSX.writeFile(wb,`KHIM_Stock_Check_${fmtDate()}.xlsx`);
+}
+function dl(name,blob){const a=document.createElement('a');a.download=name;a.href=URL.createObjectURL(blob);a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function backupJSON(){dl(`KHIM_backup_${fmtDate()}.json`,new Blob([JSON.stringify({v:1,catalog,ledger,meta,gifs,shelfData})],{type:'application/json'}))}
+function restoreJSON(ev){
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.catalog)||typeof d.ledger!=='object')throw 0;if(!confirm('Restore នឹងជំនួសទិន្នន័យទាំងអស់។ បន្ត?'))return;catalog=d.catalog;ledger=d.ledger;meta={...meta,...(d.meta||{})};if(d.shelfData&&d.shelfData.racks){shelfData={...shelfData,...d.shelfData};rebuildShelfIndex();saveShelfData();}gifs=Array.isArray(d.gifs)?d.gifs.slice(0,MAX_GIFS):gifs;if(!meta.exported)meta.exported={};undoStack=[];applyHeaderFlip();applyUiThemeAndIcons();applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);renderStage(true);renderGifGrid();buildIndex();save('catalog','ledger','meta','gifs');render();toast('Restore ជោគជ័យ');}catch(e){alert('File Backup មិនត្រឹមត្រូវ!')}ev.target.value=''};
+  r.readAsText(f);
+}
+function resetCounts(){if(!confirm('លុបចំនួនរាប់ទាំងអស់?'))return;if(!confirm('ប្រាកដមែនទេ?'))return;ledger={};meta.exported={};undoStack=[];save('ledger','meta');render();toast('បានលុបចំនួនរាប់');}
+
+function downloadPNG(){
+  const p=curP(), card=$('card');if(!card)return;
+  const clone=card.cloneNode(true);clone.removeAttribute('id');clone.classList.add('capture-clone');document.body.appendChild(clone);
+  html2canvas(clone,{scale:3,backgroundColor:'#ffffff',useCORS:true}).then(cv=>{
+    clone.remove();cv.toBlob(b=>{
+      if(!b)return toast('បង្កើត PNG មិនបាន','err');
+      const fname=`KHIM_${meta.active}_${fmtDate()}.png`, f=new File([b],fname,{type:'image/png'});
+      if(p)markExported(p.shortCode);nextGifSmooth();triggerBlessingDance();
+      if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'Stock '+meta.active}).catch(()=>dl(fname,b));
+      else dl(fname,b);
+    },'image/png');
+  }).catch(()=>{clone.remove();toast('បង្កើត PNG មិនបាន','err');});
+}
+
+function copyTextFallback(str,msg){
+  const ok=()=>toast(msg);
+  const fb=()=>{const t=document.createElement('textarea');t.value=str;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(e){toast('Copy មិនបាន','err')}t.remove()};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(str).then(ok,fb);else fb();
+}
+function copyCodeOnly(){const p=curP();if(!p)return;copyTextFallback(p.shortCode,'Copy កូដ '+p.shortCode+' រួចរាល់');}
+function copyTelegram(){
+  const p=curP();if(!p)return;const last=productLastCountTime(p), dStr=last?fmtDate(last):fmtDate(), locs=findCodeLocations(p.shortCode);
+  const uniqueRacks=[...new Set(locs.map(x=>x.rackId))];
+  const shelfLine=uniqueRacks.length?`🏆 ឆាន: ${uniqueRacks.join(', ')}\n`:'';
+  let a=0,s=0,L=`${p.shortCode} - ${p.name} (${p.price}$)\n${shelfLine}📅 ${dStr}\n----------------------\n`;
+  p.variants.forEach(v=>{const n=cnt(p,v),sys=v.sysStock||0,d=n-sys;a+=n;s+=sys;const diffTxt=!counted(p,v)?'⏳ មិនទាន់រាប់':d===0?'✅ ត្រូវ':d<0?`❌ ខ្វះ ${-d}`:`⚠ លើស ${d}`;L+=`• ${v.color&&v.color!=='-'?v.color:'ចំនួនរាប់'}: = ${n} (ពពក ${sys}) ➔ ${diffTxt}\n`;});
+  L+=`----------------------\nសរុបរាប់បាន: = ${a} (ពពក ${s}) ${a===s?'✅':'Diff '+(a-s)}\n${uniqueRacks.length?'🏆 ឆាន: '+uniqueRacks.join(', '):''}`.trim();
+  markExported(p.shortCode);nextGifSmooth();triggerBlessingDance();copyTextFallback(L,'Copy '+p.shortCode+' រួចរាល់');
+}
+
+function extractGoogleSheetId(urlOrId){
+  const s=String(urlOrId||'').trim();
+  const m=s.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if(m)return m[1];
+  if(/^[a-zA-Z0-9-_]{20,}$/.test(s))return s;
+  return '';
+}
+
+function loadShelfData(){
+  try{
+    const raw=localStorage.getItem(SHELF_KEY) || localStorage.getItem('khim_shelf_map_v3');
+    if(raw){
+      const parsed=JSON.parse(raw);
+      shelfData={
+        enabled:parsed.enabled!==false,
+        selectedRack:parsed.selectedRack||'K-1',
+        sheetUrl:parsed.sheetUrl||DEFAULT_SHELF_SHEET_URL,
+        prefix:parsed.prefix||'',
+        sheetUrl2:parsed.sheetUrl2||'',
+        prefix2:parsed.prefix2!==undefined?parsed.prefix2:'A',
+        lastSynced:parsed.lastSynced||'',
+        editingSlot:null,
+        activeLocIdx:0,
+        rackCols:parsed.rackCols&&typeof parsed.rackCols==='object'?parsed.rackCols:{'K-1':3,'K-2':3},
+        rackSource:parsed.rackSource&&typeof parsed.rackSource==='object'?parsed.rackSource:{'K-1':1,'K-2':1},
+        racks:parsed.racks&&typeof parsed.racks==='object'?parsed.racks:shelfData.racks
+      };
+    }
+  }catch(_){}
+  rebuildShelfIndex();
+  if($('toggleShelfSwitch'))$('toggleShelfSwitch').checked=shelfData.enabled!==false;
+  updateShelfToggleText();
+}
+
+function saveShelfData(){
+  rebuildShelfIndex();
+  try{
+    localStorage.setItem(SHELF_KEY,JSON.stringify({
+      enabled:shelfData.enabled!==false,
+      selectedRack:shelfData.selectedRack,
+      sheetUrl:shelfData.sheetUrl,
+      prefix:shelfData.prefix,
+      sheetUrl2:shelfData.sheetUrl2,
+      prefix2:shelfData.prefix2,
+      lastSynced:shelfData.lastSynced,
+      rackCols:shelfData.rackCols,
+      rackSource:shelfData.rackSource,
+      racks:shelfData.racks
+    }));
+  }catch(_){}
+}
+
+function countTotalShelfCodes(racksObj){
+  let n=0;
+  Object.values(racksObj||{}).forEach(slots=>{Object.values(slots||{}).forEach(arr=>{n+=(arr||[]).length;});});
+  return n;
+}
+
+function updateShelfToggleText(){
+  const on=shelfData.enabled!==false;
+  if($('shelfToggleSub'))$('shelfToggleSub').textContent=on?'កំពុងបើកបង្ហាញលេខក្បាលឆាន':'បានបិទ (មិនលោតលើក្រដាសរាប់ស្តុក)';
+  const rackCount=Object.keys(shelfData.racks||{}).length;
+  const codeCount=countTotalShelfCodes(shelfData.racks);
+  const sampleCodes=[...shelfCodeIndex.keys()].slice(0,5).join(', ');
+  if($('shelfTotalRacksBadge'))$('shelfTotalRacksBadge').textContent=`${rackCount} ឆាន (${codeCount} កូដ)`;
+  if($('shelfSyncStatus')){
+    $('shelfSyncStatus').textContent=shelfData.lastSynced
+      ? `${shelfData.lastSynced} • ${rackCount} ឆាន • ${codeCount} កូដ`
+      : `ចុចដើម្បីទាញ Code ពី Link ទី 1 និង Link ទី 2 (${rackCount} ឆាន • ${codeCount} កូដ)`;
+  }
+  if($('shelfDebugInfo')){
+    const linkInfo=shelfData.sheetUrl2 ? '2 Link សកម្ម' : '1 Link សកម្ម';
+    $('shelfDebugInfo').textContent=`📊 ${linkInfo} • ${rackCount} ឆាន • ${codeCount} កូដ` + (sampleCodes ? ` (ឧ. ${sampleCodes})` : '');
+  }
+}
+
+function toggleShelfEnabled(on){shelfData.enabled=!!on;shelfData.activeLocIdx=0;saveShelfData();updateShelfToggleText();render();toast(shelfData.enabled?'✓ បានបើកបង្ហាញលេខក្បាលឆាន':'បានបិទបង្ហាញឆាន');}
+function saveShelfSheetUrl(val){shelfData.sheetUrl=(val||'').trim()||DEFAULT_SHELF_SHEET_URL;saveShelfData();toast('បានរក្សាទុក Link Google Sheet ទី 1');}
+function saveShelfPrefix(val){shelfData.prefix=(val||'').trim().toUpperCase();saveShelfData();toast(shelfData.prefix?`Link 1 កំណត់ត្រកូល "${shelfData.prefix}"`:'Link 1 ចាប់ទាំងអស់');}
+function saveShelfSheetUrl2(val){shelfData.sheetUrl2=(val||'').trim();if($('shelfPrefixBadge'))$('shelfPrefixBadge').textContent=shelfData.sheetUrl2?'2 Link':'1 Link';saveShelfData();toast(shelfData.sheetUrl2?'✓ បានរក្សាទុក Link Google Sheet ទី 2':'បានលុប Link ទី 2');}
+function saveShelfPrefix2(val){shelfData.prefix2=(val||'').trim().toUpperCase();saveShelfData();toast(shelfData.prefix2?`Link 2 កំណត់ត្រកូល "${shelfData.prefix2}"`:'Link 2 ចាប់ទាំងអស់');}
+
+function parseRawCsvToGrid(text){
+  const cleanText=String(text||'').replace(/^\uFEFF/,'');
+  const firstLine=cleanText.split(/\r?\n/)[0]||'';
+  const delim=((firstLine.match(/\t/g)||[]).length > (firstLine.match(/,/g)||[]).length)?'\t':',';
+  const rows=[];let row=[], cur='', inQuotes=false;
+  for(let i=0;i<cleanText.length;i++){
+    const ch=cleanText[i], next=cleanText[i+1];
+    if(inQuotes){
+      if(ch==='"' && next==='"'){cur+='"';i++;}
+      else if(ch==='"')inQuotes=false;
+      else cur+=ch;
+    }else{
+      if(ch==='"')inQuotes=true;
+      else if(ch===delim){row.push(cur.trim());cur='';}
+      else if(ch==='\r' && next==='\n'){row.push(cur.trim());rows.push(row);row=[];cur='';i++;}
+      else if(ch==='\n' || ch==='\r'){row.push(cur.trim());rows.push(row);row=[];cur='';}
+      else cur+=ch;
+    }
+  }
+  if(cur.length>0 || row.length>0){row.push(cur.trim());rows.push(row);}
+  return rows;
+}
+
+function extractCodesFromCell(rawCell){
+  const cleaned=normDigits(rawCell||'').toUpperCase().trim();
+  if(!cleaned)return[];
+  if(/^(?:ឆាន|ធ្នើរ|ថ្នើរ)?\s*[A-Z]{1,4}\s*[-–—_/]\s*\d{1,4}$/.test(cleaned))return[];
+  if(/^(?:ជួរ|ប្រឡោះ|ថ្នើរ|TIER|ROW|SLOT)?\s*[0-9]{1,2}$/.test(cleaned))return[];
+  const out=[];
+  for(const tok of cleaned.split(/[\s,;/|+\n()]+/).map(x=>x.trim()).filter(Boolean)){
+    if(/^(?:ឆាន|ធ្នើរ|ថ្នើរ)?[A-Z]{1,4}[-–—_/]\d{1,4}$/.test(tok))continue;
+    const alphaNumMatches=tok.match(/[A-Z]{1,5}[-_]?\d{1,7}[A-Z0-9]*/g);
+    if(alphaNumMatches){
+      for(const m of alphaNumMatches){
+        const cleanM=m.replace(/^[-_]+|[-_]+$/g,'');
+        if(cleanM.length>=2 && !out.includes(cleanM))out.push(cleanM);
+      }
+      continue;
+    }
+    if(/^\d{3,14}$/.test(tok) && !out.includes(tok))out.push(tok);
+  }
+  return out;
+}
+
+function parseWarehouseGridToRacks(grid, prefixFilter='', targetRacks=null, sourceNum=1, targetRackCols=null, targetRackSource=null){
+  const prefixList=parsePrefixList(prefixFilter);
+  const isRackHeader=txt=>{
+    const clean=normDigits(txt||'').trim();
+    if(!clean)return false;
+    return /^(?:ឆាន|ធ្នើរ|ថ្នើរ)\s*[A-Z]{1,4}\s*[-–—_/]?\s*[0-9]{1,4}$/i.test(clean) ||
+           /^[A-Z]{1,4}\s*[-–—_/]\s*[0-9]{1,4}$/i.test(clean);
+  };
+  const normalizeRackId=txt=>{
+    let s=normDigits(txt||'').trim().replace(/^(?:ឆាន|ធ្នើរ|ថ្នើរ)\s*/i,'').toUpperCase().replace(/\s+/g,'');
+    return s.replace(/^([A-Z]+)[-–—_/]?(\d+)$/,'$1-$2');
+  };
+
+  const rackHeaders=[];
+  for(let r=0;r<grid.length;r++){
+    for(let c=0;c<(grid[r]||[]).length;c++){
+      const cell=String(grid[r][c]||'').trim();
+      if(isRackHeader(cell))rackHeaders.push({row:r,col:c,rackId:normalizeRackId(cell)});
+    }
+  }
+  if(!rackHeaders.length)return null;
+
+  const newRacks=targetRacks||{}, rCols=targetRackCols||{}, rSrc=targetRackSource||{};
+  for(let idx=0;idx<rackHeaders.length;idx++){
+    const cur=rackHeaders[idx];
+    let blockWidth=3;
+    const sameRowNext=rackHeaders.find(h=>h.row===cur.row && h.col>cur.col);
+    if(sameRowNext)blockWidth=Math.max(1,Math.min(5,sameRowNext.col-cur.col));
+    else{
+      let maxDataCol=cur.col+2;
+      for(let off=1;off<=8 && (cur.row+off)<grid.length;off++){
+        const rr=grid[cur.row+off]||[];
+        for(let cc=cur.col;cc<Math.min(rr.length,cur.col+5);cc++){if(String(rr[cc]||'').trim())maxDataCol=Math.max(maxDataCol,cc);}
+      }
+      blockWidth=Math.max(1,Math.min(5,maxDataCol-cur.col+1));
+    }
+
+    const rowEntries=[];
+    let maxUsedColOffset=0;
+    for(let offset=1;offset<=12;offset++){
+      const r=cur.row+offset;if(r>=grid.length)break;
+      if(rackHeaders.some(h=>h.row===r && h.col>=cur.col && h.col<cur.col+blockWidth))break;
+      const colsInRow=[];
+      for(let cOffset=0;cOffset<blockWidth;cOffset++){
+        const rawCell=String(grid[r]?.[cur.col+cOffset]||'').trim();
+        if(!rawCell || isRackHeader(rawCell))continue;
+        let codes=extractCodesFromCell(rawCell);
+        if(prefixList.length && !matchesPrefixRules(cur.rackId,prefixList))codes=codes.filter(cd=>matchesPrefixRules(cd,prefixList));
+        if(codes.length){colsInRow.push({cOffset,codes});if(cOffset>maxUsedColOffset)maxUsedColOffset=cOffset;}
+      }
+      if(colsInRow.length){rowEntries.push(colsInRow);if(rowEntries.length>=4)break;}
+    }
+
+    if(!rowEntries.length && prefixList.length && !matchesPrefixRules(cur.rackId,prefixList))continue;
+    const detectedCols=Math.max(3,Math.min(5,Math.max(blockWidth,maxUsedColOffset+1)));
+    const rackKey=(newRacks[cur.rackId] && rSrc[cur.rackId] && rSrc[cur.rackId]!==sourceNum)?`${cur.rackId} (L${sourceNum})`:cur.rackId;
+    if(!newRacks[rackKey])newRacks[rackKey]={};
+    rCols[rackKey]=Math.max(rCols[rackKey]||3,detectedCols);
+    rSrc[rackKey]=sourceNum;
+
+    const totalRowsFound=rowEntries.length;
+    rowEntries.forEach((colsInRow, rIdx)=>{
+      const tierNum = totalRowsFound >= 4 ? (4 - rIdx) : Math.max(1, Math.min(4, totalRowsFound - rIdx));
+      colsInRow.forEach(({cOffset,codes})=>{
+        const slotIdx=Math.max(0,Math.min(4,cOffset));
+        const slotKey=`${tierNum}_${slotIdx}`;
+        if(!newRacks[rackKey][slotKey])newRacks[rackKey][slotKey]=[];
+        codes.forEach(code=>{if(!newRacks[rackKey][slotKey].includes(code))newRacks[rackKey][slotKey].push(code);});
+      });
+    });
+  }
+  return newRacks;
+}
+
+async function fetchSheetGridFromGoogle(sheetId){
+  if(!sheetId)return null;
+  try{
+    const res=await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx&_t=${Date.now()}`,{cache:'no-store',mode:'cors'});
+    if(res.ok){
+      const buf=await res.arrayBuffer();
+      if(buf && buf.byteLength>200){
+        const wb=XLSX.read(new Uint8Array(buf),{type:'array'});
+        if(wb && wb.SheetNames && wb.SheetNames.length){
+          return {grids:wb.SheetNames.map(name=>XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:'',raw:false})),sheetCount:wb.SheetNames.length};
+        }
+      }
+    }
+  }catch(_){}
+  for(const url of [
+    `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&_t=${Date.now()}`,
+    `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&_t=${Date.now()}`
+  ]){
+    try{
+      const res=await fetch(url,{cache:'no-store',mode:'cors'});
+      if(res.ok){
+        const txt=await res.text();
+        if(txt && !txt.trim().startsWith('<!DOCTYPE') && !txt.trim().startsWith('<html')){
+          const grid=parseRawCsvToGrid(txt);
+          if(grid.length)return {grids:[grid],sheetCount:1};
+        }
+      }
+    }catch(_){}
+  }
+  return null;
+}
+
+async function syncShelfFromGoogleSheet(notify=false){
+  const sheetId1=extractGoogleSheetId(shelfData.sheetUrl || DEFAULT_SHELF_SHEET_URL);
+  const sheetId2=extractGoogleSheetId(shelfData.sheetUrl2 || '');
+  try{
+    if(notify)toast('⏳ កំពុងទាញតារាងឆានពី Google Sheet...');
+    const mergedRacks={}, mergedCols={}, mergedSrc={};
+    let totalTabs=0;
+    if(sheetId1){
+      const f1=await fetchSheetGridFromGoogle(sheetId1);
+      if(f1 && f1.grids.length){totalTabs+=f1.sheetCount;f1.grids.forEach(g=>parseWarehouseGridToRacks(g,shelfData.prefix,mergedRacks,1,mergedCols,mergedSrc));}
+    }
+    if(sheetId2){
+      const f2=await fetchSheetGridFromGoogle(sheetId2);
+      if(f2 && f2.grids.length){totalTabs+=f2.sheetCount;f2.grids.forEach(g=>parseWarehouseGridToRacks(g,shelfData.prefix2,mergedRacks,2,mergedCols,mergedSrc));}
+    }
+    const rackTotal=Object.keys(mergedRacks).length, codeTotal=countTotalShelfCodes(mergedRacks);
+    if(!rackTotal){if(notify)toast('រកមិនឃើញក្បាលឆាន (ឧ. K-1 ឬ A-1) ក្នុង Sheet ទេ','warn');return;}
+    shelfData.racks=mergedRacks;shelfData.rackCols=mergedCols;shelfData.rackSource=mergedSrc;
+    shelfData.lastSynced=`Sheet (${totalTabs} Tab) `+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const firstRack=Object.keys(mergedRacks)[0];
+    if(firstRack && !mergedRacks[shelfData.selectedRack])shelfData.selectedRack=firstRack;
+    saveShelfData();updateShelfToggleText();render();liveSearch();scheduleSharedPush();
+    if($('shelfModal')?.classList.contains('open')){populateRackSelect();renderShelfModalGrid();}
+    if(notify)toast(`✓ Sync ឆានជោគជ័យ (${rackTotal} ឆាន • ${codeTotal} កូដ)!`);
+  }catch(e){if(notify)toast('ទាញពី Google Sheet មិនបាន','err');}
+}
+
+function importShelfFile(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const rd=new FileReader();
+  rd.onload=e=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      const mergedRacks={}, mergedCols={}, mergedSrc={};
+      wb.SheetNames.forEach(shName=>{
+        const grid=XLSX.utils.sheet_to_json(wb.Sheets[shName],{header:1,defval:'',raw:false});
+        parseWarehouseGridToRacks(grid,shelfData.prefix,mergedRacks,1,mergedCols,mergedSrc);
+      });
+      if(!Object.keys(mergedRacks).length){toast('រកមិនឃើញឆាន (ឧ. K-1) ក្នុង File នេះទេ!','err');return;}
+      shelfData.racks=mergedRacks;shelfData.rackCols=mergedCols;shelfData.rackSource=mergedSrc;shelfData.lastSynced='File: '+file.name;
+      const firstRack=Object.keys(mergedRacks)[0];if(firstRack)shelfData.selectedRack=firstRack;
+      saveShelfData();updateShelfToggleText();render();liveSearch();scheduleSharedPush();
+      toast(`✓ Convert តារាងឆានបាន ${Object.keys(mergedRacks).length} ឆាន (${countTotalShelfCodes(mergedRacks)} កូដ)!`);
+    }catch(err){toast('មានបញ្ហាក្នុងការអាន File ឆាន!','err');}
+    ev.target.value='';
+  };
+  rd.readAsArrayBuffer(file);
+}
+
+function importShelfFromPaste(){
+  const raw=($('shelfPasteArea')?.value||'').trim();
+  if(!raw)return toast('សូម Copy ពី Sheet មក Paste ក្នុងប្រអប់ជាមុនសិន','warn');
+  try{
+    const grid=parseRawCsvToGrid(raw);
+    const mergedRacks={...shelfData.racks}, mergedCols={...(shelfData.rackCols||{})}, mergedSrc={...(shelfData.rackSource||{})};
+    parseWarehouseGridToRacks(grid,'',mergedRacks,1,mergedCols,mergedSrc);
+    if(!Object.keys(mergedRacks).length)return toast('រកមិនឃើញឈ្មោះឆាន (ឧ. K-1) ក្នុងអត្ថបទដែល Paste ទេ','err');
+    shelfData.racks=mergedRacks;shelfData.rackCols=mergedCols;shelfData.rackSource=mergedSrc;
+    shelfData.lastSynced='Paste '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const firstRack=Object.keys(mergedRacks)[0];if(firstRack)shelfData.selectedRack=firstRack;
+    saveShelfData();updateShelfToggleText();render();liveSearch();scheduleSharedPush();
+    toast(`✓ បញ្ចូលបាន ${Object.keys(mergedRacks).length} ឆាន (${countTotalShelfCodes(mergedRacks)} កូដ) រួចរាល់!`);
+  }catch(err){toast('មានបញ្ហាក្នុងការអានទិន្នន័យ Paste','err');}
+}
+
+function announceShelfLocation(shortCode){
+  if(shelfData.enabled===false)return;
+  const hits=findCodeLocations(shortCode);if(!hits.length)return;
+  const uniqueRacks=[...new Set(hits.map(h=>h.rackId))];
+  toast(`🏆 ${normCode(shortCode)} ➔ ឆាន ${uniqueRacks.join(', ')}`);
+}
+
+function renderMiniShelfForProduct(p){
+  const box=$('dShelfMini'), badge=$('dShelfBadge'), tabs=$('dShelfTabs'), grid=$('dShelfGrid'), locEl=$('dShelfLoc');
+  if(!box||!grid||!badge||!locEl)return;
+  if(shelfData.enabled===false || !p){box.style.display='none';return;}
+  box.style.display='flex';
+  const hits=findCodeLocations(p.shortCode);
+  if(!hits.length){
+    box.classList.add('empty');badge.textContent='ឆាន —';tabs.innerHTML='';locEl.textContent='+ ឆាន';
+    grid.innerHTML=[4,3,2,1].map(()=>`<div class="shelf-mini-row" style="grid-template-columns:repeat(3,1fr)">${[0,1,2].map(()=>`<div class="shelf-mini-cell"></div>`).join('')}</div>`).join('');
+    return;
+  }
+  box.classList.remove('empty');
+  if(shelfData.activeLocIdx>=hits.length)shelfData.activeLocIdx=0;
+  const curHit=hits[shelfData.activeLocIdx], colCount=getRackColCount(curHit.rackId), slotCols=getSlotIndicesLTR(colCount);
+  badge.textContent='🏆 ឆាន '+curHit.rackId;
+  const uniqueRacks=[...new Set(hits.map(h=>h.rackId))];
+  tabs.innerHTML = uniqueRacks.length>1 ? uniqueRacks.map(rId=>{
+    const firstIdx=hits.findIndex(x=>x.rackId===rId);
+    return `<button type="button" class="shelf-mtab ${curHit.rackId===rId?'on':''}" onclick="selectShelfHit(${firstIdx})">${esc(rId)}</button>`;
+  }).join('') : '';
+  locEl.textContent=`ឆាន ${curHit.rackId} (${colCount} ប្រឡោះ)`;
+  grid.innerHTML=[4,3,2,1].map(tNum=>`<div class="shelf-mini-row" style="grid-template-columns:repeat(${colCount},1fr)">${slotCols.map(sIdx=>{
+    const isHit=(curHit.tier===tNum && curHit.slot===sIdx);
+    return `<div class="shelf-mini-cell ${isHit?'hit':''}">${isHit?esc(p.shortCode):''}</div>`;
+  }).join('')}</div>`).join('');
+}
+
+function selectShelfHit(idx){shelfData.activeLocIdx=idx;renderMiniShelfForProduct(curP());}
+
+function populateRackSelect(){
+  const sel=$('shelfRackSelect');if(!sel)return;
+  const rackSet=new Set(Object.keys(shelfData.racks||{}));
+  if(!rackSet.size){for(let i=1;i<=10;i++)rackSet.add('K-'+i);}
+  const sorted=[...rackSet].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  sel.innerHTML=sorted.map(id=>{
+    const cntCodes=Object.values(shelfData.racks[id]||{}).reduce((a,b)=>a+(b?.length||0),0);
+    return `<option value="${esc(id)}">${esc(id)} (${getRackColCount(id)} ប្រឡោះ • ${cntCodes} កូដ)</option>`;
+  }).join('');
+  sel.value=shelfData.selectedRack||sorted[0]||'K-1';
+}
+
+function openShelfModalForCurrent(){
+  populateRackSelect();updateShelfToggleText();
+  const qVal=normCode($('scanInput')?.value||''), p=curP();
+  const hits=(qVal && findCodeLocations(qVal).length) ? findCodeLocations(qVal) : (p?findCodeLocations(p.shortCode):[]);
+  if(hits.length){shelfData.selectedRack=hits[shelfData.activeLocIdx]?.rackId || hits[0].rackId;$('shelfRackSelect').value=shelfData.selectedRack;}
+  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='none';
+  renderShelfModalGrid();openM('shelfModal');
+}
+
+function setSelectedRackColumns(cols){
+  const rackId=shelfData.selectedRack||'K-1';
+  if(!shelfData.rackCols)shelfData.rackCols={};
+  shelfData.rackCols[rackId]=Math.max(3,Math.min(5,cols));
+  saveShelfData();renderShelfModalGrid();render();
+}
+
+function renderShelfModalGrid(){
+  const sel=$('shelfRackSelect'), rackId=sel?sel.value:(shelfData.selectedRack||'K-1');
+  shelfData.selectedRack=rackId;saveShelfData();
+  const colCount=getRackColCount(rackId), slotCols=getSlotIndicesLTR(colCount);
+  if($('shelfRackTitle')){
+    $('shelfRackTitle').innerHTML=`🏆 ឆាន ${esc(rackId)} (${colCount} ប្រឡោះ) &nbsp;
+      <span style="display:inline-flex;gap:3px;vertical-align:middle">
+        ${[3,4,5].map(n=>`<button type="button" onclick="setSelectedRackColumns(${n})" style="border:1px solid var(--g);background:${colCount===n?'var(--g)':'#fff'};color:${colCount===n?'#fff':'var(--g)'};border-radius:6px;padding:1px 6px;font-size:10px;font-weight:800;cursor:pointer">${n}</button>`).join('')}
+      </span>`;
+  }
+  const activeCode=normCode($('scanInput')?.value||'') || normCode(curP()?.shortCode||'');
+  const rackSlots=shelfData.racks[rackId]||{};
+  $('shelfTierGrid').innerHTML=[4,3,2,1].map(tNum=>{
+    const cells=slotCols.map(sIdx=>{
+      const key=`${tNum}_${sIdx}`, list=rackSlots[key]||[], hasCodes=list.length>0;
+      const isHit=activeCode && list.some(c=>normCode(c)===activeCode);
+      return `<div class="shelf-slot-cell ${hasCodes?'has-codes':''} ${isHit?'is-hit':''}" onclick="openSlotEditor('${esc(rackId)}','${key}',${tNum},${sIdx})"><div class="shelf-slot-pos">${SLOT_NAMES[sIdx]}</div><div class="shelf-slot-codes">${hasCodes?esc(list.join(', ')):`<span style="color:#9ca3af;font-weight:600">+ ដាក់</span>`}</div></div>`;
+    }).join('');
+    return `<div class="shelf-tier-row" style="grid-template-columns:56px repeat(${colCount},1fr)"><div class="shelf-tier-lbl">${TIER_NAMES[tNum]}</div>${cells}</div>`;
+  }).join('');
+}
+
+function openSlotEditor(rackId,key,tNum,sIdx){
+  shelfData.editingSlot={rackId,key};
+  const list=(shelfData.racks[rackId]&&shelfData.racks[rackId][key])||[];
+  if($('shelfEditorTitle'))$('shelfEditorTitle').textContent=`កែប្រឡោះ • ឆាន ${rackId} (${TIER_NAMES[tNum]} - ${SLOT_NAMES[sIdx]})`;
+  if($('shelfSlotInput'))$('shelfSlotInput').value=list.join(', ');
+  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='block';
+  $('shelfSlotInput')?.focus();
+}
+
+function saveShelfSlotCodes(){
+  if(!shelfData.editingSlot)return;
+  const {rackId,key}=shelfData.editingSlot;
+  const codes=normDigits($('shelfSlotInput')?.value||'').toUpperCase().split(/[,\s]+/).map(s=>s.trim()).filter(Boolean);
+  if(!shelfData.racks[rackId])shelfData.racks[rackId]={};
+  if(codes.length)shelfData.racks[rackId][key]=codes;else delete shelfData.racks[rackId][key];
+  saveShelfData();updateShelfToggleText();scheduleSharedPush();
+  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='none';
+  renderShelfModalGrid();render();toast('✓ បានរក្សាទុកឆាន '+rackId);
+}
+
+function quickAssignCurrentCodeToSelectedSlot(){
+  const p=curP();if(!p)return;
+  const rackId=shelfData.selectedRack||'K-1', key='1_0';
+  if(!shelfData.racks[rackId])shelfData.racks[rackId]={};
+  const list=shelfData.racks[rackId][key]||[];
+  if(!list.includes(p.shortCode))list.unshift(p.shortCode);
+  shelfData.racks[rackId][key]=list;
+  saveShelfData();updateShelfToggleText();renderShelfModalGrid();render();scheduleSharedPush();
+  toast(`✓ ដាក់ ${p.shortCode} ចូលឆាន ${rackId}`);
+}
+
+let appInitialized=false;
+async function initApp(){
+  if(appInitialized)return;
+  appInitialized=true;
+  loadShelfData();
+  startGifTimer();
+  try{
+    if(navigator.storage?.persist)navigator.storage.persist();
+    const [c,l,m,g]=await Promise.all([idbGet('catalog'),idbGet('ledger'),idbGet('meta'),idbGet('gifs')]);
+    catalog=c&&c.length?c:JSON.parse(JSON.stringify(SAMPLE));
+    ledger=l||{};meta={...meta,...(m||{})};gifs=Array.isArray(g)?g.slice(0,MAX_GIFS):[];
+    if(!meta.exported)meta.exported={};
+    applyHeaderFlip();applyUiThemeAndIcons();applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);
+    renderStage(true);setBadge('✓ Ready '+(meta.sync?'· '+meta.sync:''));
+    await pullSharedFromCloud(false);
+    await syncShelfFromGoogleSheet(false);
+  }catch(e){
+    catalog=JSON.parse(JSON.stringify(SAMPLE));applyUiThemeAndIcons();renderStage(true);setBadge('✓ Ready');
+  }
+  buildIndex();rebuildShelfIndex();render();$('scanInput')?.focus();
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initApp,{once:true});
+}else{
+  initApp();
+}
+</script>
+</body>
+</html>
 
