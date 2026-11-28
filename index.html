@@ -368,7 +368,7 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
 
 /* Shelf Search Input + Auto-Sync Note Card */
 .shelf-top-bar{display:flex;gap:7px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
-.shelf-search-wrap{position:relative;flex:1.4;min-width:170px}
+.shelf-search-wrap{position:relative;flex:1.25;min-width:155px}
 .shelf-search-box{display:flex;align-items:center;gap:6px;background:#ffffff;border:1.8px solid var(--g);border-radius:12px;padding:0 10px;height:40px;box-shadow:0 2px 8px rgba(var(--g-rgb),.10)}
 .shelf-search-box input{flex:1;min-width:0;border:none;background:transparent;font-size:13.5px;font-weight:800;color:var(--g);outline:none}
 .shelf-search-box input::placeholder{color:#9ca3af;font-weight:600;font-size:12px}
@@ -379,6 +379,9 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
 .shelf-drop-item{padding:9px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px}
 .shelf-drop-item:hover,.shelf-drop-item.active{background:var(--gs)}
 .shelf-drop-item:last-child{border-bottom:none}
+
+.shelf-quick-add-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(180deg,var(--g2) 0%,var(--g) 100%);color:#ffffff;border:none;border-radius:11px;padding:0 12px;height:40px;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(var(--g-rgb),.24);white-space:nowrap}
+.shelf-quick-add-btn:active{transform:scale(.96)}
 
 .shelf-note-card{background:#ffffff;border:1.5px solid #86efac;border-radius:14px;padding:10px 12px;margin-bottom:10px;box-shadow:0 3px 10px rgba(var(--g-rgb),.07)}
 .shelf-note-hdr{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}
@@ -394,12 +397,19 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
 .shelf-tier-grid{display:flex;flex-direction:column;gap:7px;min-width:300px}
 .shelf-tier-row{display:grid;gap:5px;align-items:stretch}
 .shelf-tier-lbl{background:var(--gs);border:1px solid #bbf7d0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--g);text-align:center;padding:2px}
-.shelf-slot-cell{min-height:54px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fafafa;padding:4px 5px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:2px}
+.shelf-slot-cell{min-height:54px;border:1.5px solid #e5e7eb;border-radius:10px;background:#fafafa;padding:4px 5px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;gap:2px;transition:all .14s ease}
 .shelf-slot-cell:hover{border-color:#16a34a;background:#f0fdf4}
 .shelf-slot-cell.has-codes{background:#ffffff;border-color:#86efac}
-.shelf-slot-cell.is-hit{background:var(--gs);border-color:var(--g);box-shadow:0 0 0 2px rgba(var(--g-rgb),.25)}
-.shelf-slot-pos{font-size:8.5px;font-weight:700;color:#6b7280}
+.shelf-slot-cell.is-hit{background:var(--gs);border-color:var(--g)}
+.shelf-slot-cell.is-selected{border:2.2px solid #7e22ce !important;background:linear-gradient(180deg,#faf5ff 0%,#f3e8ff 100%) !important;box-shadow:0 0 0 2.5px rgba(126,34,206,.18)}
+.shelf-slot-pos{font-size:8.5px;font-weight:700;color:#6b7280;display:flex;justify-content:space-between;align-items:center}
+.shelf-slot-cell.is-selected .shelf-slot-pos{color:#6b21a8;font-weight:800}
 .shelf-slot-codes{font-size:10.5px;font-weight:800;color:#111827;word-break:break-word;line-height:1.25}
+
+.slot-chips-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.slot-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gs);color:var(--g);border:1px solid #86efac;border-radius:8px;padding:4px 8px;font-size:12.5px;font-weight:800}
+.slot-chip button{border:none;background:#dc2626;color:#fff;width:17px;height:17px;border-radius:999px;font-size:11px;font-weight:800;cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+
 .capture-clone .shelf-mini-box{display:none!important}
 </style>
 </head>
@@ -615,7 +625,7 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
   </div>
 </section>
 
-<!-- Shelf Rack Map Modal (Search ក្បាលឆាន + Note Auto Sync ជាមួយ Firebase & Sheet) -->
+<!-- Shelf Rack Map Modal (Select ប្រឡោះ -> ចុច + ដាក់ចូលប្រឡោះនោះ Auto + Save Auto) -->
 <div class="mbg" id="shelfModal" onclick="if(event.target===this)closeM('shelfModal')">
   <div class="sheet" style="background:#f2f2f7">
     <div class="sh">
@@ -634,7 +644,7 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
         <div class="shelf-search-drop" id="shelfSearchDrop"></div>
       </div>
       <button class="ios-file-btn" onclick="syncShelfFromGoogleSheet(true)">🔄 Sync</button>
-      <button class="ios-file-btn green" onclick="quickAssignCurrentCodeToSelectedSlot()">+ ដាក់កូដនេះ</button>
+      <button class="shelf-quick-add-btn" id="shelfQuickAddBtn" onclick="quickAssignCurrentCodeToSelectedSlot()">+ ដាក់កូដនេះ</button>
     </div>
 
     <div class="shelf-note-card">
@@ -652,12 +662,16 @@ main{position:relative;z-index:1;width:100%;max-width:520px;padding:12px 16px 40
       <div class="shelf-tier-grid" id="shelfTierGrid"></div>
     </div>
 
-    <div id="shelfSlotEditor" style="display:none;margin-top:12px;background:#fff;border-radius:14px;padding:12px;border:1px solid #d1d5db">
-      <div style="font-size:13px;font-weight:800;color:var(--g);margin-bottom:6px" id="shelfEditorTitle">កែប្រែកូដក្នុងប្រឡោះ</div>
-      <div style="font-size:11.5px;color:#6b7280;margin-bottom:6px">វាយកូដច្រើនបាន (ខណ្ឌដោយក្បៀស , ឬ Space ឧ. Y158, Z289)</div>
-      <textarea class="inp" id="shelfSlotInput" rows="3" placeholder="ឧ. Y158, Z289, U936"></textarea>
+    <div id="shelfSlotEditor" style="display:none;margin-top:12px;background:#fff;border-radius:14px;padding:12px;border:1.5px solid #d8b4fe">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px">
+        <div style="font-size:13px;font-weight:800;color:#6b21a8" id="shelfEditorTitle">កែប្រែកូដក្នុងប្រឡោះ</div>
+        <span style="font-size:10.5px;font-weight:800;color:var(--g);background:var(--gs);padding:2px 8px;border-radius:999px">✓ Auto Save</span>
+      </div>
+      <div class="slot-chips-wrap" id="shelfSlotChips"></div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:5px">ចុច <b>+ ដាក់កូដ</b> ខាងលើដើម្បីបញ្ចូល Auto ឬវាយកូដបន្ថែមខាងក្រោម៖</div>
+      <textarea class="inp" id="shelfSlotInput" rows="2" placeholder="ឧ. Y158, Z289, U936"></textarea>
       <div class="g2">
-        <button class="btn" onclick="saveShelfSlotCodes()">រក្សាទុកប្រឡោះ</button>
+        <button class="btn" onclick="saveShelfSlotCodes(true)">រក្សាទុកប្រឡោះ</button>
         <button class="btn lt" onclick="$('shelfSlotEditor').style.display='none'">បិទ</button>
       </div>
     </div>
@@ -1295,7 +1309,7 @@ function removeGif(i){gifs.splice(i,1);if(gifIdx>=gifs.length)gifIdx=0;meta.upda
 function clearAllGifs(){if(!gifs.length)return toast('មិនមានរូបត្រូវលុបទេ','warn');if(!confirm('លុបរូបវិលជុំទាំងអស់ចេញ?'))return;gifs=[];gifIdx=0;meta.updatedAt=Date.now();save('gifs','meta');renderStage(true);renderGifGrid();syncSharedToCloud(false);toast('បានលុបរូបវិលជុំទាំងអស់');}
 
 let sharedPushTimer;
-function scheduleSharedPush(){if(!getFirebaseUrl())return;clearTimeout(sharedPushTimer);sharedPushTimer=setTimeout(()=>syncSharedToCloud(false),700);}
+function scheduleSharedPush(){if(!getFirebaseUrl())return;clearTimeout(sharedPushTimer);sharedPushTimer=setTimeout(()=>syncSharedToCloud(false),650);}
 function updateCloudStrip(title,sub){if($('cloudStatusLabel'))$('cloudStatusLabel').textContent=title;if($('cloudSubLabel'))$('cloudSubLabel').textContent=sub;}
 
 async function syncSharedToCloud(notify){
@@ -1530,7 +1544,7 @@ function bump(p,v,d){const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null,cur
 function setCount(p,v,n){const key=vKey(p,v),prev=ledger[key]?ledger[key].n:null;undoStack.push({key,prev});ledger[key]={n:Math.max(0,n|0),t:Date.now()};save('ledger');}
 function undo(){const u=undoStack.pop();if(!u)return toast('គ្មានអ្វីត្រូវ Undo','warn');if(u.prev===null)delete ledger[u.key];else ledger[u.key]={n:u.prev,t:Date.now()};save('ledger');render();toast('Undo រួចរាល់');}
 
-/* តារាងឆាន — Search ក្បាលឆាន + Note Auto Sync ទៅវិញទៅមកជាមួយ Google Sheet & Firebase */
+/* តារាងឆាន — Select ប្រឡោះ -> ចុច + ដាក់ចូលប្រឡោះនោះ Auto + Save Auto */
 const SHELF_KEY='khim_shelf_map_v5';
 const TIER_NAMES={1:'ជួរ ១',2:'ជួរ ២',3:'ជួរ ៣',4:'ជួរ ៤'};
 const SLOT_NAMES={0:'ប្រឡោះ ១',1:'ប្រឡោះ ២',2:'ប្រឡោះ ៣',3:'ប្រឡោះ ៤',4:'ប្រឡោះ ៥'};
@@ -1538,6 +1552,7 @@ const SLOT_NAMES={0:'ប្រឡោះ ១',1:'ប្រឡោះ ២',2:'ប�
 let shelfData={
   enabled:true,
   selectedRack:'K-1',
+  selectedSlotKey:'1_0',
   sheetUrl:DEFAULT_SHELF_SHEET_URL,
   prefix:'',
   sheetUrl2:'',
@@ -1884,7 +1899,7 @@ function dl(name,blob){const a=document.createElement('a');a.download=name;a.hre
 function backupJSON(){dl(`KHIM_backup_${fmtDate()}.json`,new Blob([JSON.stringify({v:1,catalog,ledger,meta,gifs,shelfData})],{type:'application/json'}))}
 function restoreJSON(ev){
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.catalog)||typeof d.ledger!=='object')throw 0;if(!confirm('Restore នឹងជំនួសទិន្នន័យទាំងអស់។ បន្ត?'))return;catalog=d.catalog;ledger=d.ledger;meta={...meta,...(d.meta||{})};if(d.shelfData&&d.shelfData.racks){shelfData={...shelfData,...d.shelfData};if(!shelfData.notes)shelfData.notes={};rebuildShelfIndex();saveShelfData();}gifs=Array.isArray(d.gifs)?d.gifs.slice(0,MAX_GIFS):gifs;if(!meta.exported)meta.exported={};undoStack=[];applyHeaderFlip();applyUiThemeAndIcons();applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);renderStage(true);renderGifGrid();buildIndex();save('catalog','ledger','meta','gifs');render();toast('Restore ជោគជ័យ');}catch(e){alert('File Backup មិនត្រឹមត្រូវ!')}ev.target.value=''};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.catalog)||typeof d.ledger!=='object')throw 0;if(!confirm('Restore នឹងជំនួសទិន្នន័យទាំងអស់។ បន្ត?'))return;catalog=d.catalog;ledger=d.ledger;meta={...meta,...(d.meta||{})};if(d.shelfData&&d.shelfData.racks){shelfData={...shelfData,...d.shelfData};if(!shelfData.notes)shelfData.notes={};if(!shelfData.selectedSlotKey)shelfData.selectedSlotKey='1_0';rebuildShelfIndex();saveShelfData();}gifs=Array.isArray(d.gifs)?d.gifs.slice(0,MAX_GIFS):gifs;if(!meta.exported)meta.exported={};undoStack=[];applyHeaderFlip();applyUiThemeAndIcons();applyTableFontStyle(meta.tableFont,meta.customFontData,meta.customFontLabel);renderStage(true);renderGifGrid();buildIndex();save('catalog','ledger','meta','gifs');render();toast('Restore ជោគជ័យ');}catch(e){alert('File Backup មិនត្រឹមត្រូវ!')}ev.target.value=''};
   r.readAsText(f);
 }
 function resetCounts(){if(!confirm('លុបចំនួនរាប់ទាំងអស់?'))return;if(!confirm('ប្រាកដមែនទេ?'))return;ledger={};meta.exported={};undoStack=[];save('ledger','meta');render();toast('បានលុបចំនួនរាប់');}
@@ -1936,6 +1951,7 @@ function loadShelfData(){
       shelfData={
         enabled:parsed.enabled!==false,
         selectedRack:parsed.selectedRack||'K-1',
+        selectedSlotKey:parsed.selectedSlotKey||'1_0',
         sheetUrl:parsed.sheetUrl||DEFAULT_SHELF_SHEET_URL,
         prefix:parsed.prefix||'',
         sheetUrl2:parsed.sheetUrl2||'',
@@ -1961,6 +1977,7 @@ function saveShelfData(){
     localStorage.setItem(SHELF_KEY,JSON.stringify({
       enabled:shelfData.enabled!==false,
       selectedRack:shelfData.selectedRack,
+      selectedSlotKey:shelfData.selectedSlotKey||'1_0',
       sheetUrl:shelfData.sheetUrl,
       prefix:shelfData.prefix,
       sheetUrl2:shelfData.sheetUrl2,
@@ -2230,11 +2247,31 @@ async function syncShelfFromGoogleSheet(notify=false){
   }catch(e){if(notify)toast('ទាញពី Google Sheet មិនបាន','err');}
 }
 
-/* Search ក្បាលឆានផ្ទាល់ដៃ & Note Auto Sync */
+/* Search ក្បាលឆាន & Select ប្រឡោះ -> ចុច + ដាក់ចូលប្រឡោះនោះ Auto + Save Auto */
 function getSortedRackIds(){
   const rackSet=new Set(Object.keys(shelfData.racks||{}));
   if(!rackSet.size){for(let i=1;i<=10;i++)rackSet.add('K-'+i);}
   return [...rackSet].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+}
+
+function getActiveProductCodeForShelf(){
+  const typed=normCode($('scanInput')?.value||'');
+  if(typed && (index.has(typed) || catalog.some(x=>normCode(x.shortCode)===typed) || shelfCodeIndex.has(typed)))return typed;
+  return normCode(curP()?.shortCode||'');
+}
+
+function formatSlotShortLabel(slotKey){
+  const parts=String(slotKey||'1_0').split('_');
+  const t=parseInt(parts[0],10)||1;
+  const s=(parseInt(parts[1],10)||0)+1;
+  return `ជួរ ${t}-${s}`;
+}
+
+function updateQuickAddButtonLabel(){
+  const btn=$('shelfQuickAddBtn');if(!btn)return;
+  const code=getActiveProductCodeForShelf();
+  const slotLbl=formatSlotShortLabel(shelfData.selectedSlotKey||'1_0');
+  btn.textContent=code ? `+ ដាក់ ${code} ➔ ${slotLbl}` : `+ ដាក់កូដនេះ ➔ ${slotLbl}`;
 }
 
 function renderShelfSearchDropdown(rawQuery=''){
@@ -2274,6 +2311,7 @@ function renderShelfSearchDropdown(rawQuery=''){
 
 function selectShelfRackFromSearch(rackId){
   shelfData.selectedRack=rackId;
+  if(!shelfData.selectedSlotKey)shelfData.selectedSlotKey='1_0';
   saveShelfData();
   const inp=$('shelfRackSearchInput');
   if(inp)inp.value=rackId;
@@ -2424,12 +2462,20 @@ function openShelfModalForCurrent(){
   updateShelfToggleText();
   const qVal=normCode($('scanInput')?.value||''), p=curP();
   const hits=(qVal && findCodeLocations(qVal).length) ? findCodeLocations(qVal) : (p?findCodeLocations(p.shortCode):[]);
-  if(hits.length){shelfData.selectedRack=hits[shelfData.activeLocIdx]?.rackId || hits[0].rackId;}
+  if(hits.length){
+    const chosen=hits[shelfData.activeLocIdx] || hits[0];
+    shelfData.selectedRack=chosen.rackId;
+    shelfData.selectedSlotKey=`${chosen.tier}_${chosen.slot}`;
+  }else if(!shelfData.selectedSlotKey){
+    shelfData.selectedSlotKey='1_0';
+  }
   if($('shelfRackSearchInput'))$('shelfRackSearchInput').value=shelfData.selectedRack||'K-1';
   $('shelfSearchClearBtn')?.classList.toggle('show',!!shelfData.selectedRack);
   $('shelfSearchDrop')?.classList.remove('show');
-  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='none';
-  renderShelfModalGrid();openM('shelfModal');
+  renderShelfModalGrid();
+  const [tStr,sStr]=String(shelfData.selectedSlotKey||'1_0').split('_');
+  openSlotEditor(shelfData.selectedRack||'K-1', shelfData.selectedSlotKey||'1_0', parseInt(tStr,10)||1, parseInt(sStr,10)||0);
+  openM('shelfModal');
 }
 
 function setSelectedRackColumns(cols){
@@ -2441,7 +2487,9 @@ function setSelectedRackColumns(cols){
 
 function renderShelfModalGrid(){
   const rackId=shelfData.selectedRack||'K-1';
+  if(!shelfData.selectedSlotKey)shelfData.selectedSlotKey='1_0';
   saveShelfData();
+  updateQuickAddButtonLabel();
   const colCount=getRackColCount(rackId), slotCols=getSlotIndicesLTR(colCount);
 
   if($('shelfNoteLabel'))$('shelfNoteLabel').textContent=`📝 Note ក្បាលឆាន ${rackId}`;
@@ -2454,48 +2502,108 @@ function renderShelfModalGrid(){
         ${[3,4,5].map(n=>`<button type="button" onclick="setSelectedRackColumns(${n})" style="border:1px solid var(--g);background:${colCount===n?'var(--g)':'#fff'};color:${colCount===n?'#fff':'var(--g)'};border-radius:6px;padding:1px 6px;font-size:10px;font-weight:800;cursor:pointer">${n}</button>`).join('')}
       </span>`;
   }
-  const activeCode=normCode($('scanInput')?.value||'') || normCode(curP()?.shortCode||'');
+  const activeCode=getActiveProductCodeForShelf();
   const rackSlots=shelfData.racks[rackId]||{};
   $('shelfTierGrid').innerHTML=[4,3,2,1].map(tNum=>{
     const cells=slotCols.map(sIdx=>{
       const key=`${tNum}_${sIdx}`, list=rackSlots[key]||[], hasCodes=list.length>0;
       const isHit=activeCode && list.some(c=>normCode(c)===activeCode);
-      return `<div class="shelf-slot-cell ${hasCodes?'has-codes':''} ${isHit?'is-hit':''}" onclick="openSlotEditor('${esc(rackId)}','${key}',${tNum},${sIdx})"><div class="shelf-slot-pos">${SLOT_NAMES[sIdx]}</div><div class="shelf-slot-codes">${hasCodes?esc(list.join(', ')):`<span style="color:#9ca3af;font-weight:600">+ ដាក់</span>`}</div></div>`;
+      const isSel=(shelfData.selectedSlotKey===key);
+      return `<div class="shelf-slot-cell ${hasCodes?'has-codes':''} ${isHit?'is-hit':''} ${isSel?'is-selected':''}" onclick="selectAndEditSlot('${esc(rackId)}','${key}',${tNum},${sIdx})">
+        <div class="shelf-slot-pos"><span>${SLOT_NAMES[sIdx]}</span>${isSel?'<span>✓</span>':''}</div>
+        <div class="shelf-slot-codes">${hasCodes?esc(list.join(', ')):`<span style="color:#9ca3af;font-weight:600">+ ដាក់</span>`}</div>
+      </div>`;
     }).join('');
     return `<div class="shelf-tier-row" style="grid-template-columns:56px repeat(${colCount},1fr)"><div class="shelf-tier-lbl">${TIER_NAMES[tNum]}</div>${cells}</div>`;
   }).join('');
 }
 
-function openSlotEditor(rackId,key,tNum,sIdx){
-  shelfData.editingSlot={rackId,key};
-  const list=(shelfData.racks[rackId]&&shelfData.racks[rackId][key])||[];
-  if($('shelfEditorTitle'))$('shelfEditorTitle').textContent=`កែប្រឡោះ • ឆាន ${rackId} (${TIER_NAMES[tNum]} - ${SLOT_NAMES[sIdx]})`;
-  if($('shelfSlotInput'))$('shelfSlotInput').value=list.join(', ');
-  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='block';
-  $('shelfSlotInput')?.focus();
+function selectAndEditSlot(rackId,key,tNum,sIdx){
+  shelfData.selectedRack=rackId;
+  shelfData.selectedSlotKey=key;
+  saveShelfData();
+  renderShelfModalGrid();
+  openSlotEditor(rackId,key,tNum,sIdx);
 }
 
-function saveShelfSlotCodes(){
+function renderSlotChips(rackId,key){
+  const wrap=$('shelfSlotChips');if(!wrap)return;
+  const list=(shelfData.racks[rackId]&&shelfData.racks[rackId][key])||[];
+  if(!list.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=list.map(code=>`<span class="slot-chip">${esc(code)}<button type="button" onclick="removeCodeFromSelectedSlot('${esc(code)}')" title="ដកចេញ">×</button></span>`).join('');
+}
+
+function openSlotEditor(rackId,key,tNum,sIdx){
+  shelfData.editingSlot={rackId,key};
+  shelfData.selectedSlotKey=key;
+  const list=(shelfData.racks[rackId]&&shelfData.racks[rackId][key])||[];
+  if($('shelfEditorTitle'))$('shelfEditorTitle').textContent=`ប្រឡោះរើស • ឆាន ${rackId} (${TIER_NAMES[tNum]} - ${SLOT_NAMES[sIdx]})`;
+  if($('shelfSlotInput'))$('shelfSlotInput').value=list.join(', ');
+  renderSlotChips(rackId,key);
+  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='block';
+  updateQuickAddButtonLabel();
+}
+
+function removeCodeFromSelectedSlot(codeToRemove){
+  const rackId=shelfData.selectedRack||'K-1';
+  const key=shelfData.selectedSlotKey||'1_0';
+  if(!shelfData.racks[rackId] || !shelfData.racks[rackId][key])return;
+  const target=normCode(codeToRemove);
+  const nextList=shelfData.racks[rackId][key].filter(c=>normCode(c)!==target);
+  if(nextList.length)shelfData.racks[rackId][key]=nextList;
+  else delete shelfData.racks[rackId][key];
+  saveShelfData();updateShelfToggleText();
+  if($('shelfSlotInput'))$('shelfSlotInput').value=nextList.join(', ');
+  renderSlotChips(rackId,key);
+  renderShelfModalGrid();render();scheduleSharedPush();
+  toast(`✓ បានដក ${target} ចេញ & Save Auto`);
+}
+
+function saveShelfSlotCodes(closeAfter=false){
   if(!shelfData.editingSlot)return;
   const {rackId,key}=shelfData.editingSlot;
-  const codes=normDigits($('shelfSlotInput')?.value||'').toUpperCase().split(/[,\s]+/).map(s=>s.trim()).filter(Boolean);
+  const rawList=normDigits($('shelfSlotInput')?.value||'').toUpperCase().split(/[,\s]+/).map(s=>s.trim()).filter(Boolean);
+  const codes=[...new Set(rawList)];
   if(!shelfData.racks[rackId])shelfData.racks[rackId]={};
   if(codes.length)shelfData.racks[rackId][key]=codes;else delete shelfData.racks[rackId][key];
   saveShelfData();updateShelfToggleText();scheduleSharedPush();
-  if($('shelfSlotEditor'))$('shelfSlotEditor').style.display='none';
-  renderShelfModalGrid();render();toast('✓ បានរក្សាទុកឆាន '+rackId);
+  renderSlotChips(rackId,key);
+  if(closeAfter && $('shelfSlotEditor'))$('shelfSlotEditor').style.display='none';
+  renderShelfModalGrid();render();toast('✓ បានរក្សាទុកប្រឡោះ Auto');
 }
 
 function quickAssignCurrentCodeToSelectedSlot(){
-  const p=curP();if(!p)return;
-  const rackId=shelfData.selectedRack||'K-1', key='1_0';
+  const code=getActiveProductCodeForShelf();
+  if(!code)return toast('មិនទាន់មានកូដត្រូវបញ្ចូលទេ!','warn');
+  const rackId=shelfData.selectedRack||'K-1';
+  const key=shelfData.selectedSlotKey||'1_0';
+  const [tStr,sStr]=key.split('_');
+  const tNum=parseInt(tStr,10)||1, sIdx=parseInt(sStr,10)||0;
+
   if(!shelfData.racks[rackId])shelfData.racks[rackId]={};
   const list=shelfData.racks[rackId][key]||[];
-  if(!list.includes(p.shortCode))list.unshift(p.shortCode);
+  const alreadyHas=list.some(c=>normCode(c)===code);
+  if(!alreadyHas)list.push(code);
   shelfData.racks[rackId][key]=list;
-  saveShelfData();updateShelfToggleText();renderShelfModalGrid();render();scheduleSharedPush();
-  toast(`✓ ដាក់ ${p.shortCode} ចូលឆាន ${rackId}`);
+
+  saveShelfData();
+  updateShelfToggleText();
+  renderShelfModalGrid();
+  openSlotEditor(rackId,key,tNum,sIdx);
+  render();
+  scheduleSharedPush();
+  beep(true);
+  toast(alreadyHas
+    ? `✓ ${code} មានក្នុង ឆាន ${rackId} (${TIER_NAMES[tNum]} - ${SLOT_NAMES[sIdx]}) រួចហើយ`
+    : `✓ បញ្ចូល ${code} ➔ ឆាន ${rackId} (${TIER_NAMES[tNum]} - ${SLOT_NAMES[sIdx]}) & Save Auto!`
+  );
 }
+
+let shelfAutoTypeTimer=null;
+$('shelfSlotInput')?.addEventListener('input',()=>{
+  clearTimeout(shelfAutoTypeTimer);
+  shelfAutoTypeTimer=setTimeout(()=>saveShelfSlotCodes(false),650);
+});
 
 let appInitialized=false;
 async function initApp(){
